@@ -61,7 +61,7 @@
                       <span>Login</span>
                       <i class="bi bi-arrow-right group-hover:translate-x-1 transition-transform duration-300"></i>
                     </a>
-                    <a class="gold-btn-outline group flex items-center justify-center gap-2 px-8 py-3.5 md:px-10 md:py-4 text-sm md:text-base font-semibold rounded-xl border-2 border-gold-500/50 text-white hover:bg-gold-500 hover:text-primary-900 transition-all duration-300" href="signup">
+                    <a class="gold-btn-outline group flex items-center justify-center gap-2 px-8 py-3.5 md:px-10 md:py-4 text-sm md:text-base font-semibold rounded-xl border-2 border-gold-500/50 text-white hover:bg-gold-500 hover:text-primary-900 transition-all duration-300" href="register">
                       <span>Get Started</span>
                       <i class="bi bi-rocket-takeoff group-hover:rotate-12 transition-transform duration-300"></i>
                     </a>

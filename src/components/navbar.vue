@@ -19,7 +19,7 @@
               <a class="navbar-btn navbar-btn-gold-outlined" href="login">
                 Login
               </a>
-              <a class="navbar-btn navbar-btn-gold" href="signup">
+              <a class="navbar-btn navbar-btn-gold" href="register">
                 Register
               </a>
             </div>
@@ -81,7 +81,7 @@
             <div class="flex items-center gap-2 lg:hidden">
               <!-- Mobile Auth Buttons (visible when not scrolled) -->
               <div class="flex items-center gap-2" :class="{ 'hidden': isScrolled }">
-                <a class="navbar-btn navbar-btn-gold text-sm !px-3" href="signup">
+                <a class="navbar-btn navbar-btn-gold text-sm !px-3" href="register">
                   Register
                 </a>
                 <a class="navbar-btn navbar-btn-gold-outlined text-sm !px-3" href="login">
@@ -138,7 +138,7 @@
               OPEN AN ACCOUNT
             </div>
             <div class="mt-6">
-              <a href="?a=signup">
+              <a href="?a=register">
                 <!-- Banner image here -->
               </a>
             </div>

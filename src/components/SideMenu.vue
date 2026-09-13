@@ -116,7 +116,7 @@
             <!-- Quick Actions -->
             <div class="p-4 space-y-2">
               <a 
-                href="signup" 
+                href="register" 
                 class="flex items-center justify-between w-full px-4 py-3 rounded-xl bg-gradient-to-r from-gold-400 to-gold-600 text-primary-900 font-semibold text-sm transition-all duration-300 hover:shadow-lg hover:shadow-gold-500/30 hover:scale-[1.02] active:scale-[0.98] group"
               >
                 <span class="flex items-center gap-2">

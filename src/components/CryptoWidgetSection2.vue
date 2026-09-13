@@ -36,7 +36,7 @@
           </ul>
   
           <a 
-            href="?a=signup" 
+            href="?a=register" 
             class="crypto-widget-cta inline-block text-gold-500 font-semibold text-sm md:text-base no-underline border-2 border-gold-500 rounded-full px-6 md:px-10 py-2 md:py-3 transition-all duration-200 hover:bg-gold-500 hover:text-white"
           >
             Register Now

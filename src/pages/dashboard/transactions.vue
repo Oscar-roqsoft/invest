@@ -1,7 +1,7 @@
 <template>
     <DashboardLayout>
       <!-- Page Header -->
-      <div class="my-6 md:mb-8">
+      <div class="my-6 md:mb-8 mt-[70px]">
         <div class="flex flex-wrap items-center justify-between gap-4">
           <div class="flex items-center gap-3">
             <div class="w-11 h-11 rounded-2xl flex items-center justify-center bg-gold-500/10 dark:bg-blue-500/[0.08]">

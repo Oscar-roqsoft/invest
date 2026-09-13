@@ -2,9 +2,20 @@
 export default defineNuxtConfig({
   compatibilityDate: '2024-11-01',
   devtools: { enabled: true },
-  
+  ssr:false,
   modules: ['@nuxtjs/tailwindcss', '@pinia/nuxt',
     '@pinia-plugin-persistedstate/nuxt', '@nuxtjs/color-mode','@vueuse/nuxt'],
+
+    imports: {
+      dirs: [
+        'composables',
+        'composables/**',
+        'stores',
+      ],
+    },
+  
+    // Also auto-import from requests/constants subfolders
+    components: true,
  
   
 
@@ -12,6 +23,7 @@ export default defineNuxtConfig({
   css: ['~/assets/css/main.css',
     'swiper/css',
     'swiper/css/pagination',
+    // 'vue-sonner/style.css',
   ],
   
   app: {
@@ -59,6 +71,15 @@ export default defineNuxtConfig({
     plugins: {
       tailwindcss: {},
       autoprefixer: {},
+    },
+  },
+
+  runtimeConfig: {
+    public: {
+      apiBaseUrl:
+        process.env.NUXT_PUBLIC_API_BASE_URL ||
+        'http://localhost:5000/api/v1',
+      appName: 'CoinSquare Wealth',
     },
   },
 

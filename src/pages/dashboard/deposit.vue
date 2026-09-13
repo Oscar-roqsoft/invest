@@ -1,7 +1,7 @@
 <template>
     <DashboardLayout>
       <!-- Page Header -->
-      <div class="mb-6 md:mb-8">
+      <div class="mb-6 md:mb-8 mt-[70px]">
         <div class="flex items-center gap-3 mb-2">
           <div class="w-11 h-11 rounded-2xl flex items-center justify-center bg-gold-500/10 dark:bg-amber-500/[0.08]">
             <i class="bi bi-arrow-down-circle text-amber-500 text-lg"></i>

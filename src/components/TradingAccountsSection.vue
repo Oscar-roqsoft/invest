@@ -106,7 +106,7 @@
   
                   <a 
                     class="gold-btn block text-center text-sm md:text-base font-semibold" 
-                    href="/?a=signup"
+                    href="/?a=register"
                   >
                     {{ plan.duration }}
                   </a>

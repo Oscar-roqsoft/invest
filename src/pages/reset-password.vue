@@ -1,31 +1,12 @@
 <template>
   <div class="reset-password-page min-h-screen flex flex-col" style="background: #030f5c;">
-    <!-- Loader Overlay -->
-    <div v-if="isLoading" class="fixed inset-0 z-[1000] bg-primary-900/80 flex flex-col items-center justify-center">
-      <div class="candles-loader-wrapper flex flex-col items-center">
-        <div class="candles-loader flex gap-2">
-          <div 
-            v-for="i in 4" 
-            :key="i"
-            class="candles-loader-candle w-3.5 rounded-xl bg-gold-500"
-            :style="{ 
-              animationDelay: (i - 1) * 0.25 + 's',
-              height: i % 2 === 0 ? '28px' : '28px',
-              transform: i % 2 === 0 ? 'translateY(-8px)' : 'translateY(8px)'
-            }"
-          ></div>
-        </div>
-        <div class="text-white/70 text-sm font-roboto mt-4">Processing Your Request…</div>
-      </div>
-    </div>
-
     <!-- Navigation Bar -->
     <header class="page-header h-auto auth-header py-3 px-4" style="background: rgba(3, 15, 92, 0.95); backdrop-filter: blur(10px);">
       <nav class="navbar navbar-auth flex justify-end items-center container mx-auto">
-        <a href="?a=login" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-gold-500/10 border border-gold-500/20 text-gold-400 hover:text-gold-300 hover:bg-gold-500/20 transition-all duration-300 text-sm font-medium">
+        <NuxtLink to="/login" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-gold-500/10 border border-gold-500/20 text-gold-400 hover:text-gold-300 hover:bg-gold-500/20 transition-all duration-300 text-sm font-medium">
           <i class="bi bi-arrow-left"></i>
           Back to Login
-        </a>
+        </NuxtLink>
       </nav>
     </header>
 
@@ -44,147 +25,200 @@
           <!-- Auth Container -->
           <div class="auth-container rounded-2xl p-6 md:p-8" 
                style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(187, 145, 74, 0.15); backdrop-filter: blur(10px);">
-            
-            <!-- Title -->
-            <div class="text-center mb-6">
-              <div class="w-16 h-16 rounded-2xl bg-gold-500/10 flex items-center justify-center mx-auto mb-4">
-                <i class="bi bi-key text-gold-400 text-3xl"></i>
+
+            <!-- INVALID TOKEN STATE -->
+            <Transition
+              enter-active-class="transition-all duration-500"
+              enter-from-class="opacity-0 scale-95"
+              enter-to-class="opacity-100 scale-100"
+            >
+              <div v-if="!resetToken" class="text-center">
+                <div class="w-20 h-20 rounded-full bg-red-500/10 flex items-center justify-center mx-auto mb-5">
+                  <i class="bi bi-shield-x text-red-400 text-4xl"></i>
+                </div>
+                <h3 class="text-white font-oswald font-bold text-2xl md:text-3xl uppercase mb-2">
+                  INVALID LINK
+                </h3>
+                <div class="w-16 h-1 bg-gradient-to-r from-red-500 to-red-400 mx-auto mt-3 rounded-full"></div>
+                <p class="text-white/60 text-sm mt-4 mb-6">
+                  This password reset link is invalid or has expired. Please request a new one.
+                </p>
+                <NuxtLink 
+                  to="/forgot-password"
+                  class="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-bold text-sm transition-all duration-300
+                         hover:shadow-lg hover:shadow-amber-500/30 hover:scale-[1.02]"
+                  style="background: linear-gradient(135deg, #F5D77F 0%, #E6BB5C 25%, #D4A44A 50%, #E6BB5C 75%, #F5D77F 100%); background-size: 200% auto; color: #020862;"
+                >
+                  <i class="bi bi-arrow-clockwise"></i>
+                  Request New Link
+                </NuxtLink>
               </div>
-              <h3 class="text-white font-oswald font-bold text-2xl md:text-3xl uppercase">
-                RESET PASSWORD
-              </h3>
-              <div class="w-16 h-1 bg-gradient-to-r from-gold-500 to-gold-300 mx-auto mt-3 rounded-full"></div>
-              <p class="text-white/60 text-sm mt-3">
-                Enter your new password to reset your account
-              </p>
-            </div>
+            </Transition>
 
-            <!-- Error Message -->
-            <div v-if="errorMessage" class="error-message rounded-lg px-4 py-3 mb-4 text-sm"
-                 style="background: rgba(220, 53, 69, 0.12); border: 1px solid rgba(220, 53, 69, 0.35); color: #ff8a8a;">
-              <i class="bi bi-exclamation-triangle-fill mr-2"></i>
-              {{ errorMessage }}
-            </div>
+            <!-- SUCCESS STATE -->
+            <Transition
+              enter-active-class="transition-all duration-500"
+              enter-from-class="opacity-0 scale-95"
+              enter-to-class="opacity-100 scale-100"
+            >
+              <div v-if="resetToken && isSuccess" class="text-center">
+                <div class="w-20 h-20 rounded-full bg-emerald-500/10 flex items-center justify-center mx-auto mb-5 relative">
+                  <div class="absolute inset-0 rounded-full bg-emerald-500/20 animate-ping"></div>
+                  <i class="bi bi-check-circle-fill text-emerald-400 text-4xl relative"></i>
+                </div>
+                <h3 class="text-white font-oswald font-bold text-2xl md:text-3xl uppercase mb-2">
+                  PASSWORD RESET!
+                </h3>
+                <div class="w-16 h-1 bg-gradient-to-r from-emerald-400 to-emerald-300 mx-auto mt-3 rounded-full"></div>
+                <p class="text-white/70 text-sm mt-4 mb-2">
+                  Your password has been successfully changed.
+                </p>
+                <p class="text-white/50 text-xs">
+                  Redirecting you to login in <span class="text-gold-400 font-bold">{{ redirectCountdown }}</span>s...
+                </p>
 
-            <!-- Success Message -->
-            <div v-if="successMessage" class="success-message rounded-lg px-4 py-3 mb-4 text-sm"
-                 style="background: rgba(88, 189, 125, 0.12); border: 1px solid rgba(88, 189, 125, 0.35); color: #7fd8a3;">
-              <i class="bi bi-check-circle-fill mr-2"></i>
-              {{ successMessage }}
-            </div>
+                <NuxtLink
+                  to="/login"
+                  class="mt-6 inline-flex items-center gap-1 px-6 py-3 rounded-xl font-bold text-sm transition-all duration-300
+                         hover:shadow-lg hover:shadow-amber-500/30 hover:scale-[1.02]"
+                  style="background: linear-gradient(135deg, #F5D77F 0%, #E6BB5C 25%, #D4A44A 50%, #E6BB5C 75%, #F5D77F 100%); background-size: 200% auto; color: #020862;"
+                >
+                  <i class="bi bi-box-arrow-in-right"></i>
+                  Go to Login Now
+                </NuxtLink>
+              </div>
+            </Transition>
 
-            <!-- Reset Password Form -->
-            <form @submit.prevent="handleResetPassword" class="space-y-4">
-              <input type="hidden" name="a" value="reset_password">
-              <input type="hidden" name="action" value="reset_password">
-              <input type="hidden" name="token" :value="resetToken">
+            <!-- FORM STATE -->
+            <Transition
+              enter-active-class="transition-all duration-500"
+              enter-from-class="opacity-0 scale-95"
+              enter-to-class="opacity-100 scale-100"
+            >
+              <div v-if="resetToken && !isSuccess">
+                <!-- Title -->
+                <div class="text-center mb-6">
+                  <div class="w-16 h-16 rounded-2xl bg-gold-500/10 flex items-center justify-center mx-auto mb-4">
+                    <i class="bi bi-key-fill text-gold-400 text-3xl"></i>
+                  </div>
+                  <h3 class="text-white font-oswald font-bold text-2xl md:text-3xl uppercase">
+                    RESET PASSWORD
+                  </h3>
+                  <div class="w-16 h-1 bg-gradient-to-r from-gold-500 to-gold-300 mx-auto mt-3 rounded-full"></div>
+                  <p class="text-white/60 text-sm mt-3">
+                    Enter your new password below
+                  </p>
+                </div>
 
-              <!-- New Password -->
-              <div class="form-group">
-                <label for="new_password" class="block text-white/80 text-sm font-medium mb-1.5">
-                  New Password <sup class="text-red-400">*</sup>
-                </label>
-                <div class="relative">
-                  <input 
-                    :type="showNewPassword ? 'text' : 'password'"
-                    id="new_password"
-                    v-model="form.newPassword"
-                    class="w-full px-4 py-3 rounded-xl bg-white/10 border border-white/10 text-white placeholder-white/40 focus:border-gold-500/50 focus:outline-none transition-all duration-300 pr-12"
-                    placeholder="Enter your new password"
-                    required
-                    minlength="8"
-                  />
-                  <button 
-                    type="button"
-                    @click="showNewPassword = !showNewPassword"
-                    class="absolute right-3 top-1/2 -translate-y-1/2 text-white/50 hover:text-white/80 transition-colors duration-300"
+                <!-- Form -->
+                <form @submit.prevent="handleResetPassword" class="space-y-4">
+
+                  <!-- New Password -->
+                  <div class="form-group">
+                    <label for="new_password" class="block text-white/80 text-sm font-medium mb-1.5">
+                      New Password <sup class="text-red-400">*</sup>
+                    </label>
+                    <div class="relative">
+                      <input 
+                        :type="showNewPassword ? 'text' : 'password'"
+                        id="new_password"
+                        v-model="form.newPassword"
+                        class="w-full px-4 py-3 rounded-xl bg-white/10 border border-white/10 text-white placeholder-white/40 focus:border-gold-500/50 focus:outline-none transition-all duration-300 pr-12"
+                        placeholder="Enter your new password"
+                        required
+                        minlength="8"
+                        autocomplete="new-password"
+                      />
+                      <button 
+                        type="button"
+                        @click="showNewPassword = !showNewPassword"
+                        class="absolute right-3 top-1/2 -translate-y-1/2 text-white/50 hover:text-white/80 transition-colors duration-300"
+                      >
+                        <i :class="showNewPassword ? 'bi bi-eye-slash' : 'bi bi-eye'"></i>
+                      </button>
+                    </div>
+                  </div>
+
+                  <!-- Confirm Password -->
+                  <div class="form-group">
+                    <label for="confirm_password" class="block text-white/80 text-sm font-medium mb-1.5">
+                      Confirm Password <sup class="text-red-400">*</sup>
+                    </label>
+                    <div class="relative">
+                      <input 
+                        :type="showConfirmPassword ? 'text' : 'password'"
+                        id="confirm_password"
+                        v-model="form.confirmPassword"
+                        class="w-full px-4 py-3 rounded-xl bg-white/10 border border-white/10 text-white placeholder-white/40 focus:border-gold-500/50 focus:outline-none transition-all duration-300 pr-12"
+                        placeholder="Retype your new password"
+                        required
+                        autocomplete="new-password"
+                      />
+                      <button 
+                        type="button"
+                        @click="showConfirmPassword = !showConfirmPassword"
+                        class="absolute right-3 top-1/2 -translate-y-1/2 text-white/50 hover:text-white/80 transition-colors duration-300"
+                      >
+                        <i :class="showConfirmPassword ? 'bi bi-eye-slash' : 'bi bi-eye'"></i>
+                      </button>
+                    </div>
+                    <p v-if="form.confirmPassword && form.newPassword !== form.confirmPassword" class="text-xs text-red-400 mt-1">
+                      <i class="bi bi-exclamation-circle mr-1"></i>Passwords do not match
+                    </p>
+                    <p v-else-if="form.confirmPassword && form.newPassword === form.confirmPassword" class="text-xs text-emerald-400 mt-1">
+                      <i class="bi bi-check-circle mr-1"></i>Passwords match
+                    </p>
+                  </div>
+
+                  <!-- Password Strength -->
+                  <div v-if="form.newPassword">
+                    <div class="flex items-center gap-2 mb-2">
+                      <div class="flex-1 h-1.5 rounded-full bg-white/10 overflow-hidden">
+                        <div
+                          class="h-full rounded-full transition-all duration-500"
+                          :class="passwordStrength.barColor"
+                          :style="{ width: passwordStrength.width }"
+                        ></div>
+                      </div>
+                      <span class="text-xs font-bold" :class="passwordStrength.textColor">
+                        {{ passwordStrength.label }}
+                      </span>
+                    </div>
+                    <ul class="space-y-1 text-xs">
+                      <li 
+                        v-for="req in passwordRequirements" 
+                        :key="req.label"
+                        class="flex items-center gap-1.5"
+                        :class="req.met ? 'text-emerald-400' : 'text-white/30'"
+                      >
+                        <i :class="req.met ? 'bi bi-check-circle-fill' : 'bi bi-circle'" class="text-xs"></i>
+                        {{ req.label }}
+                      </li>
+                    </ul>
+                  </div>
+
+                  <!-- Submit Button -->
+                  <CandleButton
+                    type="submit"
+                    variant="gold"
+                    size="md"
+                    :loading="isSubmitting"
+                    :disabled="!canSubmit"
                   >
-                    <i :class="showNewPassword ? 'bi bi-eye-slash' : 'bi bi-eye'"></i>
-                  </button>
-                </div>
+                    <i class="bi bi-shield-check"></i>
+                    Reset Password
+                  </CandleButton>
+                </form>
+
+                <!-- Back to Login -->
+                <p class="text-center text-white/60 text-sm mt-6">
+                  <NuxtLink to="/login" class="text-gold-400 hover:text-gold-300 font-medium transition-colors duration-300">
+                    <i class="bi bi-box-arrow-in-right mr-1"></i>
+                    Back to Login
+                  </NuxtLink>
+                </p>
               </div>
-
-              <!-- Confirm New Password -->
-              <div class="form-group">
-                <label for="confirm_password" class="block text-white/80 text-sm font-medium mb-1.5">
-                  Confirm New Password <sup class="text-red-400">*</sup>
-                </label>
-                <div class="relative">
-                  <input 
-                    :type="showConfirmPassword ? 'text' : 'password'"
-                    id="confirm_password"
-                    v-model="form.confirmPassword"
-                    class="w-full px-4 py-3 rounded-xl bg-white/10 border border-white/10 text-white placeholder-white/40 focus:border-gold-500/50 focus:outline-none transition-all duration-300 pr-12"
-                    placeholder="Retype your new password"
-                    required
-                  />
-                  <button 
-                    type="button"
-                    @click="showConfirmPassword = !showConfirmPassword"
-                    class="absolute right-3 top-1/2 -translate-y-1/2 text-white/50 hover:text-white/80 transition-colors duration-300"
-                  >
-                    <i :class="showConfirmPassword ? 'bi bi-eye-slash' : 'bi bi-eye'"></i>
-                  </button>
-                </div>
-              </div>
-
-              <!-- Password Strength Indicator -->
-              <div v-if="form.newPassword" class="password-strength">
-                <div class="flex items-center justify-between mb-1">
-                  <span class="text-white/50 text-xs">Password Strength</span>
-                  <span class="text-xs font-medium" :class="passwordStrengthClass">{{ passwordStrengthLabel }}</span>
-                </div>
-                <div class="w-full h-1.5 rounded-full bg-white/10 overflow-hidden">
-                  <div 
-                    class="h-full rounded-full transition-all duration-500"
-                    :style="{ width: passwordStrengthPercentage + '%' }"
-                    :class="passwordStrengthBarClass"
-                  ></div>
-                </div>
-                <ul class="text-white/40 text-xs mt-2 space-y-1">
-                  <li class="flex items-center gap-2" :class="{ 'text-green-400': form.newPassword.length >= 8 }">
-                    <i :class="form.newPassword.length >= 8 ? 'bi bi-check-circle-fill' : 'bi bi-circle'"></i>
-                    At least 8 characters
-                  </li>
-                  <li class="flex items-center gap-2" :class="{ 'text-green-400': /[a-z]/.test(form.newPassword) }">
-                    <i :class="/[a-z]/.test(form.newPassword) ? 'bi bi-check-circle-fill' : 'bi bi-circle'"></i>
-                    Contains lowercase letter
-                  </li>
-                  <li class="flex items-center gap-2" :class="{ 'text-green-400': /[A-Z]/.test(form.newPassword) }">
-                    <i :class="/[A-Z]/.test(form.newPassword) ? 'bi bi-check-circle-fill' : 'bi bi-circle'"></i>
-                    Contains uppercase letter
-                  </li>
-                  <li class="flex items-center gap-2" :class="{ 'text-green-400': /[0-9]/.test(form.newPassword) || /[^a-zA-Z0-9]/.test(form.newPassword) }">
-                    <i :class="/[0-9]/.test(form.newPassword) || /[^a-zA-Z0-9]/.test(form.newPassword) ? 'bi bi-check-circle-fill' : 'bi bi-circle'"></i>
-                    Contains number or special character
-                  </li>
-                </ul>
-              </div>
-
-              <!-- Submit Button -->
-              <button 
-                type="submit" 
-                class="w-full py-3.5 rounded-xl bg-gradient-to-r from-gold-400 via-gold-500 to-gold-600 text-primary-900 font-oswald font-bold text-base uppercase shadow-lg shadow-gold-500/30 hover:shadow-2xl hover:shadow-gold-500/50 hover:scale-[1.02] transition-all duration-300 disabled:opacity-70 disabled:cursor-not-allowed"
-                :disabled="isSubmitting"
-              >
-                <span v-if="!isSubmitting">Reset Password</span>
-                <span v-else class="flex items-center justify-center gap-2">
-                  <svg class="animate-spin h-5 w-5 text-primary-900" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                  </svg>
-                  Resetting...
-                </span>
-              </button>
-            </form>
-
-            <!-- Back to Login Link -->
-            <p class="text-center text-white/60 text-sm mt-6">
-              <a href="?a=login" class="text-gold-400 hover:text-gold-300 font-medium transition-colors duration-300">
-                <i class="bi bi-box-arrow-in-right mr-1"></i>
-                Back to Login
-              </a>
-            </p>
+            </Transition>
           </div>
         </div>
       </div>
@@ -200,158 +234,164 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
-import { useRoute } from 'vue-router'
-
+import { toast } from 'vue-sonner'
 
 definePageMeta({
-    layout:'custom'
-  })
+  layout: 'custom',
+  middleware: 'guest',
+})
 
+const authStore = useAuthStore()
+const router = useRouter()
 const route = useRoute()
-const isLoading = ref(false)
+
+// State
+const resetToken = ref('')
 const isSubmitting = ref(false)
+const isSuccess = ref(false)
 const showNewPassword = ref(false)
 const showConfirmPassword = ref(false)
-const errorMessage = ref('')
-const successMessage = ref('')
-const resetToken = ref('')
+const redirectCountdown = ref(5)
+let redirectInterval = null
 
+// Form
 const form = ref({
   newPassword: '',
-  confirmPassword: ''
+  confirmPassword: '',
 })
 
-// Get token from URL
+// ─────────────────────────────────────────────────────────────
+// PASSWORD REQUIREMENTS
+// ─────────────────────────────────────────────────────────────
+const passwordRequirements = computed(() => {
+  const p = form.value.newPassword
+  return [
+    { label: 'At least 8 characters', met: p.length >= 8 },
+    { label: 'Contains uppercase letter', met: /[A-Z]/.test(p) },
+    { label: 'Contains lowercase letter', met: /[a-z]/.test(p) },
+    { label: 'Contains a number', met: /[0-9]/.test(p) },
+    { label: 'Contains special character', met: /[^A-Za-z0-9]/.test(p) },
+  ]
+})
+
+const passwordStrength = computed(() => {
+  const met = passwordRequirements.value.filter((r) => r.met).length
+  if (met <= 1) return { label: 'Weak', width: '20%', barColor: 'bg-red-500', textColor: 'text-red-400' }
+  if (met <= 2) return { label: 'Fair', width: '40%', barColor: 'bg-amber-500', textColor: 'text-amber-400' }
+  if (met <= 3) return { label: 'Good', width: '60%', barColor: 'bg-blue-500', textColor: 'text-blue-400' }
+  if (met <= 4) return { label: 'Strong', width: '80%', barColor: 'bg-emerald-500', textColor: 'text-emerald-400' }
+  return { label: 'Very Strong', width: '100%', barColor: 'bg-emerald-500', textColor: 'text-emerald-400' }
+})
+
+const canSubmit = computed(() => {
+  return (
+    form.value.newPassword.length >= 8 &&
+    passwordRequirements.value.every((r) => r.met) &&
+    form.value.newPassword === form.value.confirmPassword
+  )
+})
+
+// ─────────────────────────────────────────────────────────────
+// LIFECYCLE
+// ─────────────────────────────────────────────────────────────
 onMounted(() => {
-  resetToken.value = route.query.token || ''
-  if (!resetToken.value) {
-    errorMessage.value = 'Invalid or missing reset token. Please request a new password reset link.'
+  const token = (route.query.token || '').toString().trim()
+
+  if (!token) {
+    toast.error('Invalid reset link', {
+      description: 'This link is missing or expired. Request a new one.',
+    })
+    return
   }
+
+  resetToken.value = token
 })
 
-// Password Strength
-const passwordStrengthPercentage = computed(() => {
-  const password = form.value.newPassword
-  if (!password) return 0
-  
-  let score = 0
-  if (password.length >= 8) score += 25
-  if (/[a-z]/.test(password)) score += 25
-  if (/[A-Z]/.test(password)) score += 25
-  if (/[0-9]/.test(password) || /[^a-zA-Z0-9]/.test(password)) score += 25
-  
-  return score
+onUnmounted(() => {
+  if (redirectInterval) clearInterval(redirectInterval)
 })
 
-const passwordStrengthLabel = computed(() => {
-  const score = passwordStrengthPercentage.value
-  if (score === 0) return ''
-  if (score <= 25) return 'Weak'
-  if (score <= 50) return 'Fair'
-  if (score <= 75) return 'Good'
-  return 'Strong'
-})
+// ─────────────────────────────────────────────────────────────
+// START REDIRECT COUNTDOWN
+// ─────────────────────────────────────────────────────────────
+const startRedirectCountdown = () => {
+  redirectCountdown.value = 5
+  if (redirectInterval) clearInterval(redirectInterval)
 
-const passwordStrengthClass = computed(() => {
-  const score = passwordStrengthPercentage.value
-  if (score === 0) return ''
-  if (score <= 25) return 'text-red-400'
-  if (score <= 50) return 'text-yellow-400'
-  if (score <= 75) return 'text-blue-400'
-  return 'text-green-400'
-})
+  redirectInterval = setInterval(() => {
+    redirectCountdown.value--
+    if (redirectCountdown.value <= 0) {
+      clearInterval(redirectInterval)
+      router.push('/login')
+    }
+  }, 1000)
+}
 
-const passwordStrengthBarClass = computed(() => {
-  const score = passwordStrengthPercentage.value
-  if (score === 0) return ''
-  if (score <= 25) return 'bg-red-400'
-  if (score <= 50) return 'bg-yellow-400'
-  if (score <= 75) return 'bg-blue-400'
-  return 'bg-green-400'
-})
-
+// ─────────────────────────────────────────────────────────────
+// SUBMIT
+// ─────────────────────────────────────────────────────────────
 const handleResetPassword = async () => {
-  // Clear previous messages
-  errorMessage.value = ''
-  successMessage.value = ''
-
-  // Validate token
+  // Validations with toasts
   if (!resetToken.value) {
-    errorMessage.value = 'Invalid reset token. Please request a new password reset link.'
+    toast.error('Invalid reset token')
     return
   }
 
-  // Validate new password
-  if (!form.value.newPassword.trim()) {
-    errorMessage.value = 'Please enter a new password.'
-    return
-  }
-
-  // Validate password length
   if (form.value.newPassword.length < 8) {
-    errorMessage.value = 'Password must be at least 8 characters long.'
+    toast.error('Password must be at least 8 characters')
     return
   }
 
-  // Validate confirm password
+  if (!passwordRequirements.value.every((r) => r.met)) {
+    toast.error('Password does not meet all requirements')
+    return
+  }
+
   if (form.value.newPassword !== form.value.confirmPassword) {
-    errorMessage.value = 'Passwords do not match. Please try again.'
+    toast.error('Passwords do not match')
     return
   }
 
   isSubmitting.value = true
-  isLoading.value = true
 
-  // Simulate API call
-  await new Promise(resolve => setTimeout(resolve, 2000))
+  const toastId = toast.loading('Resetting your password...', {
+    description: 'Please wait a moment',
+  })
 
-  // Simulate success
-  successMessage.value = 'Your password has been reset successfully! You can now log in with your new password.'
-  
-  // Reset form
-  form.value = {
-    newPassword: '',
-    confirmPassword: ''
+  try {
+    const res = await authStore.reset({
+      token: resetToken.value,
+      newPassword: form.value.newPassword,
+    })
+
+    if (!res.success) {
+      toast.error('Reset failed', {
+        id: toastId,
+        description: res.message || 'This link may have expired. Please request a new one.',
+      })
+      return
+    }
+
+    // Success!
+    toast.success('Password reset successfully! 🎉', {
+      id: toastId,
+      description: 'You can now log in with your new password.',
+    })
+
+    isSuccess.value = true
+    startRedirectCountdown()
+  } catch (err) {
+    toast.error('Something went wrong', {
+      id: toastId,
+      description: err.message || 'Please try again.',
+    })
+  } finally {
+    isSubmitting.value = false
   }
-
-  isSubmitting.value = false
-  isLoading.value = false
-
-  // Redirect to login after 3 seconds
-  setTimeout(() => {
-    window.location.href = '?a=login'
-  }, 3000)
 }
 </script>
 
 <style scoped>
-/* Candles Loader Animation */
-.candles-loader-candle {
-  animation: candlesLoader 1s ease-in-out infinite;
-}
-
-.candles-loader-candle:nth-child(2) {
-  animation-delay: -0.75s;
-}
-
-.candles-loader-candle:nth-child(3) {
-  animation-delay: -0.5s;
-}
-
-.candles-loader-candle:nth-child(4) {
-  animation-delay: -0.25s;
-}
-
-@keyframes candlesLoader {
-  0%, 100% {
-    box-shadow: 0 0 0 #bb914a, 0 0 0 #bb914a;
-  }
-  50% {
-    box-shadow: 0 -12px 0 #bb914a, 0 12px 0 #bb914a;
-  }
-}
-
 /* Form input autofill styles */
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
@@ -371,18 +411,7 @@ p, span, input, button, label {
   font-family: "Roboto Condensed", sans-serif;
 }
 
-/* Loading spinner animation */
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-.animate-spin {
-  animation: spin 1s linear infinite;
-}
-
-/* Responsive adjustments */
+/* Responsive */
 @media (max-width: 576px) {
   .auth-container {
     padding: 1.5rem;
@@ -398,40 +427,19 @@ p, span, input, button, label {
   border-color: rgba(187, 145, 74, 0.3);
 }
 
-/* Loading overlay */
-.overlay {
-  background-color: rgba(1, 9, 50, 0.8);
-  backdrop-filter: blur(5px);
-}
-
-/* Success/Error messages */
-.success-message,
-.error-message {
-  animation: fadeIn 0.3s ease;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
+/* Pulse animation */
+@keyframes pulse-ring {
+  0% {
+    transform: scale(0.8);
     opacity: 1;
-    transform: translateY(0);
+  }
+  100% {
+    transform: scale(1.4);
+    opacity: 0;
   }
 }
 
-/* Password strength bar transition */
-.password-strength .h-full {
-  transition: width 0.5s ease, background-color 0.5s ease;
-}
-
-/* Password requirements list */
-.password-strength ul li {
-  transition: color 0.3s ease;
-}
-
-.password-strength ul li i {
-  transition: color 0.3s ease;
+.animate-ping {
+  animation: pulse-ring 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 </style>

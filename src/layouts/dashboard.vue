@@ -37,7 +37,7 @@
   
         <div class="container max-w-7xl mx-auto px-4 md:px-6 relative z-10">
           <!-- Header -->
-          <header class="header flex items-center justify-between mb-8 md:mb-10">
+          <header class="header flex items-center justify-between mb-8 md:mb-10 gap-2">
             <!-- Burger Menu (Mobile) -->
             <button 
               class="header__burger md:hidden w-12 h-12 rounded-full flex items-center justify-center transition-all duration-200 backdrop-blur-sm bg-white/[0.06] hover:bg-white/[0.12] border border-white/[0.08]"
@@ -51,7 +51,7 @@
   
             <!-- Logo & Desktop Navigation -->
             <div class="header__wrap flex items-center mr-auto">
-              <a href="?a=home" class="header__logo inline-flex w-32 mr-4 md:mr-16">
+              <a href="/" class="header__logo inline-flex w-32 mr-4 md:mr-16">
                 <img src="/logo1.png" alt="CoinSquare Wealth" class="w-full" />
               </a>
               
@@ -169,7 +169,7 @@
                     </div>
                     <div class="p-2">
                       <a 
-                        href="?a=edit_account" 
+                        href="/dashboard/settings" 
                         class="flex items-center gap-3 px-4 py-3 rounded-xl transition-colors duration-200"
                         :class="isDark 
                           ? 'text-white/70 hover:text-white hover:bg-white/[0.04]' 
@@ -179,7 +179,7 @@
                         <span>View Profile</span>
                       </a>
                       <a 
-                        href="?a=security" 
+                        href="/dashboard/settings" 
                         class="flex items-center gap-3 px-4 py-3 rounded-xl transition-colors duration-200"
                         :class="isDark 
                           ? 'text-white/70 hover:text-white hover:bg-white/[0.04]' 
@@ -267,7 +267,7 @@
                     <div class="flex-1 text-sm text-gray-700 dark:text-white/70">
                         <b class="text-amber-500">Security Note:</b> please activate 
                         <a 
-                        href="?a=security" 
+                        href="/dashboard/settings" 
                         class="font-semibold underline transition-colors duration-200
                                 text-yellow-600 hover:text-yellow-700
                                 dark:text-amber-400 dark:hover:text-amber-300"
@@ -449,21 +449,22 @@
   const username = ref('john')
   
   const navLinks = [
-    { name: 'Dashboard', href: '?a=account', active: true },
-    { name: 'Transactions', href: '?a=history', active: false },
-    { name: 'Deposit', href: '?a=deposit', active: false },
-    { name: 'Withdraw', href: '?a=withdraw', active: false },
-    { name: 'Referrals', href: '?a=referals', active: false },
-    { name: 'Settings', href: '?a=edit_account', active: false }
+    { name: 'Dashboard', href: 'account', active: true },
+    { name: 'Transactions', href: 'transactions', active: false },
+    { name: 'Deposit', href: 'deposit', active: false },
+    { name: 'Withdraw', href: 'withdraw', active: false },
+    { name: 'Referrals', href: 'referrals', active: false },
+    { name: 'Settings', href: 'settings', active: false }
   ]
   
   const tabLinks = [
-    { name: 'Dashboard', href: '?a=account', active: true },
-    { name: 'Deposit', href: '?a=deposit', active: false },
-    { name: 'Withdraw', href: '?a=withdraw', active: false },
-    { name: 'Transactions', href: '?a=history', active: false },
-    { name: 'Referrals', href: '?a=referals', active: false },
-    { name: 'Support', href: '?a=support', active: false }
+    { name: 'Dashboard', href: 'account', active: true },
+    { name: 'Deposit', href: 'deposit', active: false },
+    { name: 'Withdraw', href: 'withdraw', active: false },
+    { name: 'Transactions', href: 'transactions', active: false },
+    { name: 'Referrals', href: 'referrals', active: false },
+    { name: 'Plans', href: 'plans', active: false },
+    // { name: 'Support', href: 'support', active: false }
   ]
   
   const iconMap = {

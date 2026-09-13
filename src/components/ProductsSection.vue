@@ -119,7 +119,7 @@
             <!-- Add more product buttons as needed -->
             <a 
               class="products-button-wrapper group bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 md:p-8 text-center hover:bg-white/10 hover:border-gold-500/30 transition-all duration-300"
-              href="?a=signup"
+              href="?a=register"
             >
               <!-- Icon -->
               <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-gold-400/20 to-gold-600/20 flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
