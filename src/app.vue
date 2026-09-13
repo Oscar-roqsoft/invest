@@ -24,7 +24,7 @@
   const isLoading = ref(false)
   
   // You can control the loader from anywhere using provide/inject or a store
-  // Example: show loader when route changes
+  // Example: show loader when route chan
   const router = useRouter()
   
   router.beforeEach(() => {
