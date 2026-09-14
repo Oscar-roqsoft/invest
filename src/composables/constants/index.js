@@ -2,9 +2,8 @@
 
 export const config = useRuntimeConfig();
 
-export const API_BASE_URL =
-config.public.apiBaseUrl ||
-  'http://localhost:5000/api/v1';
+export const API_BASE_URL = 'https://invest-db.onrender.com/api/v1';
+// export const API_BASE_URL = 'http://localhost:5000/api/v1';
 
   
 

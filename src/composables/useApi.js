@@ -7,15 +7,13 @@
 export const useApi = () => {
     const config = useRuntimeConfig();
   
-    const baseURL = config.public.apiBaseUrl ||
-      'http://localhost:5000/api/v1';
+    // const baseURL = config.public.apiBaseUrl ||
+    //   'http://localhost:5000/api/v1';
 
     
-    // const baseURL = 'https://invest-db.onrender.com/api/v1';
+    const baseURL = API_BASE_URL || 'https://invest-db.onrender.com/api/v1';
     // const baseURL = 'http://localhost:5000/api/v1';
-    /**
-     * Get stored auth token
-     */
+  
     const getToken = () => {
       if (import.meta.client) {
         return localStorage.getItem('auth_token');
