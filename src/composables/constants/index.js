@@ -259,6 +259,40 @@ export const WITHDRAWAL_STATUS_META = {
   rejected:   { label: 'Rejected',   dot: 'bg-red-500',     cls: 'bg-red-50 text-red-600 dark:bg-red-500/[0.08] dark:text-red-400' },
   cancelled:  { label: 'Cancelled',  dot: 'bg-gray-400',    cls: 'bg-gray-100 text-gray-600 dark:bg-white/[0.06] dark:text-white/50' },
 };
+
+
+// ─────────────────────────────────────────────────────────────
+// INVESTMENT
+// ─────────────────────────────────────────────────────────────
+export const INVESTMENT_ENDPOINTS = {
+  PLANS:           '/investment/plans',
+  PLAN_BY_SLUG:    (slug) => `/investment/plans/${slug}`,
+  PREVIEW:         '/investment/preview',
+  CREATE:          '/investment/create',
+  MY:              '/investment/my',
+  ACTIVE:          '/investment/active',
+  STATS:           '/investment/stats',
+  BY_ID:           (id) => `/investment/${id}`,
+};
+
+export const INVESTMENT_STATUS_META = {
+  active:    { label: 'Active',    dot: 'bg-emerald-500', cls: 'bg-emerald-50 text-emerald-600 dark:bg-emerald-500/[0.08] dark:text-emerald-400' },
+  completed: { label: 'Completed', dot: 'bg-blue-500',    cls: 'bg-blue-50 text-blue-600 dark:bg-blue-500/[0.08] dark:text-blue-400' },
+  cancelled: { label: 'Cancelled', dot: 'bg-gray-400',    cls: 'bg-gray-100 text-gray-600 dark:bg-white/[0.06] dark:text-white/50' },
+};
+
+export const INVESTMENT_STATUSES = [
+  { value: 'all',       label: 'All' },
+  { value: 'active',    label: 'Active' },
+  { value: 'completed', label: 'Completed' },
+  { value: 'cancelled', label: 'Cancelled' },
+];
+
+export const INVESTMENT_RULES = {
+  PIN_REQUIRED: true,           // flip to false if you don't want PIN on investments
+  PIN_LENGTH: 4,
+  PREVIEW_DEBOUNCE_MS: 400,     // when we do call the preview endpoint
+};
 // ─────────────────────────────────────────────────────────────
 // STORAGE
 // ─────────────────────────────────────────────────────────────
