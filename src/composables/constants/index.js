@@ -1,8 +1,13 @@
 // composables/constants/index.js
 
+export const config = useRuntimeConfig();
+
 export const API_BASE_URL =
-  process.env.NUXT_PUBLIC_API_BASE_URL ||
+config.public.apiBaseUrl ||
   'http://localhost:5000/api/v1';
+
+  
+
 
 // ─────────────────────────────────────────────────────────────
 // AUTH

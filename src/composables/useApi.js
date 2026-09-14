@@ -7,8 +7,7 @@
 export const useApi = () => {
     const config = useRuntimeConfig();
   
-    const baseURL =
-      process.env.NUXT_PUBLIC_API_BASE_URL ||
+    const baseURL = config.public.apiBaseUrl ||
       'http://localhost:5000/api/v1';
 
     
