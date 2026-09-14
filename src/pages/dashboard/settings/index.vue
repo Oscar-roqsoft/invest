@@ -25,11 +25,11 @@
             <div class="flex items-center gap-3 p-3 mb-3 rounded-xl
                         bg-gray-50 dark:bg-white/[0.03]">
               <div class="w-12 h-12 rounded-full overflow-hidden flex-shrink-0 border-2 border-gold-500/30">
-                <img src="/profile.jpg" alt="Profile" class="w-full h-full object-cover">
+                <img  :src="profile?.avatar || '/avatar.webp'"  alt="Profile" class="w-full h-full object-cover">
               </div>
               <div class="min-w-0 flex-1">
-                <p class="font-bold text-sm text-gray-800 dark:text-white truncate">john</p>
-                <p class="text-xs text-gray-500 dark:text-white/40 truncate">john@example.com</p>
+                <p class="font-bold text-sm text-gray-800 dark:text-white truncate">{{ profile.name }}</p>
+                <p class="text-xs text-gray-500 dark:text-white/40 truncate">{{ profile.email }}</p>
               </div>
             </div>
   
@@ -95,31 +95,25 @@
             </div>
   
             <!-- Notifications Tab -->
-            <div 
+            <!-- <div 
               v-else-if="activeTab === 'notifications'" 
               key="notifications"
               class="space-y-4 md:space-y-6"
             >
               <SettingsNotifications />
-            </div>
+            </div> -->
   
             <!-- Payment Methods Tab -->
-            <div 
+            <!-- <div 
               v-else-if="activeTab === 'payment'" 
               key="payment"
               class="space-y-4 md:space-y-6"
             >
               <SettingsPayment />
-            </div>
+            </div> -->
   
             <!-- Preferences Tab -->
-            <div 
-              v-else-if="activeTab === 'preferences'" 
-              key="preferences"
-              class="space-y-4 md:space-y-6"
-            >
-              <SettingsPreferences />
-            </div>
+           
   
             <!-- Verification Tab -->
             <div 
@@ -147,13 +141,19 @@
   
   const route = useRoute()
   const router = useRouter()
+
+
+const store = useUserStore();
+const authStore = useAuthStore();
+
+
+
+const profile = computed(() => store.state.profile || authStore.state.user);
   
   const tabs = [
     { id: 'profile', name: 'Profile', icon: 'bi bi-person-fill' },
     { id: 'security', name: 'Security', icon: 'bi bi-shield-lock-fill' },
-    { id: 'notifications', name: 'Notifications', icon: 'bi bi-bell-fill' },
-    { id: 'payment', name: 'Payment Methods', icon: 'bi bi-credit-card-fill' },
-    { id: 'preferences', name: 'Preferences', icon: 'bi bi-sliders' },
+   
     { id: 'verification', name: 'Verification', icon: 'bi bi-patch-check-fill', badge: true }
   ]
   
