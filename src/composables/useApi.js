@@ -7,14 +7,13 @@
 export const useApi = () => {
     const config = useRuntimeConfig();
   
-    // const baseURL =
-    //   config.public.apiBaseUrl ||
-    //   process.env.NUXT_PUBLIC_API_BASE_URL ||
-    //   'http://localhost:5000/api/v1';
+    const baseURL =
+      process.env.NUXT_PUBLIC_API_BASE_URL ||
+      'http://localhost:5000/api/v1';
 
     
     // const baseURL = 'https://invest-db.onrender.com/api/v1';
-    const baseURL = 'http://localhost:5000/api/v1';
+    // const baseURL = 'http://localhost:5000/api/v1';
     /**
      * Get stored auth token
      */
