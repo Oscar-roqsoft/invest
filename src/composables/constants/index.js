@@ -1,11 +1,9 @@
 // composables/constants/index.js
 
 
-
 export const API_BASE_URL = 'https://invest-db.onrender.com/api/v1';
 // export const API_BASE_URL = 'http://localhost:5000/api/v1';
 
-  
 
 
 
@@ -25,6 +23,7 @@ export const AUTH_ENDPOINTS = {
   ME: '/auth/me',
   USERS: '/auth/users',
 };
+
 
 // ─────────────────────────────────────────────────────────────
 // USER (profile/security)
@@ -292,6 +291,264 @@ export const INVESTMENT_RULES = {
   PIN_REQUIRED: true,           // flip to false if you don't want PIN on investments
   PIN_LENGTH: 4,
   PREVIEW_DEBOUNCE_MS: 400,     // when we do call the preview endpoint
+};
+
+
+// ─────────────────────────────────────────────────────────────
+// ADMIN — INVESTMENT PLANS + INVESTMENTS
+// ─────────────────────────────────────────────────────────────
+export const ADMIN_INVESTMENT_ENDPOINTS = {
+  // Plans
+  PLANS:              '/admin/plans',
+  PLAN_SEED:          '/admin/plans/seed-defaults',
+  PLAN_BY_ID:         (id) => `/admin/plans/${id}`,
+  PLAN_TOGGLE:        (id) => `/admin/plans/${id}/toggle`,
+
+  // Investments
+  INVESTMENTS:        '/admin/investments',
+  INVESTMENT_STATS:   '/admin/investments/stats',
+  RUN_PAYOUTS:        '/admin/investments/run-payouts',
+  INVESTMENT_EARNINGS:(id) => `/admin/investments/${id}/earnings`,
+};
+
+// Icons and colors the plan form suggests (backend accepts anything)
+export const PLAN_ICON_OPTIONS = [
+  { value: 'bi bi-rocket',            label: 'Rocket (Starter)' },
+  { value: 'bi bi-graph-up-arrow',    label: 'Chart up (Growth)' },
+  { value: 'bi bi-gem',               label: 'Gem (Premium)' },
+  { value: 'bi bi-crown-fill',        label: 'Crown (Elite)' },
+  { value: 'bi bi-lightning-charge-fill', label: 'Lightning' },
+  { value: 'bi bi-shield-check',      label: 'Shield' },
+  { value: 'bi bi-star-fill',         label: 'Star' },
+  { value: 'bi bi-fire',              label: 'Fire' },
+  { value: 'bi bi-award-fill',        label: 'Award' },
+  { value: 'bi bi-diamond-fill',      label: 'Diamond' },
+];
+
+export const PLAN_COLOR_OPTIONS = [
+  { value: '#3b82f6', label: 'Blue' },
+  { value: '#bb914a', label: 'Gold' },
+  { value: '#8b5cf6', label: 'Purple' },
+  { value: '#ef4444', label: 'Red' },
+  { value: '#10b981', label: 'Green' },
+  { value: '#f59e0b', label: 'Amber' },
+  { value: '#06b6d4', label: 'Cyan' },
+  { value: '#ec4899', label: 'Pink' },
+];
+
+
+// ─────────────────────────────────────────────────────────────
+// ADMIN — SYSTEM WALLETS
+// ─────────────────────────────────────────────────────────────
+export const ADMIN_WALLET_ENDPOINTS = {
+  LIST:           '/admin/system-wallets',
+  SEED:           '/admin/system-wallets/seed-defaults',
+  BY_ID:          (id) => `/admin/system-wallets/${id}`,
+  TOGGLE:         (id) => `/admin/system-wallets/${id}/toggle`,
+};
+
+// The 12 currencies the backend model allows
+export const SUPPORTED_CURRENCIES = [
+  { value: 'BTC',   name: 'Bitcoin',        emoji: '₿', color: '#F7931A', defaultNetwork: 'Bitcoin' },
+  { value: 'ETH',   name: 'Ethereum',       emoji: 'Ξ', color: '#627EEA', defaultNetwork: 'ERC20' },
+  { value: 'USDT',  name: 'Tether USD',     emoji: '₮', color: '#26A17B', defaultNetwork: 'TRC20' },
+  { value: 'USDC',  name: 'USD Coin',       emoji: '$', color: '#2775CA', defaultNetwork: 'ERC20' },
+  { value: 'BNB',   name: 'Binance Coin',   emoji: '⬢', color: '#F3BA2F', defaultNetwork: 'BEP20' },
+  { value: 'SOL',   name: 'Solana',         emoji: '◎', color: '#14F195', defaultNetwork: 'Solana' },
+  { value: 'XRP',   name: 'Ripple',         emoji: '✕', color: '#23292F', defaultNetwork: 'XRP Ledger' },
+  { value: 'ADA',   name: 'Cardano',        emoji: '₳', color: '#0033AD', defaultNetwork: 'Cardano' },
+  { value: 'DOGE',  name: 'Dogecoin',       emoji: 'Ð', color: '#C2A633', defaultNetwork: 'Dogecoin' },
+  { value: 'TRX',   name: 'TRON',           emoji: '⚡', color: '#EF0027', defaultNetwork: 'TRC20' },
+  { value: 'MATIC', name: 'Polygon',        emoji: '⬟', color: '#8247E5', defaultNetwork: 'Polygon' },
+  { value: 'LTC',   name: 'Litecoin',       emoji: 'Ł', color: '#BFBBBB', defaultNetwork: 'Litecoin' },
+];
+
+// Suggested networks per currency (admin can free-type others)
+export const NETWORK_SUGGESTIONS = {
+  BTC:   ['Bitcoin', 'Lightning'],
+  ETH:   ['ERC20', 'Arbitrum', 'Optimism', 'Base'],
+  USDT:  ['TRC20', 'ERC20', 'BEP20', 'Polygon', 'Solana'],
+  USDC:  ['ERC20', 'Polygon', 'Solana', 'BEP20', 'Base'],
+  BNB:   ['BEP20', 'BEP2'],
+  SOL:   ['Solana'],
+  XRP:   ['XRP Ledger'],
+  ADA:   ['Cardano'],
+  DOGE:  ['Dogecoin'],
+  TRX:   ['TRC20'],
+  MATIC: ['Polygon', 'ERC20'],
+  LTC:   ['Litecoin'],
+};
+
+
+// ─────────────────────────────────────────────────────────────
+// ADMIN — WITHDRAWALS
+// ─────────────────────────────────────────────────────────────
+export const ADMIN_WITHDRAWAL_ENDPOINTS = {
+  LIST:           '/admin/withdrawals',
+  STATS:          '/admin/withdrawals/stats',
+  BY_ID:          (id) => `/admin/withdrawals/${id}`,
+  APPROVE:        (id) => `/admin/withdrawals/${id}/approve`,
+  PROCESS:        (id) => `/admin/withdrawals/${id}/process`,
+  COMPLETE:       (id) => `/admin/withdrawals/${id}/complete`,
+  REJECT:         (id) => `/admin/withdrawals/${id}/reject`,
+};
+
+/**
+ * Which actions are allowed in which status.
+ * Mirrors the backend guards exactly.
+ */
+export const WITHDRAWAL_TRANSITIONS = {
+  pending:    { approve: true,  process: false, complete: false, reject: true  },
+  approved:   { approve: false, process: true,  complete: true,  reject: true  },
+  processing: { approve: false, process: false, complete: true,  reject: true  },
+  completed:  { approve: false, process: false, complete: false, reject: false },
+  rejected:   { approve: false, process: false, complete: false, reject: false },
+  cancelled:  { approve: false, process: false, complete: false, reject: false },
+};
+
+/** Extra meta for the admin badge */
+export const WITHDRAWAL_ADMIN_STATUS_META = {
+  pending:    { label: 'Pending',    dot: 'bg-amber-500',   cls: 'bg-amber-50 text-amber-600 dark:bg-amber-500/[0.08] dark:text-amber-400',   icon: 'bi bi-clock' },
+  approved:   { label: 'Approved',   dot: 'bg-blue-500',    cls: 'bg-blue-50 text-blue-600 dark:bg-blue-500/[0.08] dark:text-blue-400',         icon: 'bi bi-shield-check' },
+  processing: { label: 'Processing', dot: 'bg-indigo-500',  cls: 'bg-indigo-50 text-indigo-600 dark:bg-indigo-500/[0.08] dark:text-indigo-400', icon: 'bi bi-arrow-repeat' },
+  completed:  { label: 'Completed',  dot: 'bg-emerald-500', cls: 'bg-emerald-50 text-emerald-600 dark:bg-emerald-500/[0.08] dark:text-emerald-400', icon: 'bi bi-check-circle' },
+  rejected:   { label: 'Rejected',   dot: 'bg-red-500',     cls: 'bg-red-50 text-red-600 dark:bg-red-500/[0.08] dark:text-red-400',           icon: 'bi bi-x-circle' },
+  cancelled:  { label: 'Cancelled',  dot: 'bg-gray-400',    cls: 'bg-gray-100 text-gray-600 dark:bg-white/[0.06] dark:text-white/50',         icon: 'bi bi-slash-circle' },
+};
+
+export const ADMIN_WITHDRAWAL_FILTERS = [
+  { value: 'all',        label: 'All' },
+  { value: 'pending',    label: 'Pending' },
+  { value: 'approved',   label: 'Approved' },
+  { value: 'processing', label: 'Processing' },
+  { value: 'completed',  label: 'Completed' },
+  { value: 'rejected',   label: 'Rejected' },
+  { value: 'cancelled',  label: 'Cancelled' },
+];
+
+
+// ─────────────────────────────────────────────────────────────
+// ADMIN — DEPOSITS
+// ─────────────────────────────────────────────────────────────
+export const ADMIN_DEPOSIT_ENDPOINTS = {
+  LIST:    '/admin/deposits',
+  STATS:   '/admin/deposits/stats',
+  BY_ID:   (id) => `/admin/deposits/${id}`,
+  APPROVE: (id) => `/admin/deposits/${id}/approve`,
+  REJECT:  (id) => `/admin/deposits/${id}/reject`,
+};
+
+/** Which actions are allowed in which deposit status */
+export const DEPOSIT_TRANSITIONS = {
+  pending:    { approve: true,  reject: true  },
+  confirming: { approve: true,  reject: true  },
+  completed:  { approve: false, reject: false },
+  failed:     { approve: false, reject: false },
+  expired:    { approve: false, reject: false },
+};
+
+export const DEPOSIT_ADMIN_STATUS_META = {
+  pending:    { label: 'Pending',    dot: 'bg-amber-500',   cls: 'bg-amber-50 text-amber-600 dark:bg-amber-500/[0.08] dark:text-amber-400',   icon: 'bi bi-clock' },
+  confirming: { label: 'Confirming', dot: 'bg-blue-500',    cls: 'bg-blue-50 text-blue-600 dark:bg-blue-500/[0.08] dark:text-blue-400',         icon: 'bi bi-arrow-repeat' },
+  completed:  { label: 'Completed',  dot: 'bg-emerald-500', cls: 'bg-emerald-50 text-emerald-600 dark:bg-emerald-500/[0.08] dark:text-emerald-400', icon: 'bi bi-check-circle' },
+  failed:     { label: 'Failed',     dot: 'bg-red-500',     cls: 'bg-red-50 text-red-600 dark:bg-red-500/[0.08] dark:text-red-400',           icon: 'bi bi-x-circle' },
+  expired:    { label: 'Expired',    dot: 'bg-gray-400',    cls: 'bg-gray-100 text-gray-600 dark:bg-white/[0.06] dark:text-white/50',         icon: 'bi bi-slash-circle' },
+};
+
+export const ADMIN_DEPOSIT_FILTERS = [
+  { value: 'all',        label: 'All' },
+  { value: 'pending',    label: 'Pending' },
+  { value: 'confirming', label: 'Confirming' },
+  { value: 'completed',  label: 'Completed' },
+  { value: 'failed',     label: 'Failed' },
+  { value: 'expired',    label: 'Expired' },
+];
+
+// Placeholder the seed uses; warn on if admin accidentally activates it
+export const PLACEHOLDER_ADDRESS = 'REPLACE_WITH_REAL_ADDRESS';
+
+
+
+// ─────────────────────────────────────────────────────────────
+// ADMIN — REFERRALS
+// ─────────────────────────────────────────────────────────────
+export const ADMIN_REFERRAL_ENDPOINTS = {
+  LIST:               '/admin/referrals',
+  STATS:              '/admin/referrals/stats',
+  USER_REFERRALS:     (userId) => `/admin/referrals/user/${userId}`,
+  MANUAL_CREDIT:      '/admin/referrals/manual-credit',
+  BACKFILL:           '/admin/referrals/backfill',
+};
+
+export const REFERRAL_ADMIN_STATUS_META = {
+  pending:   { label: 'Pending',   dot: 'bg-amber-500',   cls: 'bg-amber-50 text-amber-600 dark:bg-amber-500/[0.08] dark:text-amber-400' },
+  credited:  { label: 'Credited',  dot: 'bg-emerald-500', cls: 'bg-emerald-50 text-emerald-600 dark:bg-emerald-500/[0.08] dark:text-emerald-400' },
+  cancelled: { label: 'Cancelled', dot: 'bg-gray-400',    cls: 'bg-gray-100 text-gray-600 dark:bg-white/[0.06] dark:text-white/50' },
+  failed:    { label: 'Failed',    dot: 'bg-red-500',     cls: 'bg-red-50 text-red-600 dark:bg-red-500/[0.08] dark:text-red-400' },
+};
+
+export const ADMIN_REFERRAL_FILTERS = [
+  { value: 'all',       label: 'All' },
+  { value: 'credited',  label: 'Credited' },
+  { value: 'pending',   label: 'Pending' },
+  { value: 'cancelled', label: 'Cancelled' },
+];
+
+export const ADMIN_REFERRAL_SORT = [
+  { value: 'newest',      label: 'Newest first' },
+  { value: 'oldest',      label: 'Oldest first' },
+  { value: 'amount_high', label: 'Commission: High → Low' },
+  { value: 'amount_low',  label: 'Commission: Low → High' },
+];
+
+// composables/constants/index.js
+
+// ─────────────────────────────────────────────────────────────
+// ADMIN — USERS
+// ─────────────────────────────────────────────────────────────
+export const ADMIN_USER_ENDPOINTS = {
+  LIST:       '/admin/users',
+  STATS:      '/admin/users/stats',
+  BY_ID:      (id) => `/admin/users/${id}`,
+  BAN:        (id) => `/admin/users/${id}/ban`,
+};
+
+export const ADMIN_USER_FILTERS = {
+  roles: [
+    { value: 'all',   label: 'All Roles' },
+    { value: 'user',  label: 'User' },
+    { value: 'admin', label: 'Admin' },
+  ],
+  kycStatuses: [
+    { value: 'all',             label: 'All KYC' },
+    { value: 'not_started',     label: 'Not Started' },
+    { value: 'pending',         label: 'Pending' },
+    { value: 'approved',        label: 'Approved' },
+    { value: 'rejected',        label: 'Rejected' },
+  ],
+  banned: [
+    { value: 'all',   label: 'All' },
+    { value: 'false', label: 'Active only' },
+    { value: 'true',  label: 'Banned only' },
+  ],
+  verified: [
+    { value: 'all',   label: 'All' },
+    { value: 'true',  label: 'Verified only' },
+    { value: 'false', label: 'Unverified only' },
+  ],
+  sorts: [
+    { value: 'newest',  label: 'Newest first' },
+    { value: 'oldest',  label: 'Oldest first' },
+    { value: 'name',    label: 'Name A→Z' },
+    { value: 'balance', label: 'Balance: High → Low' },
+  ],
+};
+
+export const USER_KYC_STATUS_META = {
+  not_started: { label: 'Not Started', dot: 'bg-gray-400',    cls: 'bg-gray-100 text-gray-600 dark:bg-white/[0.06] dark:text-white/50' },
+  pending:     { label: 'Pending',     dot: 'bg-amber-500',   cls: 'bg-amber-50 text-amber-600 dark:bg-amber-500/[0.08] dark:text-amber-400' },
+  approved:    { label: 'Approved',    dot: 'bg-emerald-500', cls: 'bg-emerald-50 text-emerald-600 dark:bg-emerald-500/[0.08] dark:text-emerald-400' },
+  rejected:    { label: 'Rejected',    dot: 'bg-red-500',     cls: 'bg-red-50 text-red-600 dark:bg-red-500/[0.08] dark:text-red-400' },
 };
 // ─────────────────────────────────────────────────────────────
 // STORAGE

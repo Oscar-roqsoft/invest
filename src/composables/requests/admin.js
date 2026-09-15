@@ -1,4 +1,4 @@
-// composables/requests/admin.js
+// composables/requests/dashboard/admin.js
 import { ADMIN_ENDPOINTS } from '~/composables/constants';
 
 export const useAdminRequests = () => {

@@ -1,4 +1,4 @@
-// middleware/admin.js
+// middleware/dashboard/admin.js
 import { useAuthStore } from '~/stores/auth';
 
 export default defineNuxtRouteMiddleware((to) => {
