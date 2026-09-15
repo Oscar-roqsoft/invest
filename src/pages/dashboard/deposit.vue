@@ -700,6 +700,7 @@
 <script setup>
 import { ref, computed, onMounted, onUnmounted, watch, nextTick } from 'vue'
 import { useDepositStore } from '~/stores/deposit'
+import { useWalletStore } from '~/stores/wallet' 
 import { DEPOSIT_RULES } from '~/composables/constants'
 
 definePageMeta({ layout: 'dashboard' })
@@ -708,6 +709,7 @@ definePageMeta({ layout: 'dashboard' })
 // STORE
 // ─────────────────────────────────────────────────────────────
 const store = useDepositStore()
+const walletsStore = useWalletStore()  
 
 // ─────────────────────────────────────────────────────────────
 // LOCAL STATE
@@ -734,7 +736,7 @@ const steps = [
 // ─────────────────────────────────────────────────────────────
 
 // ✅ NOW reads from systemWallets (new endpoint) instead of addresses
-const availableCryptos = computed(() => store.state.systemWallets || [])
+const availableCryptos = computed(() => walletsStore.state.systemWallets || [])
 
 const filteredCryptos = computed(() => {
   const list = availableCryptos.value || []           // ← guard
@@ -774,7 +776,7 @@ const isSelected = (crypto) =>
 
 // ✅ Uses systemWallets list for meta lookup (recent deposits table)
 const findMeta = (currency) =>
-  store.state.systemWallets.find((a) => a.currency === currency)
+walletsStore.state.systemWallets.find((a) => a.currency === currency)
 
 const formatAmount = (n) =>
   Number(n || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
@@ -938,8 +940,8 @@ watch(
 
 // ✅ Now fetches systemWallets instead of addresses
 onMounted(async () => {
-  if (!store.state.systemWalletsLoaded) {
-    await store.fetchSystemWallets()
+  if (!walletsStore.state.systemWalletsLoaded) {
+    await walletsStore.fetchSystemWallets()
   }
   store.fetchMyDeposits({ page: 1, limit: 5 })
 })
