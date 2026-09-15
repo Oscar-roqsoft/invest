@@ -128,6 +128,8 @@ export const WALLET_ENDPOINTS = {
   STATS: '/wallet/stats',
   ADDRESSES: '/wallet/addresses',
   ADDRESS_BY_CURRENCY: (currency) => `/wallet/addresses/${currency}`,
+  SYSTEM_WALLETS:      '/wallet/system-wallets',
+  SYSTEM_WALLET_BY_ID: (id) => `/wallet/system-wallets/${id}`,
   SAVED: '/wallet/saved',
   SAVED_BY_ID: (id) => `/wallet/saved/${id}`,
 };

@@ -119,7 +119,7 @@
 
         <!-- ░░ LOADING SKELETON ░░ -->
         <div
-          v-if="store.state.isLoading && !store.state.addressesLoaded"
+          v-if="store.state.isLoadingAddresses && !store.state.systemWalletsLoaded"
           class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4"
         >
           <div
@@ -182,7 +182,7 @@
 
         <!-- Empty State -->
         <div
-          v-if="!store.state.isLoading && filteredCryptos.length === 0"
+          v-if="!store.state.isLoadingAddresses && filteredCryptos.length === 0"
           class="text-center py-12"
         >
           <i class="bi bi-search text-5xl text-gray-300 dark:text-white/20"></i>
@@ -714,7 +714,7 @@ const store = useDepositStore()
 // ─────────────────────────────────────────────────────────────
 const currentStep = ref(1)
 const searchQuery = ref('')
-const selectedCrypto = ref(null)   // an address/wallet object from /wallet/addresses
+const selectedCrypto = ref(null)
 const amount = ref(null)
 const txHash = ref('')
 const copied = ref(false)
@@ -732,13 +732,15 @@ const steps = [
 // ─────────────────────────────────────────────────────────────
 // COMPUTED
 // ─────────────────────────────────────────────────────────────
-const availableCryptos = computed(() => store.activeAddresses)
+
+// ✅ NOW reads from systemWallets (new endpoint) instead of addresses
+const availableCryptos = computed(() => store.state.systemWallets || [])
 
 const filteredCryptos = computed(() => {
-  const list = availableCryptos.value
+  const list = availableCryptos.value || []           // ← guard
   if (!searchQuery.value) return list
   const q = searchQuery.value.toLowerCase()
-  return list.filter((c) =>
+  return list.filter((c) =>                              // list is now guaranteed array
     (c.name || '').toLowerCase().includes(q) ||
     (c.currency || '').toLowerCase().includes(q) ||
     (c.network || '').toLowerCase().includes(q)
@@ -770,8 +772,9 @@ const recentDeposits = computed(() => store.state.deposits.slice(0, 5))
 const isSelected = (crypto) =>
   selectedCrypto.value?._id === crypto._id
 
+// ✅ Uses systemWallets list for meta lookup (recent deposits table)
 const findMeta = (currency) =>
-  store.state.addresses.find((a) => a.currency === currency)
+  store.state.systemWallets.find((a) => a.currency === currency)
 
 const formatAmount = (n) =>
   Number(n || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
@@ -805,7 +808,6 @@ const nextStep = async () => {
 
   if (currentStep.value === 2) {
     if (!canContinueStep2.value) return
-    // Create the deposit on the backend
     const res = await store.createDeposit({
       currency: selectedCrypto.value.currency,
       network: selectedCrypto.value.network,
@@ -814,7 +816,6 @@ const nextStep = async () => {
 
     if (!res.success) return
 
-    // Move to step 3 and start countdown
     currentStep.value = 3
     timeLeft.value = res.expiresIn || DEPOSIT_RULES.EXPIRY_SECONDS
     startTimer()
@@ -832,7 +833,7 @@ const prevStep = () => {
 }
 
 // ─────────────────────────────────────────────────────────────
-// QR (uses free QR server — replace with `qrcode` lib if preferred)
+// QR
 // ─────────────────────────────────────────────────────────────
 const generateQR = async () => {
   qrDataUrl.value = ''
@@ -867,16 +868,12 @@ const copyAddress = async () => {
 // ─────────────────────────────────────────────────────────────
 const markAsPaid = async () => {
   if (!deposit.value?._id) return
-
-  // If the user pasted a txHash, submit it
   if (txHash.value?.trim()) {
     const res = await store.submitTxHash(deposit.value._id, txHash.value.trim())
     if (!res.success) return
   }
-
   stopTimer()
   currentStep.value = 4
-  // Refresh recent list
   store.fetchMyDeposits({ page: 1 })
 }
 
@@ -911,7 +908,6 @@ const startTimer = () => {
     timeLeft.value--
     if (timeLeft.value <= 0) {
       stopTimer()
-      // Optionally auto-refetch status
       if (deposit.value?._id) store.fetchDeposit(deposit.value._id)
     }
   }, 1000)
@@ -939,10 +935,12 @@ watch(
 // ─────────────────────────────────────────────────────────────
 // LIFECYCLE
 // ─────────────────────────────────────────────────────────────
+
+// ✅ Now fetches systemWallets instead of addresses
 onMounted(async () => {
-  // Load available currencies if not already loaded
-  if (!store.state.addressesLoaded) await store.fetchAddresses()
-  // Load recent deposits
+  if (!store.state.systemWalletsLoaded) {
+    await store.fetchSystemWallets()
+  }
   store.fetchMyDeposits({ page: 1, limit: 5 })
 })
 

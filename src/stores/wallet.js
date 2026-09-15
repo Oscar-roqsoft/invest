@@ -26,6 +26,12 @@ export const useWalletStore = defineStore('wallet', () => {
     addresses: [],
     addressesLoaded: false,
 
+    systemWallets: [],
+    systemWalletsLoaded: false,
+  
+    // A single system wallet by ID (detail views)
+    currentSystemWallet: null,
+
     // Saved withdrawal addresses
     savedWallets: [],
     savedLoaded: false,
@@ -44,6 +50,24 @@ export const useWalletStore = defineStore('wallet', () => {
   // ─────────────────────────────────────────────────────────
   const availableUSD = computed(() => state.balances.USD || 0);
   const hasBalance = computed(() => availableUSD.value > 0);
+
+  /** System wallets grouped by currency */
+const systemWalletsByCurrency = computed(() => {
+    const map = {};
+    for (const w of state.systemWallets) {
+      if (!map[w.currency]) map[w.currency] = [];
+      map[w.currency].push(w);
+    }
+    return map;
+  });
+  
+  /** Look up a system wallet in the loaded list by id */
+  const findSystemWalletById = (id) =>
+    state.systemWallets.find((w) => w._id === id) || null;
+  
+  /** Look up an active system wallet by currency (first match) */
+  const findSystemWalletByCurrency = (currency) =>
+    state.systemWallets.find((w) => w.currency === currency) || null;
 
   /** Active system wallets only (isActive !== false) */
   const activeAddresses = computed(() =>
@@ -91,6 +115,96 @@ export const useWalletStore = defineStore('wallet', () => {
 
   const findSavedWallets = (currency) =>
     state.savedWallets.filter((w) => w.currency === currency);
+
+
+  // ─────────────────────────────────────────────────────────
+// SYSTEM WALLETS (user-facing — cache 5 min)
+// ─────────────────────────────────────────────────────────
+/**
+ * Fetch all active system wallets.
+ * @param {{ force?: boolean, currency?: string }} opts
+ */
+const fetchSystemWallets = async (opts = {}) => {
+    // fast-path: already loaded, not forced, cache fresh
+    const key = opts.currency
+      ? `wallet:sys-wallets:${opts.currency}`
+      : 'wallet:sys-wallets';
+  
+    if (
+      !opts.force &&
+      state.systemWalletsLoaded &&
+      self().$isFresh(key)
+    ) {
+      return { success: true, cached: true, wallets: state.systemWallets };
+    }
+  
+    state.isLoadingAddresses = true; // reuse the same loading flag for consistency
+    clearError();
+  
+    try {
+      const requests = getRequests();
+      const query = opts.currency ? { currency: opts.currency } : {};
+  
+      const res = await self().$cached(
+        key,
+        () => requests.getSystemWallets(query),
+        {
+          ttl: 5 * 60_000,
+          force: opts.force,
+          onSuccess: (data) => {
+            state.systemWallets = data?.wallets || [];
+            state.systemWalletsLoaded = true;
+          },
+        }
+      );
+  
+      if (!res.success) setError(res.message);
+      return res;
+    } catch (err) {
+      setError(err.message);
+      return { success: false, message: err.message };
+    } finally {
+      state.isLoadingAddresses = false;
+    }
+  };
+  
+  // ─────────────────────────────────────────────────────────
+  // SYSTEM WALLET BY ID (cache 5 min)
+  // ─────────────────────────────────────────────────────────
+  const fetchSystemWalletById = async (id, opts = {}) => {
+    state.isLoadingAddresses = true;
+    clearError();
+  
+    try {
+      const requests = getRequests();
+      const res = await self().$cached(
+        `wallet:sys-wallet:${id}`,
+        () => requests.getSystemWalletById(id),
+        {
+          ttl: 5 * 60_000,
+          force: opts.force,
+          onSuccess: (data) => {
+            state.currentSystemWallet = data?.wallet || null;
+          },
+        }
+      );
+  
+      if (!res.success) setError(res.message);
+      return res;
+    } catch (err) {
+      setError(err.message);
+      return { success: false, message: err.message };
+    } finally {
+      state.isLoadingAddresses = false;
+    }
+  };
+  
+  // ─────────────────────────────────────────────────────────
+  // CLEAR SYSTEM WALLET DETAIL
+  // ─────────────────────────────────────────────────────────
+  const clearCurrentSystemWallet = () => {
+    state.currentSystemWallet = null;
+  };
 
   // ─────────────────────────────────────────────────────────
   // BALANCES (cache 30 s)
@@ -332,6 +446,8 @@ export const useWalletStore = defineStore('wallet', () => {
     self().$invalidatePrefix('wallet:');
   };
 
+
+
   // ─────────────────────────────────────────────────────────
   // CLEANUP
   // ─────────────────────────────────────────────────────────
@@ -349,6 +465,9 @@ export const useWalletStore = defineStore('wallet', () => {
     state.savedWallets = [];
     state.savedLoaded = false;
     state.error = null;
+    state.systemWallets = [];
+  state.systemWalletsLoaded = false;
+  state.currentSystemWallet = null;
     invalidateAll();
   };
 
@@ -361,11 +480,14 @@ export const useWalletStore = defineStore('wallet', () => {
     activeAddresses,
     addressesByCurrency,
     savedByCurrency,
+    systemWalletsByCurrency,
     // helpers
     setError,
     clearError,
     findAddress,
     findSavedWallets,
+    findSystemWalletById,
+  findSystemWalletByCurrency,
     // actions
     fetchBalances,
     fetchStats,
@@ -374,6 +496,10 @@ export const useWalletStore = defineStore('wallet', () => {
     addSavedWallet,
     updateSavedWallet,
     deleteSavedWallet,
+    fetchSystemWallets,
+  fetchSystemWalletById,
+  clearCurrentSystemWallet,
+
     // invalidation
     invalidateBalances,
     invalidateStats,

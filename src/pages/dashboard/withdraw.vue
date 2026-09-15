@@ -174,7 +174,7 @@
         </div>
 
         <!-- ░░ SKELETON ░░ -->
-        <div v-if="store.state.isLoading && !addressesLoaded" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
+        <div v-if="store.state.isLoadingAddresses && !addressesLoaded" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
           <div
             v-for="i in 6"
             :key="i"
@@ -222,7 +222,7 @@
           </button>
         </div>
 
-        <div v-if="!store.state.isLoading && filteredCryptos.length === 0" class="text-center py-12">
+        <div v-if="!store.state.isLoadingAddresses && filteredCryptos.length === 0" class="text-center py-12">
           <i class="bi bi-search text-5xl text-gray-300 dark:text-white/20"></i>
           <p class="text-gray-500 dark:text-white/40 mt-4">No cryptocurrencies found</p>
         </div>
@@ -380,14 +380,12 @@
 
         <!-- Fee preview -->
         <div class="p-4 rounded-xl mb-6 bg-gray-50 dark:bg-white/[0.03] border border-gray-100 dark:border-white/[0.06]">
-          <!-- loading -->
           <div v-if="store.state.isPreviewing" class="space-y-2">
             <div class="h-4 bg-gray-200 dark:bg-white/[0.06] rounded w-2/3 animate-pulse"></div>
             <div class="h-4 bg-gray-100 dark:bg-white/[0.04] rounded w-1/2 animate-pulse"></div>
             <div class="h-6 bg-gray-200 dark:bg-white/[0.06] rounded w-1/3 animate-pulse"></div>
           </div>
 
-          <!-- preview -->
           <div v-else-if="preview" class="space-y-2 text-sm">
             <div class="flex justify-between">
               <span class="text-gray-500 dark:text-white/40">Withdrawal amount</span>
@@ -412,7 +410,6 @@
             </div>
           </div>
 
-          <!-- prompt -->
           <p v-else class="text-xs text-gray-500 dark:text-white/40 text-center py-2">
             Enter an amount to see the fee breakdown
           </p>
@@ -733,8 +730,7 @@
 <script setup>
 import { ref, computed, onMounted, watch, onUnmounted } from 'vue'
 import { useWithdrawalStore } from '~/stores/withdrawal'
-import { useDepositStore } from '~/stores/deposit'         // reuse cached addresses
-import { useWalletStore } from '~/stores/wallet'           // if you have one; else remove
+import { useWalletStore } from '~/stores/wallet'
 import { WITHDRAWAL_RULES, CURRENCY_META } from '~/composables/constants'
 
 definePageMeta({ layout: 'dashboard' })
@@ -743,14 +739,14 @@ definePageMeta({ layout: 'dashboard' })
 // STORES
 // ─────────────────────────────────────────────────────────────
 const store = useWithdrawalStore()
-const depositStore = useDepositStore()
+const walletStore = useWalletStore()
 
 // ─────────────────────────────────────────────────────────────
 // LOCAL UI STATE
 // ─────────────────────────────────────────────────────────────
 const currentStep = ref(1)
 const searchQuery = ref('')
-const selectedAddress = ref(null)     // a wallet from /wallet/addresses
+const selectedAddress = ref(null)     // a system wallet from wallet store
 const address = ref('')
 const amount = ref(null)
 const saveAddress = ref(false)
@@ -761,12 +757,12 @@ const pinOpen = ref(false)
 const pinError = ref('')
 const maxAttempts = WITHDRAWAL_RULES.PIN_MAX_ATTEMPTS
 
-// Balance
-const balance = ref(0)
-const balanceLoading = ref(true)
-
-// Saved wallets for the selected currency
-const savedWallets = ref([])
+// Saved wallets (from wallet store, computed below — kept reactive)
+const balance = computed(() => walletStore.availableUSD)
+const balanceLoading = computed(
+  () => walletStore.state.isLoadingBalances && !walletStore.state.balancesLoaded
+)
+const savedWallets = computed(() => walletStore.state.savedWallets)
 
 // ─────────────────────────────────────────────────────────────
 // STEPS
@@ -781,13 +777,17 @@ const steps = [
 // ─────────────────────────────────────────────────────────────
 // COMPUTED
 // ─────────────────────────────────────────────────────────────
-const addressesLoaded = computed(() => depositStore.state.addressesLoaded)
-const availableAddresses = computed(() => depositStore.activeAddresses)
+
+// ✅ Now sourced from the wallet store's systemWallets
+const addressesLoaded = computed(() => walletStore.state.systemWalletsLoaded === true)
+
+const availableAddresses = computed(() => walletStore.state.systemWallets || [])
 
 const filteredCryptos = computed(() => {
-  if (!searchQuery.value) return availableAddresses.value
+  const list = availableAddresses.value || []         
+  if (!searchQuery.value) return list
   const q = searchQuery.value.toLowerCase()
-  return availableAddresses.value.filter((c) =>
+  return list.filter((c) =>
     (c.name || '').toLowerCase().includes(q) ||
     (c.currency || '').toLowerCase().includes(q) ||
     (c.network || '').toLowerCase().includes(q)
@@ -880,7 +880,6 @@ const nextStep = async () => {
 
   if (currentStep.value === 2) {
     if (!isStep2Valid.value) return
-    // Fetch fee preview before showing review
     await store.previewFee({
       currency: selectedAddress.value.currency,
       amountUSD: amount.value,
@@ -942,38 +941,17 @@ const handlePinSubmit = async (pin) => {
   if (res.success) {
     pinOpen.value = false
     currentStep.value = 4
-    refreshBalance()
+    // Balance changed — force refresh the wallet store
+    walletStore.fetchBalances({ force: true })
+    // Refresh saved wallets if we auto-saved
+    if (saveAddress.value) walletStore.fetchSavedWallets({ force: true })
     return
   }
 
-  // error
   pinError.value = res.message || 'Invalid PIN'
   if (store.state.isPinLocked) {
     setTimeout(() => { pinOpen.value = false }, 1800)
   }
-}
-
-// ─────────────────────────────────────────────────────────────
-// BALANCE
-// ─────────────────────────────────────────────────────────────
-const refreshBalance = async () => {
-  try {
-    const requests = useWalletRequests()
-    const res = await requests.getBalances()
-    if (res.success) {
-      balance.value = res.data?.balances?.USD || 0
-    }
-  } catch { /* ignore */ } finally {
-    balanceLoading.value = false
-  }
-}
-
-const loadSavedWallets = async () => {
-  try {
-    const requests = useWalletRequests()
-    const res = await requests.getSavedWallets()
-    if (res.success) savedWallets.value = res.data?.wallets || []
-  } catch { /* ignore */ }
 }
 
 // ─────────────────────────────────────────────────────────────
@@ -986,6 +964,7 @@ const resetWithdrawal = () => {
   amount.value = null
   searchQuery.value = ''
   confirmChecked.value = false
+  saveAddress.value = false
   store.clearPreview()
   store.clearCurrent()
   store.resetPinAttempts()
@@ -1013,12 +992,12 @@ watch(amount, (v) => {
 // LIFECYCLE
 // ─────────────────────────────────────────────────────────────
 onMounted(async () => {
-  // Reuse deposit store's cached addresses (5-min TTL)
-  if (!depositStore.state.addressesLoaded) {
-    await depositStore.fetchAddresses()
-  }
-  refreshBalance()
-  loadSavedWallets()
+  // Load system wallets (cached 5 min)
+  await Promise.all([
+    walletStore.fetchSystemWallets(),
+    walletStore.fetchBalances(),
+    walletStore.fetchSavedWallets(),
+  ])
   store.fetchMyWithdrawals({ page: 1, limit: 5 })
 })
 
