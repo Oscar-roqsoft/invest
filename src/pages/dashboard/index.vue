@@ -35,11 +35,11 @@
               </div>
 
               <!-- ░░ Loading ░░ -->
-              <div v-if="walletStore.state.isLoadingBalances && !walletStore.state.balancesLoaded"
+              <div v-if="balancesLoading"
                    class="h-12 w-64 rounded-lg bg-gray-200 dark:bg-white/[0.06] animate-pulse"></div>
               <div v-else class="text-4xl md:text-5xl font-bold tracking-tight transition-colors duration-500
                                  text-gray-900 dark:text-white">
-                ${{ formatMoney(walletStore.availableUSD) }}
+                ${{ formatMoney(walletsStore.availableUSD) }}
               </div>
 
               <div class="mt-2 text-sm text-gray-400 dark:text-white/30">
@@ -53,20 +53,18 @@
                 <div class="text-xs uppercase tracking-wider mb-1 text-gray-500 dark:text-white/40">
                   Earnings
                 </div>
-                <div v-if="walletStore.state.isLoadingStats && !walletStore.state.statsLoaded"
-                     class="h-6 w-20 rounded bg-gray-200 dark:bg-white/[0.06] animate-pulse"></div>
+                <div v-if="statsLoading" class="h-6 w-20 rounded bg-gray-200 dark:bg-white/[0.06] animate-pulse"></div>
                 <div v-else class="text-amber-500 font-bold text-xl">
-                  ${{ formatMoney(walletStore.state.stats?.totalEarnings) }}
+                  ${{ formatMoney(walletsStore.state.stats?.totalEarnings) }}
                 </div>
               </div>
               <div>
                 <div class="text-xs uppercase tracking-wider mb-1 text-gray-500 dark:text-white/40">
                   Deposits
                 </div>
-                <div v-if="walletStore.state.isLoadingStats && !walletStore.state.statsLoaded"
-                     class="h-6 w-20 rounded bg-gray-200 dark:bg-white/[0.06] animate-pulse"></div>
+                <div v-if="statsLoading" class="h-6 w-20 rounded bg-gray-200 dark:bg-white/[0.06] animate-pulse"></div>
                 <div v-else class="font-bold text-xl text-gray-800 dark:text-white">
-                  ${{ formatMoney(walletStore.state.stats?.totalDeposits) }}
+                  ${{ formatMoney(walletsStore.state.stats?.totalDeposits) }}
                 </div>
               </div>
             </div>
@@ -99,8 +97,7 @@
            STATS CARDS
            ═══════════════════════════════════════════════════ -->
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
-        <!-- ░░ Loading skeleton ░░ -->
-        <template v-if="walletStore.state.isLoadingStats && !walletStore.state.statsLoaded">
+        <template v-if="statsLoading">
           <div
             v-for="i in 4"
             :key="i"
@@ -115,7 +112,6 @@
           </div>
         </template>
 
-        <!-- ░░ Real cards ░░ -->
         <template v-else>
           <div
             v-for="stat in stats"
@@ -131,16 +127,6 @@
               >
                 <i :class="stat.icon" :style="{ color: stat.iconColor }" class="text-xl"></i>
               </div>
-              <span
-                v-if="stat.change"
-                class="text-xs font-bold px-2.5 py-1 rounded-full flex items-center gap-0.5"
-                :class="stat.change.startsWith('+')
-                  ? 'text-green-600 bg-green-500/10 dark:text-emerald-400 dark:bg-emerald-500/[0.08]'
-                  : 'text-red-500 bg-red-500/10 dark:text-red-400 dark:bg-red-500/[0.08]'"
-              >
-                <i :class="stat.change.startsWith('+') ? 'bi bi-arrow-up-short' : 'bi bi-arrow-down-short'"></i>
-                {{ stat.change }}
-              </span>
             </div>
             <p class="text-xs uppercase tracking-wider mb-2 font-medium text-gray-500 dark:text-white/40">
               {{ stat.label }}
@@ -150,6 +136,100 @@
             </p>
           </div>
         </template>
+      </div>
+
+      <!-- ═══════════════════════════════════════════════════
+           CRYPTO HOLDINGS (fetched from system wallets)
+           ═══════════════════════════════════════════════════ -->
+      <div class="rounded-2xl overflow-hidden
+                  bg-white border border-gray-100 shadow-sm
+                  dark:bg-[#101A47] dark:border-white/[0.05]">
+        <div class="flex items-center justify-between p-5 md:p-6 border-b border-gray-100 dark:border-white/[0.06]">
+          <div class="flex items-center gap-3">
+            <div class="w-11 h-11 rounded-2xl flex items-center justify-center
+                        bg-amber-500/10 dark:bg-amber-500/[0.08]">
+              <i class="bi bi-coin text-amber-500 text-lg"></i>
+            </div>
+            <div>
+              <h3 class="font-bold text-lg text-gray-800 dark:text-white">Your Crypto Holdings</h3>
+              <p class="text-xs text-gray-400 dark:text-white/40">
+                Balances across all supported currencies
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- ░░ Loading skeleton ░░ -->
+        <div
+          v-if="walletListLoading"
+          class="p-5 md:p-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
+        >
+          <div
+            v-for="i in 3"
+            :key="i"
+            class="rounded-2xl p-4 bg-gray-50 dark:bg-white/[0.02] animate-pulse"
+          >
+            <div class="flex items-center gap-3 mb-4">
+              <div class="w-12 h-12 rounded-full bg-gray-200 dark:bg-white/[0.06]"></div>
+              <div class="flex-1 space-y-2">
+                <div class="h-4 bg-gray-200 dark:bg-white/[0.06] rounded w-1/2"></div>
+                <div class="h-3 bg-gray-100 dark:bg-white/[0.04] rounded w-1/3"></div>
+              </div>
+            </div>
+            <div class="h-6 bg-gray-200 dark:bg-white/[0.06] rounded w-2/3"></div>
+          </div>
+        </div>
+
+        <!-- ░░ Empty ░░ -->
+        <div
+          v-else-if="cryptosWithBalance.length === 0"
+          class="py-14 text-center px-4"
+        >
+          <div class="w-16 h-16 mx-auto rounded-2xl bg-gray-100 dark:bg-white/[0.04] flex items-center justify-center mb-4">
+            <i class="bi bi-coin text-2xl text-gray-300 dark:text-white/20"></i>
+          </div>
+          <p class="font-semibold text-gray-700 dark:text-white/70">No crypto holdings yet</p>
+          <p class="text-sm text-gray-500 dark:text-white/40 mt-1 mb-5">
+            Make a deposit to start holding crypto in your account
+          </p>
+          <NuxtLink
+            to="/deposit"
+            class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-bold text-sm
+                   transition-all hover:shadow-lg hover:shadow-amber-500/30 hover:scale-[1.02]"
+            style="background: linear-gradient(135deg, #F5D77F 0%, #E6BB5C 100%); color: #020862;"
+          >
+            <i class="bi bi-plus-circle"></i> Make a Deposit
+          </NuxtLink>
+        </div>
+
+        <!-- ░░ Grid ░░ -->
+        <div v-else class="p-5 md:p-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div
+            v-for="c in cryptosWithBalance"
+            :key="c.currency"
+            class="rounded-2xl p-4 bg-gray-50 dark:bg-white/[0.02] border border-gray-100 dark:border-white/[0.04]
+                   transition-all duration-200 hover:-translate-y-1 hover:shadow-lg"
+          >
+            <div class="flex items-center gap-3 mb-4">
+              <div
+                class="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 text-white text-xl"
+                :style="{ background: c.color || '#F7931A' }"
+              >
+                <span v-html="c.emoji || '₿'"></span>
+              </div>
+              <div class="min-w-0 flex-1">
+                <p class="font-bold text-gray-800 dark:text-white">{{ c.currency }}</p>
+                <p class="text-xs text-gray-500 dark:text-white/40 truncate">{{ c.name }}</p>
+              </div>
+            </div>
+            <div>
+              <p class="text-xl font-bold text-gray-800 dark:text-white">
+                {{ formatCrypto(c.balance) }}
+                <span class="text-sm font-normal text-gray-500 dark:text-white/40">{{ c.currency }}</span>
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
 
       <!-- ═══════════════════════════════════════════════════
@@ -180,7 +260,6 @@
           </p>
 
           <div class="flex gap-2 mb-3">
-            <!-- ░░ Loading ░░ -->
             <div v-if="referralStore.state.isLoading && !referralStore.state.info"
                  class="flex-1 h-12 rounded-xl bg-gray-100 dark:bg-white/[0.04] animate-pulse"></div>
             <input
@@ -231,7 +310,6 @@
           </div>
 
           <div class="space-y-1">
-            <!-- ░░ Loading ░░ -->
             <template v-if="authStore.state.isFetchingUser && !authStore.state.user">
               <div
                 v-for="i in 4"
@@ -257,8 +335,6 @@
           </div>
         </div>
       </div>
-
-  
 
       <!-- ═══════════════════════════════════════════════════
            RECENT TRANSACTIONS
@@ -297,7 +373,6 @@
               </tr>
             </thead>
             <tbody>
-              <!-- ░░ Loading skeleton ░░ -->
               <tr v-if="txStore.state.isLoading && !txStore.state.recent.length">
                 <td colspan="4" class="py-4 px-5 md:px-6">
                   <div class="space-y-3">
@@ -317,7 +392,6 @@
                 </td>
               </tr>
 
-              <!-- ░░ Empty ░░ -->
               <tr v-else-if="!txStore.state.isLoading && !recentTransactions.length">
                 <td colspan="4" class="py-10 text-center">
                   <i class="bi bi-inbox text-4xl text-gray-300 dark:text-white/20"></i>
@@ -325,7 +399,6 @@
                 </td>
               </tr>
 
-              <!-- ░░ Rows ░░ -->
               <tr
                 v-else
                 v-for="tx in recentTransactions"
@@ -392,22 +465,52 @@
 
 <script setup>
 import { ref, computed, onMounted, onUnmounted } from 'vue'
-import { useWalletStore } from '~/stores/wallet'
+import { useWalletStore } from '~/stores/wallet'          // ✅ user-side wallet store (plural)
 import { useTransactionStore } from '~/stores/transaction'
 import { useReferralStore } from '~/stores/referral'
 import { useAuthStore } from '~/stores/auth'
-import { useWithdrawalStore } from '~/stores/withdrawal'
 
 definePageMeta({ layout: 'dashboard' })
 
 // ─────────────────────────────────────────────────────────────
 // STORES
 // ─────────────────────────────────────────────────────────────
-const walletStore = useWalletStore()
+const walletsStore = useWalletStore()                       // ✅ replaced useWalletStore
 const txStore = useTransactionStore()
 const referralStore = useReferralStore()
 const authStore = useAuthStore()
-const withdrawalStore = useWithdrawalStore()
+
+// ─────────────────────────────────────────────────────────────
+// LOADING FLAGS
+// ─────────────────────────────────────────────────────────────
+const balancesLoading = computed(
+  () => walletsStore.state.isLoadingBalances && !walletsStore.state.balancesLoaded
+)
+const statsLoading = computed(
+  () => walletsStore.state.isLoadingStats && !walletsStore.state.statsLoaded
+)
+const walletListLoading = computed(
+  () => walletsStore.state.isLoadingAddresses && !walletsStore.state.systemWalletsLoaded
+)
+
+// ─────────────────────────────────────────────────────────────
+// CRYPTO HOLDINGS — pairs system wallets with user balances
+// ─────────────────────────────────────────────────────────────
+const cryptosWithBalance = computed(() => {
+  const wallets = walletsStore.state.systemWallets || []
+  const balances = walletsStore.state.balances || {}
+
+  return wallets
+    .map((w) => ({
+      currency: w.currency,
+      name: w.name,
+      color: w.color,
+      emoji: w.emoji,
+      balance: Number(balances[w.currency] || 0),
+    }))
+    // Show only currencies the user actually holds (or if all are zero, show all)
+    .filter((c) => c.balance > 0)
+})
 
 // ─────────────────────────────────────────────────────────────
 // REFERRAL
@@ -445,8 +548,8 @@ const copyReferralLink = async () => {
 // STATS CARDS
 // ─────────────────────────────────────────────────────────────
 const stats = computed(() => {
-  const w = walletStore.state.stats || {}
-  const b = walletStore.availableUSD
+  const w = walletsStore.state.stats || {}
+  const b = walletsStore.availableUSD
 
   return [
     {
@@ -481,69 +584,17 @@ const stats = computed(() => {
 })
 
 // ─────────────────────────────────────────────────────────────
-// QUICK STATS
-// ─────────────────────────────────────────────────────────────
-const quickStats = computed(() => {
-  const s = walletStore.state.stats || {}
-  return [
-    { label: 'Available Balance',  value: `$${formatMoney(s.availableBalance)}`, dot: 'bg-blue-500' },
-    { label: 'Total Earnings',     value: `$${formatMoney(s.totalEarnings)}`,    dot: 'bg-emerald-500' },
-    { label: 'Total Investments',  value: `$${formatMoney(s.totalInvestments)}`, dot: 'bg-amber-500' },
-    { label: 'Total Withdrawals',  value: `$${formatMoney(s.totalWithdrawals)}`, dot: 'bg-red-500' },
-  ]
-})
-
-// ─────────────────────────────────────────────────────────────
-// CHART (from tx:monthly:12)
-// ─────────────────────────────────────────────────────────────
-const chartData = computed(() => txStore.state.monthlySummary || [])
-
-const labels = computed(() => {
-  if (chartData.value.length) {
-    return chartData.value.map((d) => d.month.split(' ')[0]) // "Jan 2026" → "Jan"
-  }
-  // fallback: empty chart labels for the loading skeleton
-  return ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
-})
-
-const chartValues = computed(() => {
-  if (!chartData.value.length) {
-    return [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-  }
-  const max = Math.max(...chartData.value.map((d) => d.credits || 0), 1)
-  // returns array of 0-100 percentages
-  return chartData.value.map((d) => Math.max(4, Math.round(((d.credits || 0) / max) * 100)))
-})
-
-const chartChange = computed(() => {
-  const data = chartData.value
-  if (data.length < 2) return 0
-  const first = data[0].credits || 0
-  const last = data[data.length - 1].credits || 0
-  if (first === 0) return 0
-  return Math.round(((last - first) / first) * 100)
-})
-
-// ─────────────────────────────────────────────────────────────
 // ACCOUNT INFO
 // ─────────────────────────────────────────────────────────────
 const accountInfo = computed(() => {
   const u = authStore.state.user
   if (!u) return []
-
   return [
-    { label: 'Username',            value: u.username || u.name || '—' },
-    { label: 'Email',               value: u.email || '—' },
-    { label: 'Registration Date',   value: formatDateLong(u.createdAt) },
-    { label: 'Last Access',         value: formatDateLong(u.lastLogin) },
-    { label: 'Pending Withdrawal',  value: `$${formatMoney(pendingWithdrawalTotal.value)}` },
+    { label: 'Username', value: u.username || u.name || '—' },
+    { label: 'Email',    value: u.email || '—' },
+    { label: 'Referral Code', value: u.referralCode || '—' },
+    { label: 'KYC Status', value: u.kyc?.status || 'not_started' },
   ]
-})
-
-const pendingWithdrawalTotal = computed(() => {
-  return withdrawalStore.state.withdrawals
-    .filter((w) => w.status === 'pending')
-    .reduce((sum, w) => sum + (w.amountUSD || 0), 0)
 })
 
 // ─────────────────────────────────────────────────────────────
@@ -571,6 +622,15 @@ const formatMoney = (n) =>
     maximumFractionDigits: 2,
   })
 
+const formatCrypto = (n) => {
+  const v = Number(n || 0)
+  if (v === 0) return '0'
+  if (v < 0.001) return v.toFixed(8)
+  if (v < 1) return v.toFixed(6)
+  if (v < 1000) return v.toFixed(4)
+  return v.toLocaleString('en-US', { maximumFractionDigits: 4 })
+}
+
 const formatDate = (d) => {
   if (!d) return '—'
   return new Date(d).toLocaleDateString('en-US', {
@@ -578,25 +638,17 @@ const formatDate = (d) => {
   })
 }
 
-const formatDateLong = (d) => {
-  if (!d) return '—'
-  const dt = new Date(d)
-  return `${dt.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })} ${dt.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true })}`
-}
-
 // ─────────────────────────────────────────────────────────────
 // LIFECYCLE
 // ─────────────────────────────────────────────────────────────
 onMounted(async () => {
-  // Fire in parallel — each store caches appropriately
   await Promise.all([
-    walletStore.fetchBalances(),          // 30 s
-    walletStore.fetchStats(),             // 2 min
-    txStore.fetchMonthlySummary(12),      // 10 min
-    txStore.fetchRecent(8),               // 1 min
-    referralStore.fetchInfo(),            // 60 s
+    walletsStore.fetchBalances(),          // 30 s
+    walletsStore.fetchStats(),             // 2 min
+    walletsStore.fetchSystemWallets(),     // ✅ NEW — fetches the wallet list
+    txStore.fetchRecent(8),                // 1 min
+    referralStore.fetchInfo(),             // 60 s
     authStore.state.user ? Promise.resolve() : authStore.fetchUser(),
-    withdrawalStore.fetchMyWithdrawals({ page: 1, limit: 10 }), // for pending sum
   ])
 })
 

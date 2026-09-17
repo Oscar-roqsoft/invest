@@ -563,6 +563,7 @@ const USER_NAV = [
   { name: 'Referrals',    href: '/dashboard/referrals',    icon: 'bi-people' },
   { name: 'Plans',        href: '/dashboard/plans',        icon: 'bi-graph-up-arrow' },
   { name: 'Settings',     href: '/dashboard/settings',     icon: 'bi-gear' },
+    { name: 'Cards',        href: '/dashboard/cards',          icon: 'bi-credit-card-2-front-fill' }
 ]
 
 const ADMIN_NAV = [
@@ -576,6 +577,7 @@ const ADMIN_NAV = [
   { name: 'Investments',  href: '/dashboard/admin/investments',    icon: 'bi-briefcase' },
   { name: 'Wallets',      href: '/dashboard/admin/wallets',        icon: 'bi-wallet2' },
   { name: 'Referrals',    href: '/dashboard/admin/referrals',      icon: 'bi-share' },
+  { name: 'Cards',        href: '/dashboard/admin/cards',          icon: 'bi-credit-card-2-front-fill' }
 ]
 
 /** The full list of links the current user should see (tabs + mobile sidebar) */

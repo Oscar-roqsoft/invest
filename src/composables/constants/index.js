@@ -1,8 +1,8 @@
 // composables/constants/index.js
 
 
-export const API_BASE_URL = 'https://invest-db.onrender.com/api/v1';
-// export const API_BASE_URL = 'http://localhost:5000/api/v1';
+// export const API_BASE_URL = 'https://invest-db.onrender.com/api/v1';
+export const API_BASE_URL = 'http://localhost:5000/api/v1';
 
 
 
@@ -551,6 +551,75 @@ export const USER_KYC_STATUS_META = {
   pending:     { label: 'Pending',     dot: 'bg-amber-500',   cls: 'bg-amber-50 text-amber-600 dark:bg-amber-500/[0.08] dark:text-amber-400' },
   approved:    { label: 'Approved',    dot: 'bg-emerald-500', cls: 'bg-emerald-50 text-emerald-600 dark:bg-emerald-500/[0.08] dark:text-emerald-400' },
   rejected:    { label: 'Rejected',    dot: 'bg-red-500',     cls: 'bg-red-50 text-red-600 dark:bg-red-500/[0.08] dark:text-red-400' },
+};
+
+
+// ─────────────────────────────────────────────────────────────
+// VIRTUAL CARDS
+// ─────────────────────────────────────────────────────────────
+export const CARD_ENDPOINTS = {
+  ELIGIBILITY: '/card/eligibility',
+  MY:          '/card/my',
+  GENERATE:    '/card/generate',
+  BY_ID:       (id) => `/card/${id}`,
+  FREEZE:      (id) => `/card/${id}/freeze`,
+  DELETE:      (id) => `/card/${id}`,
+};
+
+export const ADMIN_CARD_ENDPOINTS = {
+  LIST:        '/admin/cards',
+  STATS:       '/admin/cards/stats',
+  GENERATE:    '/admin/cards/generate',
+  BY_ID:       (id) => `/admin/cards/${id}`,
+  FREEZE:      (id) => `/admin/cards/${id}/freeze`,
+  DELETE:      (id) => `/admin/cards/${id}`,
+};
+
+/** One entry per tier — used by UI for labels, colors, gradients */
+export const CARD_TIERS = [
+  {
+    value: 'gold',
+    name: 'Gold Card',
+    tagline: 'Standard virtual card',
+    minBalance: 5000,
+    gradient: 'linear-gradient(135deg, #F5D77F 0%, #E6BB5C 25%, #D4A44A 50%, #E6BB5C 75%, #F5D77F 100%)',
+    textColor: '#020862',
+    accentColor: '#E6BB5C',
+    ringClass: 'ring-amber-500/40',
+    badgeClass: 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/30',
+    icon: 'bi bi-credit-card-2-front-fill',
+    perks: [
+      'Virtual USD card',
+      'Instant issuance',
+      'Freeze / unfreeze anytime',
+      'Display-only — no spending',
+    ],
+  },
+  {
+    value: 'black',
+    name: 'Black Card',
+    tagline: 'Premium virtual card',
+    minBalance: 5000,   // same gate as gold in our spec
+    gradient: 'linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 50%, #000000 100%)',
+    textColor: '#F5D77F',
+    accentColor: '#F5D77F',
+    ringClass: 'ring-neutral-700',
+    badgeClass: 'bg-neutral-800 text-amber-400 border-neutral-700',
+    icon: 'bi bi-credit-card-2-back-fill',
+    perks: [
+      'Premium virtual USD card',
+      'Instant issuance',
+      'Freeze / unfreeze anytime',
+      'Display-only — no spending',
+    ],
+  },
+];
+
+export const CARD_STATUS_META = {
+  active:    { label: 'Active',    dot: 'bg-emerald-500', cls: 'bg-emerald-50 text-emerald-600 dark:bg-emerald-500/[0.08] dark:text-emerald-400' },
+  frozen:    { label: 'Frozen',    dot: 'bg-blue-500',    cls: 'bg-blue-50 text-blue-600 dark:bg-blue-500/[0.08] dark:text-blue-400' },
+  expired:   { label: 'Expired',   dot: 'bg-gray-400',    cls: 'bg-gray-100 text-gray-600 dark:bg-white/[0.06] dark:text-white/50' },
+  cancelled: { label: 'Cancelled', dot: 'bg-red-500',     cls: 'bg-red-50 text-red-600 dark:bg-red-500/[0.08] dark:text-red-400' },
 };
 // ─────────────────────────────────────────────────────────────
 // STORAGE
