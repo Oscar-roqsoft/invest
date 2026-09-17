@@ -73,7 +73,7 @@
           <!-- Buttons -->
           <div class="flex flex-col sm:flex-row gap-3">
             <NuxtLink
-              to="/withdraw"
+              to="/dashboard/withdraw"
               class="flex-1 flex items-center justify-center gap-2 py-3.5 rounded-xl font-semibold transition-all duration-300 border backdrop-blur-sm
                      bg-gray-50 text-gray-700 hover:bg-gray-100 border-gray-200
                      dark:bg-white/[0.04] dark:text-white/90 dark:hover:bg-white/[0.08] dark:border-white/[0.06]"
@@ -82,7 +82,7 @@
               <span>Withdraw Funds</span>
             </NuxtLink>
             <NuxtLink
-              to="/deposit"
+              to="/dashboard/deposit"
               class="flex-1 flex items-center justify-center gap-2 py-3.5 rounded-xl font-bold transition-all duration-300 hover:shadow-lg hover:shadow-amber-500/30 hover:scale-[1.02]"
               style="background: linear-gradient(135deg, #F5D77F 0%, #E6BB5C 25%, #D4A44A 50%, #E6BB5C 75%, #F5D77F 100%); background-size: 200% auto; color: #020862;"
             >
