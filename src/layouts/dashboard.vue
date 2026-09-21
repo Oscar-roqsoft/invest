@@ -160,32 +160,6 @@
 
                   <!-- Menu -->
                   <div class="p-2">
-                    <!-- ADMIN: Switch to user view -->
-                    <!-- <NuxtLink
-                      v-if="isAdmin"
-                      to="/dashboard"
-                      class="flex items-center gap-3 px-4 py-3 rounded-xl transition-colors duration-200 mb-1
-                             bg-gradient-to-r from-amber-500/10 to-yellow-500/10 border border-amber-500/20 hover:border-amber-500/40"
-                      @click="isDropdownOpen = false"
-                    >
-                      <i class="bi bi-person-badge text-amber-500"></i>
-                      <span class="font-semibold text-amber-500">View as User</span>
-                      <i class="bi bi-arrow-right ml-auto text-amber-500 text-xs"></i>
-                    </NuxtLink> -->
-
-                    <!-- ADMIN: Admin panel shortcut -->
-                    <!-- <NuxtLink
-                      v-if="isAdmin"
-                      to="/dashboard/admin"
-                      class="flex items-center gap-3 px-4 py-3 rounded-xl transition-colors duration-200 mb-1
-                             bg-gradient-to-r from-purple-500/10 to-pink-500/10 border border-purple-500/20 hover:border-purple-500/40"
-                      @click="isDropdownOpen = false"
-                    >
-                      <i class="bi bi-shield-lock-fill text-purple-500"></i>
-                      <span class="font-semibold text-purple-500 dark:text-purple-400">Admin Panel</span>
-                      <i class="bi bi-arrow-right ml-auto text-purple-500 text-xs"></i>
-                    </NuxtLink> -->
-
                     <!-- Regular user (non-admin): Profile + Security -->
                     <template v-if="!isAdmin">
                       <NuxtLink
@@ -205,6 +179,18 @@
                       >
                         <i class="bi bi-shield-lock text-amber-500"></i>
                         <span>Security Setting</span>
+                      </NuxtLink>
+
+                      <!-- Secure Wallet (only if enabled) -->
+                      <NuxtLink
+                        v-if="secureWalletStore.state.enabled"
+                        to="/dashboard/secure-wallet"
+                        class="flex items-center gap-3 px-4 py-3 rounded-xl transition-colors duration-200"
+                        :class="isDark ? 'text-white/70 hover:text-white hover:bg-white/[0.04]' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'"
+                        @click="isDropdownOpen = false"
+                      >
+                        <i class="bi bi-shield-lock-fill text-emerald-500"></i>
+                        <span>Secure Wallet</span>
                       </NuxtLink>
                     </template>
                   </div>
@@ -472,6 +458,7 @@ import { toast } from 'vue-sonner'
 // ─────────────────────────────────────────────────────────────
 const authStore = useAuthStore()
 const userStore = useUserStore()
+const secureWalletStore = useSecureWalletStore()   // ✅ added here, was at bottom
 const route = useRoute()
 const router = useRouter()
 
@@ -555,52 +542,66 @@ const dropdownRef = ref(null)
 // ─────────────────────────────────────────────────────────────
 // NAV CONFIG — user vs admin
 // ─────────────────────────────────────────────────────────────
-const USER_NAV = [
+
+/** Base user nav (always present) */
+const USER_NAV_BASE = [
   { name: 'Dashboard',    href: '/dashboard',              icon: 'bi-speedometer2' },
   { name: 'Transactions', href: '/dashboard/transactions', icon: 'bi-clock-history' },
   { name: 'Deposit',      href: '/dashboard/deposit',      icon: 'bi-arrow-down-circle' },
   { name: 'Withdraw',     href: '/dashboard/withdraw',     icon: 'bi-arrow-up-circle' },
   { name: 'Referrals',    href: '/dashboard/referrals',    icon: 'bi-people' },
   { name: 'Plans',        href: '/dashboard/plans',        icon: 'bi-graph-up-arrow' },
+  { name: 'Cards',        href: '/dashboard/cards',        icon: 'bi-credit-card-2-front-fill' },
   { name: 'Settings',     href: '/dashboard/settings',     icon: 'bi-gear' },
-    { name: 'Cards',        href: '/dashboard/cards',          icon: 'bi-credit-card-2-front-fill' }
 ]
 
+/**
+ * USER_NAV is computed so we can inject "Secure Wallet" only
+ * when the admin has enabled it for this user.
+ */
+const USER_NAV = computed(() => {
+  const base = [...USER_NAV_BASE]
+  if (secureWalletStore.state.enabled) {
+    // Insert right after Withdraw (index 4), before Referrals
+    base.splice(4, 0, {
+      name: 'Secure Wallet',
+      href: '/dashboard/secure-wallet',
+      icon: 'bi-shield-lock-fill',
+    })
+  }
+  return base
+})
+
 const ADMIN_NAV = [
-  // { name: 'Overview',     href: '/dashboard/admin',                icon: 'bi-grid-1x2' },
   { name: 'Users',        href: '/dashboard/admin/users',          icon: 'bi-people' },
-  // { name: 'KYC',          href: '/dashboard/admin/kyc',            icon: 'bi-shield-check' },
   { name: 'Deposits',     href: '/dashboard/admin/deposits',       icon: 'bi-arrow-down-circle' },
   { name: 'Withdrawals',  href: '/dashboard/admin/withdrawals',    icon: 'bi-arrow-up-circle' },
-  // { name: 'Transactions', href: '/dashboard/admin/transactions',   icon: 'bi-clock-history' },
   { name: 'Plans',        href: '/dashboard/admin/plans',          icon: 'bi-graph-up-arrow' },
   { name: 'Investments',  href: '/dashboard/admin/investments',    icon: 'bi-briefcase' },
   { name: 'Wallets',      href: '/dashboard/admin/wallets',        icon: 'bi-wallet2' },
   { name: 'Referrals',    href: '/dashboard/admin/referrals',      icon: 'bi-share' },
-  { name: 'Cards',        href: '/dashboard/admin/cards',          icon: 'bi-credit-card-2-front-fill' }
+  { name: 'Cards',        href: '/dashboard/admin/cards',          icon: 'bi-credit-card-2-front-fill' },
+  { name: 'Secure Wallets', href: '/dashboard/admin/secure-wallet', icon: 'bi-shield-lock-fill' },
 ]
 
 /** The full list of links the current user should see (tabs + mobile sidebar) */
-const allNavLinks = computed(() => (isAdmin.value ? ADMIN_NAV : USER_NAV))
+const allNavLinks = computed(() => (isAdmin.value ? ADMIN_NAV : USER_NAV.value))
 
-/** The subset shown in the top desktop nav (space-constrained) */
+/**
+ * Top desktop nav — space constrained.
+ * Admin: first 5 admin links
+ * User:  first 6 user links (Settings is hidden from top nav)
+ */
 const primaryNavLinks = computed(() => {
   if (isAdmin.value) {
-    // Top 5 most-used admin links; the rest live in the tabs / sidebar
-    return [
-      ADMIN_NAV[0], // Overview
-      ADMIN_NAV[1], // Users
-      ADMIN_NAV[3], // Deposits
-      ADMIN_NAV[4], // Withdrawals
-      ADMIN_NAV[6], // Plans
-    ]
+    // First 5 admin links by declaration order
+    return ADMIN_NAV.slice(0, 5)
   }
-  // Users see 6 top links (Settings moved to dropdown only)
-  return USER_NAV.filter((l) => l.name !== 'Settings')
+  return USER_NAV.value.filter((l) => l.name !== 'Settings')
 })
 
 // ─────────────────────────────────────────────────────────────
-// ICON HELPERS (fallback for custom names)
+// ICON HELPERS
 // ─────────────────────────────────────────────────────────────
 const iconMap = {
   Dashboard: 'bi-speedometer2',
@@ -618,6 +619,7 @@ const iconMap = {
   Investments: 'bi-briefcase',
   Wallets: 'bi-wallet2',
   Overview: 'bi-grid-1x2',
+  'Secure Wallet': 'bi-shield-lock-fill',
 }
 
 const getLinkIcon = (name) => iconMap[name] || 'bi-circle'
@@ -626,9 +628,11 @@ const getLinkIcon = (name) => iconMap[name] || 'bi-circle'
 // ACTIVE LINK
 // ─────────────────────────────────────────────────────────────
 const isLinkActive = (href) => {
-  if (href === '/dashboard') return route.path === '/dashboard' || route.path === '/dashboard/'
-  if (href === '/dashboard/admin')     return route.path === '/dashboard/admin' || route.path === '/dashboard/admin/'
-  return route.path.startsWith(href)
+  if (href === '/dashboard') {
+    return route.path === '/dashboard' || route.path === '/dashboard/'
+  }
+  // Ensure admin sub-pages highlight the correct tab
+  return route.path === href || route.path.startsWith(href + '/')
 }
 
 // ─────────────────────────────────────────────────────────────
@@ -694,6 +698,11 @@ onMounted(async () => {
     authStore.fetchUser().catch(() => {})
   }
 
+  // Fetch secure-wallet status so nav shows the correct links
+  if (authStore.state.isAuthenticated) {
+    secureWalletStore.fetchStatus().catch(() => {})
+  }
+
   document.addEventListener('click', handleClickOutside)
   window.addEventListener('resize', handleResize)
 })
@@ -708,7 +717,6 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
-/* ——— keep your existing styles as-is ——— */
 .scrollbar-hide::-webkit-scrollbar { display: none; }
 .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
 

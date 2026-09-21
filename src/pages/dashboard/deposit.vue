@@ -684,7 +684,7 @@
                 ${{ formatAmount(d.amountUSD) }}
               </td>
               <td class="py-4 px-5 md:px-6">
-                <DepositStatusBadge :status="d.status" />
+                <WithdrawalStatusBadge :status="d.status" />
               </td>
               <td class="py-4 px-5 md:px-6 text-sm text-gray-500 dark:text-white/30">
                 {{ formatDate(d.createdAt) }}

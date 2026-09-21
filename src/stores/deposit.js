@@ -129,7 +129,9 @@ export const useDepositStore = defineStore('deposit', () => {
     clearError();
 
     try {
+
       const requests = getRequests();
+      
       const res = await requests.createDeposit({
         currency,
         network,

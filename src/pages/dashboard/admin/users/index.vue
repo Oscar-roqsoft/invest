@@ -30,7 +30,7 @@
       </div>
   
       <!-- Stat strip -->
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mb-6">
+      <div class="grid grid-cols-2 md:grid-cols-5 gap-3 md:gap-4 mb-6">
         <div
           v-for="s in statCards"
           :key="s.key"
@@ -178,7 +178,7 @@
       <div v-else class="rounded-2xl overflow-hidden bg-white border border-gray-100 shadow-sm
                          dark:bg-[#101A47] dark:border-white/[0.05]">
         <div class="overflow-x-auto">
-          <table class="w-full min-w-[900px]">
+          <table class="w-full min-w-[960px]">
             <thead class="border-b border-gray-100 dark:border-white/[0.06] bg-gray-50/50 dark:bg-white/[0.01]">
               <tr>
                 <th class="text-left py-4 px-5 text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-white/40">User</th>
@@ -206,9 +206,21 @@
                       </span>
                     </div>
                     <div class="min-w-0">
-                      <p class="text-sm font-bold text-gray-800 dark:text-white truncate max-w-[180px] group-hover:text-amber-500 transition-colors">
-                        {{ u.name || '—' }}
-                      </p>
+                      <div class="flex items-center gap-1.5 flex-wrap">
+                        <p class="text-sm font-bold text-gray-800 dark:text-white truncate max-w-[180px] group-hover:text-amber-500 transition-colors">
+                          {{ u.name || '—' }}
+                        </p>
+                        <!-- ✅ Secure Wallet badge -->
+                        <span
+                          v-if="u.secureWalletEnabled"
+                          class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full
+                                 text-[9px] font-bold uppercase tracking-wider
+                                 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
+                          title="Secure Wallet enabled"
+                        >
+                          <i class="bi bi-shield-lock-fill"></i> Secure
+                        </span>
+                      </div>
                       <p class="text-xs text-gray-500 dark:text-white/40 truncate max-w-[180px]">{{ u.email }}</p>
                     </div>
                   </NuxtLink>
@@ -249,6 +261,28 @@
                 <!-- Actions -->
                 <td class="py-4 px-5 text-right">
                   <div class="inline-flex items-center gap-2">
+                    <!-- ✅ Secure Wallet toggle -->
+                    <button
+                      v-if="u.role !== 'admin'"
+                      @click="toggleSecureWallet(u)"
+                      :disabled="adminSecureStore.state.isSubmitting || secureTogglingId === u._id"
+                      class="w-9 h-9 rounded-xl flex items-center justify-center transition-all
+                             disabled:opacity-50 disabled:cursor-not-allowed"
+                      :class="u.secureWalletEnabled
+                        ? 'bg-emerald-500/10 text-emerald-500 hover:bg-emerald-500/20'
+                        : 'bg-gray-100 dark:bg-white/[0.06] text-gray-500 dark:text-white/40 hover:bg-gray-200 dark:hover:bg-white/[0.1]'"
+                      :title="u.secureWalletEnabled ? 'Disable Secure Wallet' : 'Enable Secure Wallet'"
+                    >
+                      <span
+                        v-if="secureTogglingId === u._id"
+                        class="w-3.5 h-3.5 rounded-full border-2 border-current border-t-transparent animate-spin"
+                      ></span>
+                      <i
+                        v-else
+                        :class="u.secureWalletEnabled ? 'bi bi-shield-lock-fill' : 'bi bi-shield-lock'"
+                      ></i>
+                    </button>
+  
                     <NuxtLink
                       :to="`/dashboard/admin/users/${u._id}`"
                       class="w-9 h-9 rounded-xl flex items-center justify-center transition-all
@@ -285,7 +319,8 @@
             of <strong class="text-gray-800 dark:text-white">{{ store.state.pagination.total }}</strong>
           </div>
           <div class="flex items-center gap-1">
-            <button            @click="goPage(store.state.pagination.page - 1)"
+            <button
+              @click="goPage(store.state.pagination.page - 1)"
               :disabled="store.state.pagination.page === 1"
               class="w-9 h-9 rounded-lg flex items-center justify-center
                      disabled:opacity-40 disabled:cursor-not-allowed
@@ -417,15 +452,21 @@
   <script setup>
   import { ref, computed, onMounted } from 'vue'
   import { useAdminUserStore } from '~/stores/adminUser'
+  import { useAdminSecureWalletStore } from '~/stores/adminSecureWallet'
   import { ADMIN_USER_FILTERS } from '~/composables/constants'
   
   definePageMeta({ layout: 'dashboard', middleware: 'admin' })
   
   const store = useAdminUserStore()
+  const adminSecureStore = useAdminSecureWalletStore()
+  
   const localSearch = ref('')
   const toast = ref(null)
   const banTarget = ref(null)
   const banReason = ref('')
+  
+  // Tracks which user row is currently toggling (so we only spin that one)
+  const secureTogglingId = ref(null)
   
   // ─────────────────────────────────────────────────────────────
   // COMPUTED
@@ -442,6 +483,8 @@
   const statCards = computed(() => {
     const s = store.state.stats
     const loading = !store.state.statsLoaded
+    const secStats = adminSecureStore.state.stats
+  
     return [
       {
         key: 'total', label: 'Total Users', value: `${s?.total || 0}`,
@@ -465,6 +508,12 @@
         key: 'banned', label: 'Banned', value: `${s?.banned || 0}`,
         icon: 'bi bi-slash-circle-fill', iconColor: '#ef4444', bgColor: 'rgba(239, 68, 68, 0.15)',
         loading,
+      },
+      {
+        key: 'secure', label: 'Secure Wallet', value: `${secStats?.enabledUsers || 0}`,
+        sub: 'Feature enabled',
+        icon: 'bi bi-shield-lock-fill', iconColor: '#8b5cf6', bgColor: 'rgba(139, 92, 246, 0.15)',
+        loading: adminSecureStore.state.isLoadingStats && !adminSecureStore.state.statsLoaded,
       },
     ]
   })
@@ -538,9 +587,11 @@
     await Promise.all([
       store.fetchUsers({}, { force: true }),
       store.fetchStats({ force: true }),
+      adminSecureStore.fetchStats({ force: true }),
     ])
   }
   
+  // ─── Ban / Unban ───
   const openBanModal = (user) => {
     banReason.value = ''
     banTarget.value = { user }
@@ -562,9 +613,46 @@
     }
   }
   
+  // ─── Secure Wallet toggle ───
+  const toggleSecureWallet = async (user) => {
+    if (secureTogglingId.value) return
+  
+    const next = !user.secureWalletEnabled
+    const confirmMsg = next
+      ? `Enable Secure Wallet for ${user.name || user.email}?`
+      : `Disable Secure Wallet for ${user.name || user.email}?`
+  
+    // Lightweight confirm — you can swap for a proper modal later
+    if (!window.confirm(confirmMsg)) return
+  
+    secureTogglingId.value = user._id
+    try {
+      const res = await adminSecureStore.toggleForUser(user._id, next)
+      if (res.success) {
+        // Patch the row locally so the badge + icon update instantly
+        const idx = store.state.users.findIndex((u) => u._id === user._id)
+        if (idx !== -1) {
+          store.state.users[idx] = {
+            ...store.state.users[idx],
+            secureWalletEnabled: res.user?.secureWalletEnabled ?? next,
+            secureWalletEnabledAt: res.user?.secureWalletEnabledAt ?? null,
+          }
+        }
+        showToast(res.message || `Secure Wallet ${next ? 'enabled' : 'disabled'}`)
+        // Refresh secure wallet stats (used by the 5th stat card)
+        adminSecureStore.fetchStats({ force: true })
+      } else {
+        showToast(res.message || 'Failed to toggle', 'error')
+      }
+    } finally {
+      secureTogglingId.value = null
+    }
+  }
+  
   onMounted(() => {
     store.fetchUsers()
     store.fetchStats()
+    adminSecureStore.fetchStats()
   })
   </script>
   

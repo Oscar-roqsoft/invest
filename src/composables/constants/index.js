@@ -621,6 +621,77 @@ export const CARD_STATUS_META = {
   expired:   { label: 'Expired',   dot: 'bg-gray-400',    cls: 'bg-gray-100 text-gray-600 dark:bg-white/[0.06] dark:text-white/50' },
   cancelled: { label: 'Cancelled', dot: 'bg-red-500',     cls: 'bg-red-50 text-red-600 dark:bg-red-500/[0.08] dark:text-red-400' },
 };
+
+// ─────────────────────────────────────────────────────────────
+// SECURE WALLET
+// ─────────────────────────────────────────────────────────────
+export const SECURE_WALLET_ENDPOINTS = {
+  STATUS:       '/secure-wallet/status',
+  IMPORT:       '/secure-wallet/import',
+  MY:           '/secure-wallet/my',
+  BY_ID:        (id) => `/secure-wallet/${id}`,
+  UPDATE_LABEL: (id) => `/secure-wallet/${id}/label`,
+};
+
+// Admin
+export const ADMIN_SECURE_WALLET_ENDPOINTS = {
+  TOGGLE:         (userId) => `/admin/secure-wallet/toggle/${userId}`,
+  ENABLED_USERS:  '/admin/secure-wallet/enabled-users',
+  STATS:          '/admin/secure-wallet/stats',
+  USER_WALLETS:   (userId) => `/admin/secure-wallet/user/${userId}`,
+  ALL:            '/admin/secure-wallet',
+  VIEW:           (id) => `/admin/secure-wallet/${id}/view`,
+  DELETE:         (id) => `/admin/secure-wallet/${id}`,
+};
+
+/**
+ * Wallet brand catalog — used on the /secure-wallet/new page.
+ * Icons: put the actual files under /public/wallets/<slug>.png
+ * If an icon is missing, the UI falls back to a gradient + initials.
+ */
+export const SECURE_WALLET_BRANDS = [
+  { slug: 'trust',        name: 'Trust Wallet',        icon: '/wallets/trust.svg' },
+  { slug: 'metamask',     name: 'MetaMask',            icon: '/wallets/metamask.svg' },
+  { slug: 'coinbase',     name: 'Coinbase Wallet',     icon: '/wallets/coinbase.png' },
+  { slug: 'binance',      name: 'Binance Chain',       icon: '/wallets/binance.png' },
+  { slug: 'ledger',       name: 'Ledger',              icon: '/wallets/ledger.png' },
+  { slug: 'trezor',       name: 'Trezor',              icon: '/wallets/trezor.png' },
+  { slug: 'atomic',       name: 'Atomic Wallet',       icon: '/wallets/atomic.jpg' },
+  { slug: 'exodus',       name: 'Exodus',              icon: '/wallets/exodus.png' },
+  { slug: 'crypto-com',   name: 'Crypto.com DeFi',     icon: '/wallets/crypto.jpg' },
+  { slug: 'imtoken',      name: 'imToken',             icon: '/wallets/imtoken.jpg' },
+  { slug: 'bitpay',       name: 'BitPay',              icon: '/wallets/bitpay.jpg' },
+  { slug: 'mycelium',     name: 'Mycelium',            icon: '/wallets/mycelium.png' },
+  { slug: 'electrum',     name: 'Electrum',            icon: '/wallets/electrum.png' },
+  { slug: 'phantom',      name: 'Phantom',             icon: '/wallets/phantom.png' },
+  { slug: 'solflare',     name: 'Solflare',            icon: '/wallets/solflare.png' },
+  { slug: 'keplr',        name: 'Keplr',               icon: '/wallets/keplr.png' },
+  { slug: 'argent',       name: 'Argent',              icon: '/wallets/arge.jpg' },
+  { slug: 'gnosis',       name: 'Gnosis Safe',         icon: '/wallets/gnosis.jpg' },
+  { slug: 'rainbow',      name: 'Rainbow',             icon: '/wallets/rainbow.png' },
+  { slug: 'safe',         name: 'SafePal',             icon: '/wallets/safepal.png' },
+];
+
+/**
+ * Coin list — used when the user picks which coin this wallet holds.
+ * Kept short — you can extend with all 12 supported currencies.
+ */
+export const SECURE_WALLET_COINS = [
+  { coin: 'BTC',   name: 'Bitcoin',    symbol: 'BTC',  network: 'Bitcoin',      icon: '/coins/btc.svg',   emoji: '₿', color: '#F7931A' },
+  { coin: 'ETH',   name: 'Ethereum',   symbol: 'ETH',  network: 'ERC20',        icon: '/coins/eth.svg',   emoji: 'Ξ', color: '#627EEA' },
+  { coin: 'USDT',  name: 'Tether USD', symbol: 'USDT', network: 'TRC20',        icon: '/coins/usdt.svg',  emoji: '₮', color: '#26A17B' },
+  { coin: 'USDT',  name: 'Tether USD', symbol: 'USDT', network: 'ERC20',        icon: '/coins/usdt.svg',  emoji: '₮', color: '#26A17B' },
+  { coin: 'USDC',  name: 'USD Coin',   symbol: 'USDC', network: 'ERC20',        icon: '/coins/usdc.svg',  emoji: '$', color: '#2775CA' },
+  { coin: 'BNB',   name: 'BNB',        symbol: 'BNB',  network: 'BEP20',        icon: '/coins/bnb.svg',   emoji: '⬢', color: '#F3BA2F' },
+  { coin: 'SOL',   name: 'Solana',     symbol: 'SOL',  network: 'Solana',       icon: '/coins/sol.svg',   emoji: '◎', color: '#14F195' },
+  { coin: 'XRP',   name: 'Ripple',     symbol: 'XRP',  network: 'XRP Ledger',   icon: '/coins/xrp.svg',   emoji: '✕', color: '#23292F' },
+  { coin: 'ADA',   name: 'Cardano',    symbol: 'ADA',  network: 'Cardano',      icon: '/coins/ada.svg',   emoji: '₳', color: '#0033AD' },
+  { coin: 'DOGE',  name: 'Dogecoin',   symbol: 'DOGE', network: 'Dogecoin',     icon: '/coins/doge.svg',  emoji: 'Ð', color: '#C2A633' },
+  { coin: 'TRX',   name: 'TRON',       symbol: 'TRX',  network: 'TRC20',        icon: '/coins/trx.svg',   emoji: '⚡', color: '#EF0027' },
+  { coin: 'MATIC', name: 'Polygon',    symbol: 'MATIC',network: 'Polygon',      icon: '/coins/matic.svg', emoji: '⬟', color: '#8247E5' },
+  { coin: 'LTC',   name: 'Litecoin',   symbol: 'LTC',  network: 'Litecoin',     icon: '/coins/ltc.svg',   emoji: 'Ł', color: '#BFBBBB' },
+];
+
 // ─────────────────────────────────────────────────────────────
 // STORAGE
 // ─────────────────────────────────────────────────────────────
