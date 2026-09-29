@@ -720,7 +720,9 @@
       :open="pinOpen"
       :loading="store.state.isSubmitting"
       :error-message="pinError"
-      :attempts-left="maxAttempts - store.state.pinAttempts"
+      :attempts-left="3 - store.state.pinAttempts"
+      title="Confirm Withdrawal"
+      subtitle="Enter your PIN to authorize this withdrawal"
       @close="closePinModal"
       @submit="handlePinSubmit"
     />

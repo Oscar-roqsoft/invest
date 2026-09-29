@@ -575,7 +575,7 @@
         <!-- Actions -->
         <div class="flex flex-col sm:flex-row gap-3 justify-center">
           <NuxtLink
-            to="/transactions"
+            to="/dashboard/transactions"
             class="px-6 py-3 rounded-xl font-bold text-sm text-gray-700 dark:text-white/80
                    bg-gray-100 dark:bg-white/[0.06] hover:bg-gray-200 dark:hover:bg-white/[0.1]
                    transition-all duration-200 inline-flex items-center justify-center"

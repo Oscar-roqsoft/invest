@@ -2,7 +2,7 @@
     <DashboardLayout>
       <!-- Page Header -->
       <div class="mb-6 md:mb-8">
-        <div class="flex items-center gap-3">
+        <div class="flex items-center gap-3 mt-[50px]">
           <div class="w-11 h-11 rounded-2xl flex items-center justify-center bg-gold-500/10 dark:bg-amber-500/[0.08]">
             <i class="bi bi-gear-fill text-amber-500 text-lg"></i>
           </div>

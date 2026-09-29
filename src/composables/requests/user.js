@@ -35,6 +35,9 @@ export const useUserRequests = () => {
   const changePin = (data) =>
     api.post(USER_ENDPOINTS.CHANGE_PIN, data, { requiresAuth: true });
 
+  const verifyPin = (pin) =>
+    api.post('/user/verify-pin', { pin }, { requiresAuth: true });
+
   const toggle2FA = (data) =>
     api.post(USER_ENDPOINTS.TOGGLE_2FA, data, { requiresAuth: true });
 
@@ -68,6 +71,7 @@ export const useUserRequests = () => {
     changePassword,
     setPin,
     changePin,
+    verifyPin,
     toggle2FA,
 
     // KYC

@@ -1,6 +1,6 @@
 <template>
   <DashboardLayout>
-    <!-- ═══════════════════ HEADER ═══════════════════ -->
+    <!-- Page Header -->
     <div class="mb-6 md:mb-8 mt-[70px]">
       <div class="flex flex-wrap items-center justify-between gap-4">
         <div class="flex items-center gap-3">
@@ -9,14 +9,12 @@
           </div>
           <div>
             <h1 class="font-bold text-2xl md:text-3xl text-gray-800 dark:text-white">Investment Plans</h1>
-            <p class="text-xs md:text-sm text-gray-500 dark:text-white/40">
-              Choose a plan and start earning daily returns
-            </p>
+            <p class="text-xs md:text-sm text-gray-500 dark:text-white/40">Choose a plan and start earning daily returns</p>
           </div>
         </div>
         <button
           @click="showCalculator = !showCalculator"
-          class="flex items-center gap-2 px-4 py-2.5 rounded-xl font-semibold text-sm transition-all
+          class="flex items-center gap-2 px-4 py-2.5 rounded-xl font-semibold text-sm transition-all duration-200
                  bg-white border border-gray-200 text-gray-700 hover:bg-gray-50
                  dark:bg-white/[0.04] dark:border-white/[0.06] dark:text-white/70 dark:hover:bg-white/[0.08]"
         >
@@ -26,7 +24,7 @@
       </div>
     </div>
 
-    <!-- ═══════════════════ PORTFOLIO STATS ═══════════════════ -->
+    <!-- Portfolio Summary -->
     <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4 mb-6">
       <div
         v-for="stat in portfolioStats"
@@ -49,43 +47,19 @@
       </div>
     </div>
 
-    <!-- ═══════════════════ ACTIVE INVESTMENTS ═══════════════════ -->
-    <div
-      v-if="store.state.isLoading && !store.state.activeLoaded"
-      class="mb-6 rounded-2xl p-6 bg-white border border-gray-100 dark:bg-[#101A47] dark:border-white/[0.05]"
-    >
-      <div class="flex items-center gap-3 mb-5">
-        <div class="w-11 h-11 rounded-2xl bg-gray-200 dark:bg-white/[0.06] animate-pulse"></div>
-        <div class="h-4 w-40 rounded bg-gray-200 dark:bg-white/[0.06] animate-pulse"></div>
-      </div>
-      <div class="space-y-4">
-        <div
-          v-for="i in 2"
-          :key="i"
-          class="rounded-2xl p-5 bg-gray-50 dark:bg-white/[0.02] animate-pulse"
-        >
-          <div class="h-5 w-40 bg-gray-200 dark:bg-white/[0.06] rounded mb-3"></div>
-          <div class="h-3 w-64 bg-gray-100 dark:bg-white/[0.04] rounded mb-4"></div>
-          <div class="h-2 w-full bg-gray-100 dark:bg-white/[0.04] rounded"></div>
-        </div>
-      </div>
-    </div>
-
-    <div
-      v-else-if="hasActive"
-      class="mb-6 rounded-2xl overflow-hidden bg-white border border-gray-100 shadow-sm
-             dark:bg-[#101A47] dark:border-white/[0.05]"
-    >
+    <!-- Active Investments Section -->
+    <div v-if="activeInvestments.length > 0" class="mb-6 rounded-2xl overflow-hidden
+                                                      bg-white border border-gray-100 shadow-sm
+                                                      dark:bg-[#101A47] dark:border-white/[0.05]">
       <div class="flex items-center justify-between p-5 md:p-6 border-b border-gray-100 dark:border-white/[0.06]">
         <div class="flex items-center gap-3">
-          <div class="w-11 h-11 rounded-2xl flex items-center justify-center bg-emerald-500/10 dark:bg-emerald-500/[0.08]">
+          <div class="w-11 h-11 rounded-2xl flex items-center justify-center
+                      bg-emerald-500/10 dark:bg-emerald-500/[0.08]">
             <i class="bi bi-briefcase-fill text-emerald-500 text-lg"></i>
           </div>
           <div>
             <h3 class="font-bold text-lg text-gray-800 dark:text-white">Active Investments</h3>
-            <p class="text-xs text-gray-400 dark:text-white/40">
-              {{ activeInvestments.length }} active · ${{ formatMoney(store.totalActiveInvested) }} invested
-            </p>
+            <p class="text-xs text-gray-400 dark:text-white/40">Your currently running plans</p>
           </div>
         </div>
         <span class="px-3 py-1.5 rounded-full text-xs font-bold bg-emerald-500/10 text-emerald-500 dark:bg-emerald-500/[0.15] dark:text-emerald-400">
@@ -97,14 +71,13 @@
         <div
           v-for="inv in activeInvestments"
           :key="inv._id"
-          class="rounded-2xl p-4 md:p-5 bg-gray-50 dark:bg-white/[0.03] border border-gray-100 dark:border-white/[0.06]"
+          class="rounded-2xl p-4 md:p-5
+                 bg-gray-50 dark:bg-white/[0.03] border border-gray-100 dark:border-white/[0.06]"
         >
           <div class="flex flex-wrap items-start justify-between gap-4 mb-4">
             <div class="flex items-center gap-3">
-              <div
-                class="w-12 h-12 rounded-2xl flex items-center justify-center flex-shrink-0 text-white text-xl"
-                :style="{ background: planMeta(inv.planSlug).color }"
-              >
+              <div class="w-12 h-12 rounded-2xl flex items-center justify-center flex-shrink-0 font-bold text-2xl text-white"
+                   :style="{ background: planMeta(inv.planSlug).color }">
                 <i :class="planMeta(inv.planSlug).icon"></i>
               </div>
               <div>
@@ -123,7 +96,7 @@
             </div>
           </div>
 
-          <!-- Stats row -->
+          <!-- Stats Row -->
           <div class="grid grid-cols-3 gap-3 mb-4">
             <div>
               <p class="text-xs text-gray-500 dark:text-white/40 mb-0.5">Invested</p>
@@ -139,17 +112,30 @@
             </div>
           </div>
 
-          <!-- Progress -->
-          <InvestmentProgressBar
-            :progress="estimateProgress(inv)"
-            label="Progress"
-            :caption="`${daysLeft(inv)} days remaining`"
-          />
+          <!-- Progress Bar -->
+          <div>
+            <div class="flex items-center justify-between text-xs mb-2">
+              <span class="text-gray-500 dark:text-white/40">Progress</span>
+              <span class="font-bold text-gray-800 dark:text-white">{{ estimateProgress(inv) }}%</span>
+            </div>
+            <div class="h-2 rounded-full bg-gray-200 dark:bg-white/[0.06] overflow-hidden">
+              <div
+                class="h-full rounded-full transition-all duration-1000"
+                :style="{
+                  width: estimateProgress(inv) + '%',
+                  background: 'linear-gradient(90deg, #F5D77F 0%, #E6BB5C 50%, #D4A44A 100%)'
+                }"
+              ></div>
+            </div>
+            <p class="text-xs text-gray-400 dark:text-white/30 mt-2">
+              {{ daysLeft(inv) }} days remaining
+            </p>
+          </div>
         </div>
       </div>
     </div>
 
-    <!-- ═══════════════════ ROI CALCULATOR ═══════════════════ -->
+    <!-- ROI Calculator -->
     <Transition
       enter-active-class="transition-all duration-300"
       enter-from-class="opacity-0 -translate-y-4"
@@ -182,13 +168,14 @@
             </div>
             <button
               @click="showCalculator = false"
-              class="w-8 h-8 rounded-lg flex items-center justify-center hover:bg-white/[0.06]"
+              class="w-8 h-8 rounded-lg flex items-center justify-center hover:bg-white/[0.06] transition-colors"
             >
               <i class="bi bi-x-lg text-white/40 text-sm"></i>
             </button>
           </div>
 
           <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Inputs -->
             <div class="space-y-4">
               <div>
                 <label class="block text-xs font-bold uppercase tracking-wider text-white/40 mb-2">
@@ -229,30 +216,40 @@
                          bg-white/[0.06] border border-white/[0.1] focus:border-amber-500/50 transition-all"
                 >
                   <option v-for="plan in sortedPlans" :key="plan._id" :value="plan._id">
-                    {{ plan.name }} — {{ plan.dailyRoi }}% daily
+                    {{ plan.name }} - {{ plan.dailyRoi }}% daily
                   </option>
                 </select>
               </div>
             </div>
 
+            <!-- Results -->
             <div class="lg:col-span-2 grid grid-cols-2 md:grid-cols-4 gap-3">
               <div class="p-4 rounded-xl bg-white/[0.04] border border-white/[0.06]">
                 <div class="text-xs text-white/40 mb-1">Daily Return</div>
-                <div class="text-lg md:text-xl font-bold text-emerald-400">+${{ calcResults.daily.toLocaleString() }}</div>
+                <div class="text-lg md:text-xl font-bold text-emerald-400">
+                  +${{ calcResults.daily.toLocaleString() }}
+                </div>
               </div>
               <div class="p-4 rounded-xl bg-white/[0.04] border border-white/[0.06]">
                 <div class="text-xs text-white/40 mb-1">Total Profit</div>
-                <div class="text-lg md:text-xl font-bold text-emerald-400">+${{ calcResults.profit.toLocaleString() }}</div>
+                <div class="text-lg md:text-xl font-bold text-emerald-400">
+                  +${{ calcResults.profit.toLocaleString() }}
+                </div>
               </div>
               <div class="p-4 rounded-xl bg-white/[0.04] border border-white/[0.06]">
                 <div class="text-xs text-white/40 mb-1">Total Return</div>
-                <div class="text-lg md:text-xl font-bold text-amber-400">${{ calcResults.total.toLocaleString() }}</div>
+                <div class="text-lg md:text-xl font-bold text-amber-400">
+                  ${{ calcResults.total.toLocaleString() }}
+                </div>
               </div>
               <div class="p-4 rounded-xl bg-amber-500/[0.1] border border-amber-500/[0.2]">
                 <div class="text-xs text-amber-400/70 mb-1">ROI</div>
-                <div class="text-lg md:text-xl font-bold text-amber-400">{{ calcResults.roi }}%</div>
+                <div class="text-lg md:text-xl font-bold text-amber-400">
+                  {{ calcResults.roi }}%
+                </div>
               </div>
 
+              <!-- Chart Preview -->
               <div class="col-span-2 md:col-span-4 p-4 rounded-xl bg-white/[0.04] border border-white/[0.06]">
                 <div class="flex items-center justify-between mb-3">
                   <span class="text-xs font-bold uppercase tracking-wider text-white/40">Growth Projection</span>
@@ -277,7 +274,7 @@
       </div>
     </Transition>
 
-    <!-- ═══════════════════ PLANS GRID/LIST ═══════════════════ -->
+    <!-- Plans Grid -->
     <div class="mb-6">
       <div class="flex items-center justify-between mb-4">
         <div>
@@ -286,20 +283,20 @@
         </div>
         <div class="hidden md:flex items-center gap-1 p-1 rounded-xl bg-gray-100 dark:bg-white/[0.04]">
           <button
-            v-for="v in ['grid', 'list']"
-            :key="v"
-            @click="viewMode = v"
+            v-for="view in ['grid', 'list']"
+            :key="view"
+            @click="viewMode = view"
             class="px-3 py-1.5 rounded-lg text-xs font-bold transition-all"
-            :class="viewMode === v
+            :class="viewMode === view
               ? 'bg-white dark:bg-white/[0.08] text-gray-800 dark:text-white shadow-sm'
               : 'text-gray-500 dark:text-white/40'"
           >
-            <i :class="v === 'grid' ? 'bi bi-grid-fill' : 'bi bi-list-ul'"></i>
+            <i :class="view === 'grid' ? 'bi bi-grid-fill' : 'bi bi-list-ul'"></i>
           </button>
         </div>
       </div>
 
-      <!-- ░░ LOADING ░░ -->
+      <!-- Loading -->
       <div v-if="store.state.isLoading && !store.state.plansLoaded"
            class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
         <div
@@ -315,18 +312,15 @@
         </div>
       </div>
 
-      <!-- ░░ EMPTY ░░ -->
+      <!-- Empty -->
       <div v-else-if="!store.state.isLoading && sortedPlans.length === 0"
            class="rounded-2xl p-12 text-center bg-white border border-gray-100 dark:bg-[#101A47] dark:border-white/[0.05]">
         <i class="bi bi-inbox text-5xl text-gray-300 dark:text-white/20"></i>
         <p class="font-semibold text-gray-700 dark:text-white/70 mt-4">No investment plans available</p>
       </div>
 
-      <!-- ░░ GRID ░░ -->
-      <div
-        v-else-if="viewMode === 'grid'"
-        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6"
-      >
+      <!-- Grid View -->
+      <div v-else-if="viewMode === 'grid'" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
         <div
           v-for="plan in sortedPlans"
           :key="plan._id"
@@ -335,6 +329,7 @@
                  dark:bg-[#101A47] dark:border-white/[0.05]"
           :class="plan.isPopular ? 'ring-2 ring-amber-500/50' : ''"
         >
+          <!-- Popular Badge -->
           <div
             v-if="plan.isPopular"
             class="absolute top-0 right-0 px-3 py-1 rounded-bl-2xl text-xs font-bold
@@ -343,16 +338,19 @@
             <i class="bi bi-star-fill mr-1"></i>POPULAR
           </div>
 
+          <!-- Icon -->
           <div
-            class="w-14 h-14 rounded-2xl flex items-center justify-center mb-4 text-2xl text-white"
+            class="w-14 h-14 rounded-2xl flex items-center justify-center mb-4 font-bold text-2xl text-white"
             :style="{ background: plan.color || '#bb914a' }"
           >
             <i :class="plan.icon || 'bi bi-graph-up-arrow'"></i>
           </div>
 
+          <!-- Name -->
           <h4 class="font-bold text-xl text-gray-800 dark:text-white mb-1">{{ plan.name }}</h4>
           <p class="text-xs text-gray-500 dark:text-white/40 mb-4">{{ plan.description || `${plan.duration}-day plan` }}</p>
 
+          <!-- ROI -->
           <div class="mb-4 pb-4 border-b border-gray-100 dark:border-white/[0.06]">
             <div class="flex items-baseline gap-1">
               <span class="text-3xl md:text-4xl font-bold text-amber-500">{{ plan.dailyRoi }}%</span>
@@ -363,6 +361,7 @@
             </p>
           </div>
 
+          <!-- Details -->
           <ul v-if="plan.features?.length" class="space-y-2.5 mb-5">
             <li
               v-for="(feat, i) in plan.features"
@@ -374,6 +373,7 @@
             </li>
           </ul>
 
+          <!-- Amount Range -->
           <div class="grid grid-cols-2 gap-2 mb-5 p-3 rounded-xl
                       bg-gray-50 dark:bg-white/[0.03] border border-gray-100 dark:border-white/[0.06]">
             <div>
@@ -386,17 +386,19 @@
             </div>
           </div>
 
+          <!-- Invest Button -->
           <button
             @click="openInvestModal(plan)"
             class="w-full py-3 rounded-xl font-bold text-sm transition-all duration-300 hover:shadow-lg hover:shadow-amber-500/30 hover:scale-[1.02]"
-            style="background: linear-gradient(135deg, #F5D77F 0%, #E6BB5C 25%, #D4A44A 50%, #E6BB5C 75%, #F5D77F 100%); color: #020862;"
+            style="background: linear-gradient(135deg, #F5D77F 0%, #E6BB5C 25%, #D4A44A 50%, #E6BB5C 75%, #F5D77F 100%); background-size: 200% auto; color: #020862;"
           >
-            <i class="bi bi-rocket-takeoff-fill mr-1"></i> Invest Now
+            <i class="bi bi-rocket-takeoff-fill mr-1"></i>
+            Invest Now
           </button>
         </div>
       </div>
 
-      <!-- ░░ LIST ░░ -->
+      <!-- List View -->
       <div v-else class="space-y-3">
         <div
           v-for="plan in sortedPlans"
@@ -407,7 +409,7 @@
         >
           <div class="flex flex-wrap items-center gap-4">
             <div
-              class="w-14 h-14 rounded-2xl flex items-center justify-center flex-shrink-0 text-2xl text-white"
+              class="w-14 h-14 rounded-2xl flex items-center justify-center flex-shrink-0 font-bold text-2xl text-white"
               :style="{ background: plan.color || '#bb914a' }"
             >
               <i :class="plan.icon || 'bi bi-graph-up-arrow'"></i>
@@ -443,7 +445,7 @@
             <button
               @click="openInvestModal(plan)"
               class="px-6 py-2.5 rounded-xl font-bold text-sm transition-all duration-300 hover:shadow-lg hover:shadow-amber-500/30 hover:scale-[1.02]"
-              style="background: linear-gradient(135deg, #F5D77F 0%, #E6BB5C 25%, #D4A44A 50%, #E6BB5C 75%, #F5D77F 100%); color: #020862;"
+              style="background: linear-gradient(135deg, #F5D77F 0%, #E6BB5C 25%, #D4A44A 50%, #E6BB5C 75%, #F5D77F 100%); background-size: 200% auto; color: #020862;"
             >
               Invest
             </button>
@@ -452,12 +454,14 @@
       </div>
     </div>
 
-    <!-- ═══════════════════ HISTORY ═══════════════════ -->
-    <div class="rounded-2xl overflow-hidden bg-white border border-gray-100 shadow-sm
+    <!-- Recent Investment History -->
+    <div class="rounded-2xl overflow-hidden
+                bg-white border border-gray-100 shadow-sm
                 dark:bg-[#101A47] dark:border-white/[0.05]">
       <div class="flex items-center justify-between p-5 md:p-6 border-b border-gray-100 dark:border-white/[0.06]">
         <div class="flex items-center gap-3">
-          <div class="w-11 h-11 rounded-2xl flex items-center justify-center bg-blue-500/10 dark:bg-blue-500/[0.08]">
+          <div class="w-11 h-11 rounded-2xl flex items-center justify-center
+                      bg-blue-500/10 dark:bg-blue-500/[0.08]">
             <i class="bi bi-clock-history text-blue-400 text-lg"></i>
           </div>
           <div>
@@ -465,13 +469,10 @@
             <p class="text-xs text-gray-400 dark:text-white/40">Your completed investments</p>
           </div>
         </div>
-        <NuxtLink to="/invest/my" class="text-amber-500 text-sm font-semibold hover:text-amber-400 inline-flex items-center gap-1 group">
-          View All <i class="bi bi-arrow-right group-hover:translate-x-1 transition-transform"></i>
-        </NuxtLink>
       </div>
 
-      <!-- ░░ SKELETON ░░ -->
-      <div v-if="store.state.isLoading && !store.state.investments.length" class="p-5 md:p-6 space-y-3">
+      <!-- Skeleton -->
+      <div v-if="store.state.isLoading && !completedInvestments.length" class="p-5 md:p-6 space-y-3">
         <div
           v-for="i in 4"
           :key="i"
@@ -486,13 +487,13 @@
         </div>
       </div>
 
-      <!-- ░░ EMPTY ░░ -->
+      <!-- Empty -->
       <div v-else-if="!completedInvestments.length" class="py-12 text-center">
         <i class="bi bi-inbox text-4xl text-gray-300 dark:text-white/20"></i>
         <p class="text-sm text-gray-500 dark:text-white/40 mt-3">No completed investments yet</p>
       </div>
 
-      <!-- ░░ TABLE ░░ -->
+      <!-- Table -->
       <div v-else class="overflow-x-auto">
         <table class="w-full min-w-[700px]">
           <thead class="border-b border-gray-100 dark:border-white/[0.06] bg-gray-50/50 dark:bg-white/[0.01]">
@@ -500,38 +501,36 @@
               <th class="text-left py-3 px-5 md:px-6 text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-white/40">Plan</th>
               <th class="text-left py-3 px-5 md:px-6 text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-white/40">Invested</th>
               <th class="text-left py-3 px-5 md:px-6 text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-white/40">Profit</th>
-              <th class="text-left py-3 px-5 md:px-6 text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-white/40">Status</th>
+              <th class="text-left py-3 md:px-6 text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-white/40">Status</th>
               <th class="text-left py-3 px-5 md:px-6 text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-white/40">Date</th>
             </tr>
           </thead>
           <tbody>
             <tr
-              v-for="inv in completedInvestments"
-              :key="inv._id"
+              v-for="h in completedInvestments"
+              :key="h._id"
               class="border-b border-gray-100 hover:bg-gray-50 dark:border-white/[0.03] dark:hover:bg-white/[0.03] transition-colors"
             >
               <td class="py-4 px-5 md:px-6">
                 <div class="flex items-center gap-3">
-                  <div
-                    class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 text-white"
-                    :style="{ background: planMeta(inv.planSlug).color }"
-                  >
-                    <i :class="planMeta(inv.planSlug).icon"></i>
+                  <div class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 text-white"
+                       :style="{ background: planMeta(h.planSlug).color }">
+                    <i :class="planMeta(h.planSlug).icon"></i>
                   </div>
-                  <span class="font-bold text-sm text-gray-800 dark:text-white">{{ inv.planName }}</span>
+                  <span class="font-bold text-sm text-gray-800 dark:text-white">{{ h.planName }}</span>
                 </div>
               </td>
               <td class="py-4 px-5 md:px-6 font-bold text-sm text-gray-800 dark:text-white">
-                ${{ formatMoney(inv.amount) }}
+                ${{ formatMoney(h.amount) }}
               </td>
               <td class="py-4 px-5 md:px-6 font-bold text-sm text-emerald-500">
-                +${{ formatMoney(inv.earned) }}
+                +${{ formatMoney(h.earned) }}
               </td>
               <td class="py-4 px-5 md:px-6">
-                <InvestmentStatusBadge :status="inv.status" />
+                <InvestmentStatusBadge :status="h.status" />
               </td>
               <td class="py-4 px-5 md:px-6 text-sm text-gray-500 dark:text-white/40">
-                {{ formatDate(inv.completedAt || inv.endDate) }}
+                {{ formatDate(h.completedAt || h.endDate) }}
               </td>
             </tr>
           </tbody>
@@ -560,6 +559,7 @@
         >
           <div class="w-full max-w-lg rounded-3xl overflow-hidden shadow-2xl
                       bg-white dark:bg-[#101A47] border border-gray-100 dark:border-white/[0.06]">
+
             <!-- Header -->
             <div
               class="relative p-6 pb-8"
@@ -570,7 +570,7 @@
                 :disabled="store.state.isSubmitting"
                 class="absolute top-4 right-4 w-9 h-9 rounded-full flex items-center justify-center
                        bg-white/80 dark:bg-white/[0.06] hover:bg-white dark:hover:bg-white/[0.12] z-10
-                       disabled:opacity-50 disabled:cursor-not-allowed"
+                       disabled:opacity-50"
               >
                 <i class="bi bi-x-lg text-gray-600 dark:text-white/60 text-sm"></i>
               </button>
@@ -636,15 +636,12 @@
                 </p>
               </div>
 
-              <!-- Estimated returns -->
+              <!-- Estimated Returns -->
               <div v-if="isValidAmount"
                    class="p-4 rounded-xl bg-amber-500/[0.06] border border-amber-500/[0.15]">
                 <div class="flex items-center gap-2 mb-3">
                   <i class="bi bi-graph-up-arrow text-amber-500"></i>
                   <span class="text-sm font-bold text-gray-800 dark:text-white">Estimated Returns</span>
-                  <span v-if="store.state.isPreviewing" class="ml-auto text-xs text-amber-500">
-                    <i class="bi bi-arrow-repeat animate-spin inline-block"></i>
-                  </span>
                 </div>
                 <div class="grid grid-cols-3 gap-3 text-center">
                   <div>
@@ -662,7 +659,7 @@
                 </div>
               </div>
 
-              <!-- Balance -->
+              <!-- Balance Check -->
               <div class="flex items-center justify-between p-3 rounded-xl
                           bg-gray-50 dark:bg-white/[0.03] border border-gray-100 dark:border-white/[0.06]">
                 <span class="text-sm text-gray-500 dark:text-white/40">Available Balance</span>
@@ -681,7 +678,7 @@
                     <p class="text-xs text-gray-600 dark:text-white/50 mt-1">
                       You need an additional
                       <strong>${{ formatMoney(investAmount - walletStore.availableUSD) }}</strong>.
-                      <NuxtLink to="/deposit" class="underline font-bold">Deposit funds</NuxtLink>
+                      <NuxtLink to="/dashboard/deposit" class="underline font-bold">Deposit funds</NuxtLink>
                     </p>
                   </div>
                 </div>
@@ -721,11 +718,10 @@
                        disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100
                        hover:shadow-lg hover:shadow-amber-500/30 hover:scale-[1.02]
                        inline-flex items-center justify-center gap-2"
-                style="background: linear-gradient(135deg, #F5D77F 0%, #E6BB5C 25%, #D4A44A 50%, #E6BB5C 75%, #F5D77F 100%); color: #020862;"
+                style="background: linear-gradient(135deg, #F5D77F 0%, #E6BB5C 25%, #D4A44A 50%, #E6BB5C 75%, #F5D77F 100%); background-size: 200% auto; color: #020862;"
               >
-                <span v-if="store.state.isSubmitting" class="w-4 h-4 rounded-full border-2 border-current border-t-transparent animate-spin"></span>
-                {{ store.state.isSubmitting ? 'Processing...' : 'Confirm Investment' }}
-                <i v-if="!store.state.isSubmitting" class="bi bi-rocket-takeoff-fill"></i>
+                <i class="bi bi-rocket-takeoff-fill mr-1"></i>
+                Confirm Investment
               </button>
             </div>
           </div>
@@ -739,9 +735,99 @@
       :loading="store.state.isSubmitting"
       :error-message="pinError"
       :attempts-left="3 - pinAttempts"
+      title="Confirm Investment"
+      subtitle="Enter your PIN to activate this investment"
       @close="closePinModal"
       @submit="handlePinSubmit"
     />
+
+    <!-- ═══════════════════ PIN NOT SET MODAL ═══════════════════ -->
+    <Transition
+      enter-active-class="transition-all duration-300"
+      enter-from-class="opacity-0"
+      enter-to-class="opacity-100"
+      leave-active-class="transition-all duration-200"
+      leave-from-class="opacity-100"
+      leave-to-class="opacity-0"
+    >
+      <div
+        v-if="pinNotSet"
+        class="fixed inset-0 z-[750] flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm"
+        @click.self="pinNotSet = false"
+      >
+        <Transition
+          appear
+          enter-active-class="transition duration-300"
+          enter-from-class="opacity-0 scale-95 translate-y-4"
+          enter-to-class="opacity-100 scale-100 translate-y-0"
+        >
+          <div class="w-full max-w-md rounded-3xl overflow-hidden shadow-2xl
+                      bg-white dark:bg-[#101A47] border border-gray-100 dark:border-white/[0.06]">
+
+            <div class="p-6 pb-4 text-center">
+              <div class="w-16 h-16 mx-auto rounded-2xl flex items-center justify-center mb-4 bg-amber-500/10">
+                <i class="bi bi-shield-lock text-amber-500 text-2xl"></i>
+              </div>
+              <h3 class="font-bold text-xl text-gray-800 dark:text-white">
+                Set up your PIN first
+              </h3>
+              <p class="text-sm text-gray-500 dark:text-white/40 mt-2">
+                To confirm investments, you need a transaction PIN.
+                It's a 4-6 digit code that protects your account.
+              </p>
+            </div>
+
+            <div class="px-6 space-y-2.5">
+              <div class="flex items-start gap-3">
+                <div class="w-6 h-6 rounded-full bg-emerald-500/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <i class="bi bi-check-lg text-emerald-500 text-xs"></i>
+                </div>
+                <p class="text-sm text-gray-600 dark:text-white/60">
+                  Protects investments, withdrawals, and other sensitive actions
+                </p>
+              </div>
+              <div class="flex items-start gap-3">
+                <div class="w-6 h-6 rounded-full bg-emerald-500/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <i class="bi bi-check-lg text-emerald-500 text-xs"></i>
+                </div>
+                <p class="text-sm text-gray-600 dark:text-white/60">
+                  You'll set it up in seconds — takes just a minute
+                </p>
+              </div>
+              <div class="flex items-start gap-3">
+                <div class="w-6 h-6 rounded-full bg-emerald-500/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <i class="bi bi-check-lg text-emerald-500 text-xs"></i>
+                </div>
+                <p class="text-sm text-gray-600 dark:text-white/60">
+                  You'll need your account password to set it
+                </p>
+              </div>
+            </div>
+
+            <div class="p-5 border-t border-gray-100 dark:border-white/[0.06]
+                        bg-gray-50 dark:bg-white/[0.01] flex gap-3 mt-6">
+              <button
+                @click="pinNotSet = false"
+                class="flex-1 py-3 rounded-xl font-semibold text-sm
+                       bg-gray-100 dark:bg-white/[0.06] text-gray-700 dark:text-white/70
+                       hover:bg-gray-200 dark:hover:bg-white/[0.1] transition-colors"
+              >
+                Not now
+              </button>
+              <NuxtLink
+                to="/dashboard/settings?tab=security"
+                class="flex-1 py-3 rounded-xl font-bold text-sm
+                       inline-flex items-center justify-center gap-2
+                       transition-all hover:shadow-lg hover:shadow-amber-500/30"
+                style="background: linear-gradient(135deg, #F5D77F 0%, #E6BB5C 100%); color: #020862;"
+              >
+                <i class="bi bi-gear-fill"></i> Go to Settings
+              </NuxtLink>
+            </div>
+          </div>
+        </Transition>
+      </div>
+    </Transition>
 
     <!-- ═══════════════════ SUCCESS TOAST ═══════════════════ -->
     <Transition
@@ -768,6 +854,7 @@
 import { ref, computed, onMounted } from 'vue'
 import { useInvestmentStore } from '~/stores/investment'
 import { useWalletStore } from '~/stores/wallet'
+import { useUserRequests } from '~/composables/requests/user'
 
 definePageMeta({ layout: 'dashboard' })
 
@@ -778,32 +865,31 @@ const store = useInvestmentStore()
 const walletStore = useWalletStore()
 
 // ─────────────────────────────────────────────────────────────
-// LOCAL UI STATE
+// STATE
 // ─────────────────────────────────────────────────────────────
 const viewMode = ref('grid')
 const showCalculator = ref(false)
 const showSuccess = ref(false)
+const selectedPlan = ref(null)
+const investAmount = ref(null)
+const investTerms = ref(false)
 
 // Calculator
 const calcAmount = ref(1000)
 const calcPlanId = ref(null)
 
-// Invest modal
-const selectedPlan = ref(null)
-const investAmount = ref(null)
-const investTerms = ref(false)
-
 // PIN
 const pinOpen = ref(false)
 const pinError = ref('')
 const pinAttempts = ref(0)
+const pinNotSet = ref(false)
 
 // ─────────────────────────────────────────────────────────────
-// COMPUTED — data
+// COMPUTED — data from store
 // ─────────────────────────────────────────────────────────────
 const sortedPlans = computed(() => store.sortedPlans)
 const activeInvestments = computed(() => store.state.activeInvestments)
-const hasActive = computed(() => store.hasActive)
+
 const completedInvestments = computed(() =>
   store.state.investments.filter((i) => i.status === 'completed').slice(0, 5)
 )
@@ -813,16 +899,17 @@ const completedInvestments = computed(() =>
 // ─────────────────────────────────────────────────────────────
 const portfolioStats = computed(() => {
   const w = walletStore.state.stats || {}
-  const loading = walletStore.state.isLoadingStats && !walletStore.state.statsLoaded
+  const loadingStats = walletStore.state.isLoadingStats && !walletStore.state.statsLoaded
+  const loadingActive = store.state.isLoading && !store.state.activeLoaded
 
   return [
     {
       label: 'Total Invested',
-      value: `$${formatMoney(store.state.activeInvestments.reduce((s, i) => s + (i.amount || 0), 0), 0)}`,
+      value: `$${formatMoney(store.totalActiveInvested, 0)}`,
       icon: 'bi bi-wallet2',
       iconColor: '#3b82f6',
       bgColor: 'rgba(59, 130, 246, 0.15)',
-      loading: store.state.isLoading && !store.state.activeLoaded,
+      loading: loadingActive,
     },
     {
       label: 'Total Earnings',
@@ -830,7 +917,7 @@ const portfolioStats = computed(() => {
       icon: 'bi bi-cash-stack',
       iconColor: '#10b981',
       bgColor: 'rgba(16, 185, 129, 0.15)',
-      loading,
+      loading: loadingStats,
     },
     {
       label: 'Active Plans',
@@ -838,7 +925,7 @@ const portfolioStats = computed(() => {
       icon: 'bi bi-lightning-charge-fill',
       iconColor: '#bb914a',
       bgColor: 'rgba(187, 145, 74, 0.15)',
-      loading: store.state.isLoading && !store.state.activeLoaded,
+      loading: loadingActive,
     },
     {
       label: 'Avg. Daily ROI',
@@ -846,7 +933,7 @@ const portfolioStats = computed(() => {
       icon: 'bi bi-graph-up',
       iconColor: '#8b5cf6',
       bgColor: 'rgba(139, 92, 246, 0.15)',
-      loading: store.state.isLoading && !store.state.activeLoaded,
+      loading: loadingActive,
     },
   ]
 })
@@ -881,7 +968,7 @@ const calcResults = computed(() => {
 })
 
 // ─────────────────────────────────────────────────────────────
-// MODAL
+// INVEST MODAL COMPUTED
 // ─────────────────────────────────────────────────────────────
 const quickAmounts = computed(() => {
   if (!selectedPlan.value) return []
@@ -896,16 +983,18 @@ const quickAmounts = computed(() => {
 
 const isValidAmount = computed(() => {
   if (!investAmount.value || !selectedPlan.value) return false
-  return investAmount.value >= selectedPlan.value.minAmount &&
-         investAmount.value <= selectedPlan.value.maxAmount &&
-         investAmount.value <= walletStore.availableUSD
+  return (
+    investAmount.value >= selectedPlan.value.minAmount &&
+    investAmount.value <= selectedPlan.value.maxAmount &&
+    investAmount.value <= walletStore.availableUSD
+  )
 })
 
 const canInvest = computed(() => isValidAmount.value && investTerms.value)
 
 const estimatedDaily = computed(() => {
   if (!isValidAmount.value) return 0
-  return round2(investAmount.value * selectedPlan.value.dailyRoi / 100)
+  return round2((investAmount.value * selectedPlan.value.dailyRoi) / 100)
 })
 const estimatedProfit = computed(() => {
   if (!isValidAmount.value) return 0
@@ -944,12 +1033,12 @@ const planMeta = (slug) => {
 }
 
 const estimateProgress = (inv) => {
-  if (inv.progress != null) return inv.progress
+  if (inv.progress != null) return Math.round(inv.progress)
   const start = new Date(inv.startDate).getTime()
   const end = new Date(inv.endDate).getTime()
   const now = Date.now()
   if (!start || !end || end <= start) return 0
-  return Math.min(100, Math.max(0, ((now - start) / (end - start)) * 100))
+  return Math.round(Math.min(100, Math.max(0, ((now - start) / (end - start)) * 100)))
 }
 
 const daysLeft = (inv) => {
@@ -960,7 +1049,7 @@ const daysLeft = (inv) => {
 }
 
 // ─────────────────────────────────────────────────────────────
-// MODAL ACTIONS
+// INVEST MODAL ACTIONS
 // ─────────────────────────────────────────────────────────────
 const openInvestModal = (plan) => {
   selectedPlan.value = plan
@@ -985,6 +1074,8 @@ const openPinModal = () => {
   if (!canInvest.value) return
   pinError.value = ''
   pinAttempts.value = 0
+  pinNotSet.value = false
+  store.resetPinAttempts?.()
   pinOpen.value = true
 }
 
@@ -994,45 +1085,70 @@ const closePinModal = () => {
   pinError.value = ''
 }
 
+const isPinNotSetError = (msg) => {
+  if (!msg) return false
+  const m = String(msg).toLowerCase()
+  return m.includes('no pin set') || m.includes('pin not set')
+}
+
 const handlePinSubmit = async (pin) => {
   pinError.value = ''
 
-  // Optional: ask backend to confirm the numbers right before creating.
-  // This catches stale prices/plan changes.
-  const preview = await store.previewInvestment({
-    planId: selectedPlan.value._id,
-    amount: investAmount.value,
-  })
-  if (!preview.success) {
-    pinError.value = preview.message || 'Unable to verify investment'
+  try {
+    // 1. Verify the PIN with the backend
+    const userRequests = useUserRequests()
+    const pinRes = await userRequests.verifyPin(String(pin))
+
+    if (!pinRes.success) {
+      // Special case: user hasn't set a PIN yet
+      if (isPinNotSetError(pinRes.message)) {
+        pinOpen.value = false
+        pinError.value = ''
+        pinNotSet.value = true
+        return
+      }
+      // Regular wrong-PIN case
+      pinError.value = pinRes.message || 'Incorrect PIN'
+      pinAttempts.value += 1
+      if (pinAttempts.value >= 3) {
+        setTimeout(closePinModal, 1500)
+      }
+      return
+    }
+
+    // 2. PIN correct → create the investment
+    const res = await store.createInvestment({
+      planId: selectedPlan.value._id,
+      amount: investAmount.value,
+      pin: String(pin),
+    })
+
+    if (res.success) {
+      pinOpen.value = false
+      closeModal()
+      showSuccess.value = true
+      setTimeout(() => (showSuccess.value = false), 3000)
+
+      // Refresh balances to reflect the deduction
+      walletStore.fetchBalances({ force: true })
+      store.fetchActiveInvestments({ force: true })
+      return
+    }
+
+    // 3. Investment failed (e.g. plan changed, backend says no PIN)
+    if (isPinNotSetError(res.message)) {
+      pinOpen.value = false
+      pinNotSet.value = true
+      return
+    }
+
+    pinError.value = res.message || 'Investment failed'
     pinAttempts.value += 1
     if (pinAttempts.value >= 3) {
       setTimeout(closePinModal, 1500)
     }
-    return
-  }
-
-  const res = await store.createInvestment({
-    planId: selectedPlan.value._id,
-    amount: investAmount.value,
-    pin,   // will be ignored until backend enforces; safe to send
-  })
-
-  if (res.success) {
-    pinOpen.value = false
-    closeModal()
-    showSuccess.value = true
-    setTimeout(() => (showSuccess.value = false), 3000)
-
-    // Refresh wallet to reflect the new balance
-    walletStore.fetchBalances({ force: true })
-    return
-  }
-
-  pinError.value = res.message || 'Investment failed'
-  pinAttempts.value += 1
-  if (pinAttempts.value >= 3) {
-    setTimeout(closePinModal, 1500)
+  } catch (err) {
+    pinError.value = err.message || 'Something went wrong'
   }
 }
 
@@ -1041,36 +1157,63 @@ const handlePinSubmit = async (pin) => {
 // ─────────────────────────────────────────────────────────────
 onMounted(async () => {
   await Promise.all([
-    store.fetchPlans(),             // cached 10 min
-    store.fetchActiveInvestments(), // cached 30 s
-    store.fetchMyInvestments({ page: 1, limit: 20 }), // cached 30 s
+    store.fetchPlans(),
+    store.fetchActiveInvestments(),
+    store.fetchMyInvestments({ page: 1, limit: 20 }),
     walletStore.fetchBalances(),
     walletStore.fetchStats(),
   ])
 
-  // Default calculator plan = most popular or first
   if (sortedPlans.value.length) {
-    calcPlanId.value = (store.popularPlan || sortedPlans.value[0])._id
+    calcPlanId.value = (store.popularPlan || sortedPlans.value[0])?._id
   }
 })
 </script>
 
 <style scoped>
-.overflow-x-auto::-webkit-scrollbar { height: 6px; }
-.overflow-x-auto::-webkit-scrollbar-track { background: transparent; }
+/* Smooth transitions */
+.grid-enter-active, .grid-leave-active {
+  transition: all 0.3s ease;
+}
+
+/* Table scrollbar */
+.overflow-x-auto::-webkit-scrollbar {
+  height: 6px;
+}
+
+.overflow-x-auto::-webkit-scrollbar-track {
+  background: transparent;
+}
+
 .overflow-x-auto::-webkit-scrollbar-thumb {
   background: rgba(187, 145, 74, 0.3);
   border-radius: 10px;
 }
 
+/* Remove number spinners */
 input[type="number"]::-webkit-outer-spin-button,
-input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
-input[type="number"] { -moz-appearance: textfield; appearance: textfield; }
-
-input[type="checkbox"] { accent-color: #bb914a; cursor: pointer; }
-
-@keyframes spin-slow {
-  to { transform: rotate(360deg); }
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
-.animate-spin { animation: spin-slow 1s linear infinite; }
+
+input[type="number"] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+/* Checkbox */
+input[type="checkbox"] {
+  accent-color: #bb914a;
+  cursor: pointer;
+}
+
+/* Pulse for loading states */
+@keyframes pulse-ring {
+  0%   { transform: scale(0.8); opacity: 1; }
+  100% { transform: scale(1.4); opacity: 0; }
+}
+.animate-ping {
+  animation: pulse-ring 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
 </style>

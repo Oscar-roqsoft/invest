@@ -36,6 +36,10 @@ export const useInvestmentStore = defineStore('investment', () => {
     stats: null,
     statsLoaded: false,
 
+    // PIN (for create — same pattern as withdrawals)
+    pinAttempts: 0,
+    isPinLocked: false,
+
     // UI
     isLoading: false,
     isSubmitting: false,
@@ -74,6 +78,11 @@ export const useInvestmentStore = defineStore('investment', () => {
   // ─────────────────────────────────────────────────────────
   const setError = (msg) => { state.error = msg; };
   const clearError = () => { state.error = null; };
+
+  const resetPinAttempts = () => {
+    state.pinAttempts = 0;
+    state.isPinLocked = false;
+  };
 
   const findPlanById = (id) => state.plans.find((p) => p._id === id) || null;
   const findPlanBySlug = (slug) =>
@@ -169,13 +178,38 @@ export const useInvestmentStore = defineStore('investment', () => {
   const clearPreview = () => { state.preview = null; };
 
   // ─────────────────────────────────────────────────────────
-  // CREATE
+  // CREATE (with PIN gate)
   // ─────────────────────────────────────────────────────────
-  const createInvestment = async ({ planId, amount }) => {
+  const createInvestment = async ({ planId, amount, pin }) => {
+    // 🔒 Require PIN
+    if (!pin || !/^\d{4,6}$/.test(String(pin))) {
+      return { success: false, message: 'PIN is required' };
+    }
+
+    // 🔒 Client-side lockout check (backend also enforces)
+    if (state.isPinLocked) {
+      return { success: false, message: 'PIN temporarily locked. Try again later.' };
+    }
+
     state.isSubmitting = true;
     clearError();
 
     try {
+      // 1. Verify PIN first
+      const userRequests = useUserRequests();
+      const pinRes = await userRequests.verifyPin(String(pin));
+
+      if (!pinRes.success) {
+        state.pinAttempts = (state.pinAttempts || 0) + 1;
+        if (state.pinAttempts >= 3) state.isPinLocked = true;
+        setError(pinRes.message);
+        return { success: false, message: pinRes.message || 'Incorrect PIN' };
+      }
+
+      // PIN is correct — reset attempt counter
+      state.pinAttempts = 0;
+
+      // 2. Create the investment (no pin in body — verified above)
       const requests = getRequests();
       const res = await requests.createInvestment({ planId, amount });
 
@@ -397,6 +431,8 @@ export const useInvestmentStore = defineStore('investment', () => {
     state.currentDaysLeft = 0;
     state.stats = null;
     state.statsLoaded = false;
+    state.pinAttempts = 0;
+    state.isPinLocked = false;
     state.error = null;
     self().$invalidatePrefix('investment:');
   };
@@ -414,6 +450,7 @@ export const useInvestmentStore = defineStore('investment', () => {
     // helpers
     setError,
     clearError,
+    resetPinAttempts,
     findPlanById,
     findPlanBySlug,
     setFilters,

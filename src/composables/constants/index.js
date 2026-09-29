@@ -238,9 +238,12 @@ export const WITHDRAWAL_ENDPOINTS = {
 
 // Mirror of backend enums (safe defaults if API hasn't responded)
 export const WITHDRAWAL_RULES = {
-  MIN_USD: 30,            // MIN_WITHDRAWAL_USD fallback
-  MIN_NET_USD: 10,        // MIN_NET_AMOUNT_USD fallback
+  MIN_USD: 20,
+  MIN_NET_USD: 10,
+  PROCESSING_FEE_PCT: 0.01,
   POLL_INTERVAL_MS: 30_000,
+  PIN_LENGTH: 4,          // ← must be a number
+  PIN_MAX_ATTEMPTS: 3,    // ← must be a number
 };
 
 export const WITHDRAWAL_STATUS = {

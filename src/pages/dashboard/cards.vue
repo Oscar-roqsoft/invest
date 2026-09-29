@@ -99,105 +99,126 @@
         </div>
       </div>
   
-      <!-- ─────── MY CARDS ─────── -->
-      <div v-if="store.state.isLoading && !store.state.cardsLoaded"
-           class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+     <!-- ─────── MY CARDS ─────── -->
+        <div v-if="store.state.isLoading && !store.state.cardsLoaded"
+            class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
         <div
-          v-for="i in 2"
-          :key="i"
-          class="rounded-2xl p-5 bg-white border border-gray-100 dark:bg-[#101A47] dark:border-white/[0.05] animate-pulse"
+            v-for="i in 2"
+            :key="i"
+            class="rounded-2xl p-5 md:p-6 bg-white border border-gray-100 dark:bg-[#101A47] dark:border-white/[0.05] animate-pulse"
         >
-          <div class="aspect-[1.586/1] rounded-2xl bg-gray-200 dark:bg-white/[0.06] mb-4"></div>
-          <div class="h-4 w-32 bg-gray-200 dark:bg-white/[0.06] rounded mb-2"></div>
-          <div class="h-3 w-48 bg-gray-100 dark:bg-white/[0.04] rounded"></div>
+            <div class="aspect-[1.586/1] rounded-2xl bg-gray-200 dark:bg-white/[0.06] mb-5"></div>
+            <div class="h-4 w-32 bg-gray-200 dark:bg-white/[0.06] rounded mb-2"></div>
+            <div class="h-3 w-48 bg-gray-100 dark:bg-white/[0.04] rounded"></div>
         </div>
-      </div>
-  
-      <div v-else-if="hasCards" class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+        </div>
+
+        <div v-else-if="hasCards" class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
         <div
-          v-for="card in store.state.cards"
-          :key="card._id"
-          class="rounded-2xl p-5 md:p-6
-                 bg-white border border-gray-100 shadow-sm
-                 dark:bg-[#101A47] dark:border-white/[0.05]"
+            v-for="card in store.state.cards"
+            :key="card._id"
+            class="group rounded-3xl p-5 md:p-6
+                bg-white border border-gray-100 shadow-sm
+                dark:bg-[#101A47] dark:border-white/[0.05]
+                transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
         >
-          <!-- Card visual -->
-          <div class="flex justify-center mb-5">
+            <!-- ─── Card visual ─── -->
+            <div class="mb-5">
             <VirtualCard
-              :card="cardsWithRevealed[card._id] || card"
-              :reveal="revealed[card._id]"
-              :flipped="flipped[card._id]"
-              size="md"
-              @toggle-reveal="toggleReveal(card._id)"
-              @flip="flipCard(card._id)"
+                :card="cardsWithRevealed[card._id] || card"
+                :reveal="!!revealed[card._id]"
+                :flipped="!!flipped[card._id]"
+                size="md"
+                @toggle-reveal="toggleReveal(card._id)"
+                @flip="flipCard(card._id)"
             />
-          </div>
-  
-          <!-- Info row -->
-          <div class="flex items-center justify-between mb-4">
-            <div class="flex items-center gap-2">
-              <span
-                class="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider"
-                :class="tierMeta(card.tier).badgeClass"
-              >
-                <i :class="tierMeta(card.tier).icon" class="mr-1"></i>
-                {{ tierMeta(card.tier).name }}
-              </span>
-              <span
+            </div>
+
+            <!-- ─── Tier + Status chips ─── -->
+            <div class="flex items-center gap-2 flex-wrap mb-4">
+            <span
                 class="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider inline-flex items-center gap-1"
+                :class="tierMeta(card.tier).badgeClass"
+            >
+                <i :class="tierMeta(card.tier).icon"></i>
+                {{ tierMeta(card.tier).name }}
+            </span>
+            <span
+                class="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider inline-flex items-center gap-1.5"
                 :class="statusMeta(card.status).cls"
-              >
+            >
                 <span class="w-1.5 h-1.5 rounded-full" :class="statusMeta(card.status).dot"></span>
                 {{ statusMeta(card.status).label }}
-              </span>
+            </span>
+            <span
+                v-if="card.createdByAdmin"
+                class="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider
+                    bg-purple-500/10 text-purple-600 dark:text-purple-400 inline-flex items-center gap-1"
+            >
+                <i class="bi bi-shield-fill-check"></i> Issued by Admin
+            </span>
             </div>
-            <p class="text-[10px] text-gray-400 dark:text-white/30 font-mono">
-              •••• {{ card.last4 }}
-            </p>
-          </div>
-  
-          <!-- Detail rows -->
-          <div class="space-y-2 mb-4 text-xs">
-            <div class="flex justify-between">
-              <span class="text-gray-500 dark:text-white/40">Issued</span>
-              <span class="font-semibold text-gray-800 dark:text-white">{{ formatDate(card.issuedAt) }}</span>
+
+            <!-- ─── Meta rows ─── -->
+            <div class="space-y-2 mb-5 text-xs">
+            <div class="flex items-center justify-between">
+                <span class="text-gray-500 dark:text-white/40 inline-flex items-center gap-1.5">
+                <i class="bi bi-calendar-event"></i> Issued
+                </span>
+                <span class="font-semibold text-gray-800 dark:text-white">
+                {{ formatDate(card.issuedAt) }}
+                </span>
             </div>
-            <div class="flex justify-between">
-              <span class="text-gray-500 dark:text-white/40">Expires</span>
-              <span class="font-semibold text-gray-800 dark:text-white">{{ formatDate(card.expiresAt) }}</span>
+            <div class="flex items-center justify-between">
+                <span class="text-gray-500 dark:text-white/40 inline-flex items-center gap-1.5">
+                <i class="bi bi-hourglass-split"></i> Expires
+                </span>
+                <span class="font-semibold text-gray-800 dark:text-white">
+                {{ formatDate(card.expiresAt) }}
+                </span>
             </div>
-          </div>
-  
-          <!-- Actions -->
-          <div class="flex gap-2">
+            <div class="flex items-center justify-between">
+                <span class="text-gray-500 dark:text-white/40 inline-flex items-center gap-1.5">
+                <i class="bi bi-hash"></i> Number
+                </span>
+                <span class="font-mono text-xs font-semibold text-gray-800 dark:text-white">
+                •••• {{ card.last4 }}
+                </span>
+            </div>
+            </div>
+
+            <!-- ─── Actions ─── -->
+            <div class="flex gap-2">
             <button
-              v-if="card.status === 'active' || card.status === 'frozen'"
-              @click="toggleFreeze(card)"
-              :disabled="store.state.isSubmitting"
-              class="flex-1 py-2.5 rounded-xl font-bold text-xs transition-all
-                     disabled:opacity-50 disabled:cursor-not-allowed
-                     inline-flex items-center justify-center gap-2"
-              :class="card.status === 'frozen'
+                v-if="card.status === 'active' || card.status === 'frozen'"
+                @click="toggleFreeze(card)"
+                :disabled="store.state.isSubmitting"
+                class="flex-1 py-2.5 rounded-xl font-bold text-xs transition-all
+                    disabled:opacity-50 disabled:cursor-not-allowed
+                    inline-flex items-center justify-center gap-2"
+                :class="card.status === 'frozen'
                 ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-500/20'
                 : 'bg-blue-500/10 text-blue-600 dark:text-blue-400 hover:bg-blue-500/20'"
             >
-              <i :class="card.status === 'frozen' ? 'bi bi-play-circle' : 'bi bi-snow'"></i>
-              {{ card.status === 'frozen' ? 'Unfreeze' : 'Freeze' }}
+                <i :class="card.status === 'frozen' ? 'bi bi-play-circle' : 'bi bi-snow'"></i>
+                {{ card.status === 'frozen' ? 'Unfreeze' : 'Freeze' }}
             </button>
-  
+
             <button
-              @click="confirmDelete(card)"
-              :disabled="store.state.isSubmitting"
-              class="flex-1 py-2.5 rounded-xl font-bold text-xs transition-all
-                     bg-red-500/10 text-red-600 dark:text-red-400 hover:bg-red-500/20
-                     disabled:opacity-50 disabled:cursor-not-allowed
-                     inline-flex items-center justify-center gap-2"
+                @click="confirmDelete(card)"
+                :disabled="store.state.isSubmitting"
+                class="flex-1 py-2.5 rounded-xl font-bold text-xs transition-all
+                    bg-red-500/10 text-red-600 dark:text-red-400 hover:bg-red-500/20
+                    disabled:opacity-50 disabled:cursor-not-allowed
+                    inline-flex items-center justify-center gap-2"
             >
-              <i class="bi bi-trash"></i> Cancel Card
+                <i class="bi bi-trash"></i> Cancel Card
             </button>
-          </div>
+            </div>
         </div>
-      </div>
+        </div>
+  
+      
   
       <!-- ─────── GENERATE SECTION ─────── -->
       <div v-else-if="!hasCards && !store.state.isLoading"
