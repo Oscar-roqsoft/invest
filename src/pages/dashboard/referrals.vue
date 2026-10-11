@@ -696,7 +696,7 @@ const shareOptions = [
     name: 'Twitter',
     icon: 'bi bi-twitter-x',
     color: '#000000',
-    url: 'https://twitter.com/intent/tweet?text=Join%20me%20on%20CoinSquare%20Wealth&url=',
+    url: 'https://twitter.com/intent/tweet?text=Join%20me%20on%20BlockCapitalInvestment%20Wealth&url=',
   },
   {
     name: 'Facebook',
@@ -708,7 +708,7 @@ const shareOptions = [
     name: 'WhatsApp',
     icon: 'bi bi-whatsapp',
     color: '#25D366',
-    url: 'https://wa.me/?text=Join%20me%20on%20CoinSquare%20Wealth%20',
+    url: 'https://wa.me/?text=Join%20me%20on%20BlockCapitalInvestment%20Wealth%20',
   },
   {
     name: 'Telegram',
@@ -726,7 +726,7 @@ const shareOptions = [
     name: 'Email',
     icon: 'bi bi-envelope-fill',
     color: '#EA4335',
-    url: 'mailto:?subject=Join CoinSquare Wealth&body=',
+    url: 'mailto:?subject=Join BlockCapitalInvestment Wealth&body=',
   },
 ]
 
@@ -870,8 +870,8 @@ const shareReferral = async () => {
   if (navigator.share) {
     try {
       await navigator.share({
-        title: 'Join CoinSquare Wealth',
-        text: 'Start investing with CoinSquare Wealth. Use my referral link to get started!',
+        title: 'Join BlockCapitalInvestment Wealth',
+        text: 'Start investing with BlockCapitalInvestment Wealth. Use my referral link to get started!',
         url: referralLink.value,
       })
     } catch (err) {

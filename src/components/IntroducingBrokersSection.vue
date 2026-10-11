@@ -40,7 +40,7 @@
             </div>
             
             <div class="content-body text-white text-sm md:text-base lg:text-xl leading-relaxed mt-3 md:mt-4 lg:mt-6">
-              CoinSquare Wealth is a forward-thinking investment company focused on identifying
+              BlockCapitalInvestment Wealth is a forward-thinking investment company focused on identifying
               opportunities, driving strategic growth, and delivering sustainable long-term value through
               smart capital allocation and disciplined portfolio management.
             </div>
@@ -81,7 +81,7 @@
   import { onMounted, onUnmounted, ref } from 'vue'
   
   const stats = [
-    { target: 1000000, label: 'CoinSquare Wealth Trade clients' },
+    { target: 1000000, label: 'BlockCapitalInvestment Wealth Trade clients' },
     { target: 20000, label: 'TRADING INSTRUMENTS' },
     { target: 30000, label: 'INTRODUCING BROKERS' },
     { target: 20, label: 'Offices & branches' }

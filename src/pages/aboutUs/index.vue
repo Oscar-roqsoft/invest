@@ -14,7 +14,7 @@
                   About Us
                 </span>
                 <h1 class="text-gold-500 font-oswald font-bold uppercase text-3xl md:text-5xl lg:text-6xl leading-tight md:leading-[4.375rem]">
-                  WHY CoinSquare Wealth
+                  WHY BlockCapitalInvestment Wealth
                 </h1>
                 <div class="w-20 h-1 bg-gradient-to-r from-gold-500 to-gold-300 mx-auto mt-4 rounded-full"></div>
                 <p class="text-white/80 text-base md:text-xl leading-relaxed mt-6 md:mt-8 font-roboto max-w-3xl mx-auto">
@@ -54,7 +54,7 @@
       </div>
     </section>
 
-    <!-- CoinSquare Wealth Established Section -->
+    <!-- BlockCapitalInvestment Wealth Established Section -->
     <section class="multbank-group py-12 md:py-16" style="background: #030f5c;">
       <div class="container-fluid px-4 md:px-12 lg:px-16 xl:px-24">
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 md:gap-12 items-center pb-10 md:pb-14" style="border-bottom: 1px solid rgba(187, 145, 74, 0.1);">
@@ -82,7 +82,7 @@
                 </div>
               </div>
               <p class="text-white/70 text-base md:text-lg leading-relaxed font-roboto">
-                CoinSquare Wealth was established, we have evolved into one of the largest financial derivatives providers worldwide, with a current paid-up capital of over $322 million. We service an extensive client-base of over 1,000,000+ investors from across 100 countries.
+                BlockCapitalInvestment Wealth was established, we have evolved into one of the largest financial derivatives providers worldwide, with a current paid-up capital of over $322 million. We service an extensive client-base of over 1,000,000+ investors from across 100 countries.
               </p>
             </div>
           </div>
@@ -163,7 +163,7 @@
             Get Started
           </span>
           <h2 class="text-white font-oswald font-bold text-2xl md:text-4xl lg:text-5xl uppercase">
-            TRADE WITH <span class="text-gold-500">CoinSquare Wealth</span> NOW
+            TRADE WITH <span class="text-gold-500">BlockCapitalInvestment Wealth</span> NOW
           </h2>
           <div class="w-20 h-1 bg-gradient-to-r from-gold-500 to-gold-300 mx-auto mt-4 rounded-full"></div>
           <div class="flex justify-center mt-8 md:mt-10">
@@ -189,9 +189,9 @@
             </p>
           </div>
           <div class="risk-disclosure__p text-white/60 text-sm md:text-base leading-relaxed pl-0 md:pl-14">
-            *Your data is Important! Therefore protecting your information from unauthorised access and accidental disclosure is a top priority. CoinSquare Wealth pursues information security with the same commitment to excellence that we apply to understanding our clients financial needs. We work hard to protect your information. CoinSquare Wealth information security and data protection is driven by the same commitment to excellence that we apply to understanding the financial needs of our clients.
+            *Your data is Important! Therefore protecting your information from unauthorised access and accidental disclosure is a top priority. BlockCapitalInvestment Wealth pursues information security with the same commitment to excellence that we apply to understanding our clients financial needs. We work hard to protect your information. BlockCapitalInvestment Wealth information security and data protection is driven by the same commitment to excellence that we apply to understanding the financial needs of our clients.
             <br><br>
-            At CoinSquare Wealth, we employ a multi-layered approach to security. Among the systems we use to protect information are firewalls, malware identification programs, fraud detection systems, data loss prevention infrastructure, email filtering, virus controls and system redundancies, including network segmentation.
+            At BlockCapitalInvestment Wealth, we employ a multi-layered approach to security. Among the systems we use to protect information are firewalls, malware identification programs, fraud detection systems, data loss prevention infrastructure, email filtering, virus controls and system redundancies, including network segmentation.
           </div>
         </div>
       </div>

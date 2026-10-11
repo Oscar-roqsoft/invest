@@ -121,37 +121,37 @@
       name: 'Gary (mystic Mac)',
       avatar: '/newfront/1.jpg',
       winRate: 94,
-      testimonial: 'Having invested with CoinSquare Wealth for several years, I\'ve experienced exceptional platform reliability and powerful automated tools. The clear strategies and insightful market analysis make it easy to maximize returns. Following and sharing my positions has not only grown my portfolio but also helped other investors achieve consistent success.'
+      testimonial: 'Having invested with BlockCapitalInvestment Wealth for several years, I\'ve experienced exceptional platform reliability and powerful automated tools. The clear strategies and insightful market analysis make it easy to maximize returns. Following and sharing my positions has not only grown my portfolio but also helped other investors achieve consistent success.'
     },
     {
       name: 'Rodney Steve',
       avatar: '/newfront/3.jpg',
       winRate: 87,
-      testimonial: 'CoinSquare Wealth has transformed the way I invest. With automated strategies and a transparent platform, I can execute trades confidently and efficiently. The community of expert investors provides valuable insights, and copying successful strategies has consistently improved my returns. It\'s been a game-changer for growing my investment portfolio.'
+      testimonial: 'BlockCapitalInvestment Wealth has transformed the way I invest. With automated strategies and a transparent platform, I can execute trades confidently and efficiently. The community of expert investors provides valuable insights, and copying successful strategies has consistently improved my returns. It\'s been a game-changer for growing my investment portfolio.'
     },
     {
       name: 'Theresa Williams',
       avatar: '/newfront/4.jpg',
       winRate: 82,
-      testimonial: 'My experience with CoinSquare Wealth has been outstanding. The platform\'s advanced tools and clear investment strategies allow me to make informed decisions with ease. I enjoy sharing my positions and seeing other investors benefit, while consistently growing my own portfolio. It\'s the ideal environment for both learning and earning.'
+      testimonial: 'My experience with BlockCapitalInvestment Wealth has been outstanding. The platform\'s advanced tools and clear investment strategies allow me to make informed decisions with ease. I enjoy sharing my positions and seeing other investors benefit, while consistently growing my own portfolio. It\'s the ideal environment for both learning and earning.'
     },
     {
       name: 'Ishaan Sandhir',
       avatar: '/newfront/5.jpg',
       winRate: 91,
-      testimonial: 'Investing through CoinSquare Wealth has made managing my portfolio simpler and more effective. The automated systems, detailed market analysis, and ability to follow expert strategies have helped me achieve steady returns. It\'s a reliable platform where my experience as an investor is both supported and rewarded.'
+      testimonial: 'Investing through BlockCapitalInvestment Wealth has made managing my portfolio simpler and more effective. The automated systems, detailed market analysis, and ability to follow expert strategies have helped me achieve steady returns. It\'s a reliable platform where my experience as an investor is both supported and rewarded.'
     },
     {
       name: 'Sarah Sniper',
       avatar: '/newfront/6.jpg',
       winRate: 98,
-      testimonial: 'Being an investor on CoinSquare Wealth has been extremely rewarding. The platform\'s automated strategies, transparent performance metrics, and supportive community make it easy to invest intelligently. Following top investors\' positions has enhanced my portfolio growth and given me confidence in executing high-quality investment decisions every day.'
+      testimonial: 'Being an investor on BlockCapitalInvestment Wealth has been extremely rewarding. The platform\'s automated strategies, transparent performance metrics, and supportive community make it easy to invest intelligently. Following top investors\' positions has enhanced my portfolio growth and given me confidence in executing high-quality investment decisions every day.'
     },
     {
       name: 'Champ W. (The trading Champ)',
       avatar: '/newfront/7.jpg',
       winRate: 90,
-      testimonial: 'CoinSquare Wealth combines innovation and simplicity in investing. The automated tools and expert-driven strategies allow me to optimize returns without stress. I can monitor my performance, replicate successful positions, and continuously refine my approach. It\'s the perfect platform for both seasoned and aspiring investors seeking consistent growth.'
+      testimonial: 'BlockCapitalInvestment Wealth combines innovation and simplicity in investing. The automated tools and expert-driven strategies allow me to optimize returns without stress. I can monitor my performance, replicate successful positions, and continuously refine my approach. It\'s the perfect platform for both seasoned and aspiring investors seeking consistent growth.'
     }
   ]
   </script>

@@ -17,7 +17,7 @@
           <div class="text-center auth-logo mb-6">
             <img 
               src="/logo1.png" 
-              alt="CoinSquare Wealth" 
+              alt="BlockCapitalInvestment Wealth" 
               class="company_logo h-12 md:h-16 mx-auto"
             />
           </div>
@@ -33,7 +33,7 @@
               </svg>
             </div>
             <p class="text-white/70 text-xs font-bold mb-0">
-              <span class="text-green-400">https://</span>coinsquarewealth.org/?a=register
+              <span class="text-green-400">https://</span>BlockCapitalInvestmentwealth.org/?a=register
             </p>
           </div>
           
@@ -227,7 +227,7 @@
 
     <footer class="public-footer flex flex-col items-center justify-end py-6">
       <p class="text-white/40 text-xs text-center max-w-md px-4">
-        Copyright © 2014-2026 CoinSquare Wealth. All rights reserved.
+        Copyright © 2014-2026 BlockCapitalInvestment Wealth. All rights reserved.
       </p>
     </footer>
   </div>

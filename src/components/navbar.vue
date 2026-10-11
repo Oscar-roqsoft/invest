@@ -31,10 +31,10 @@
           <div class="container-custom flex items-center justify-between w-full">
             <!-- Logo Desktop -->
             <div class="hidden md:block">
-              <a href="#" class="navbar-logo block h-9 transition-all duration-200">
+              <a href="#" class="navbar-logo block w-20 transition-all duration-200">
                 <img 
                   loading="lazy" 
-                  src="/logo1.png" 
+                  src="/logo.png" 
                   alt="logos" 
                   class="h-full w-auto max-w-full"
                 />
@@ -43,12 +43,12 @@
   
             <!-- Logo Mobile -->
             <div class=" md:hidden  flex justify-between">
-              <a href="#" class="navbar-logo-mobile block w-full">
+              <a href="#" class="navbar-logo-mobile block w-20">
                 <img 
                   loading="lazy" 
-                  src="/logo1.png" 
+                  src="/logo.png" 
                   alt="logos" 
-                  class=" max-w-[70%]"
+                  class=" max-w-[]"
                 />
               </a>
             </div>
@@ -170,12 +170,12 @@
   ]
   
   const dropdownContent = {
-    'About us': 'CoinSquare Wealth was Incorporated and established in Toronto, Canada. Since then, it has grown into one of the largest financial derivatives companies worldwide, with a current paid-up capital exceeding $322 million.'
+    'About us': 'BlockCapitalInvestment Wealth was Incorporated and established in Toronto, Canada. Since then, it has grown into one of the largest financial derivatives companies worldwide, with a current paid-up capital exceeding $322 million.'
   }
   
   const dropdownLinks = {
     'About us': [
-      { name: 'Why CoinSquare Wealth', href: 'about' },
+      { name: 'Why BlockCapitalInvestment Wealth', href: 'about' },
       { name: 'Expert Traders', href: 'expert' },
       { name: 'Contact Us', href: 'support' },
     ]

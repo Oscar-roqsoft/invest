@@ -31,7 +31,7 @@
               <!-- <img 
                 id="site-logo" 
                 src="assets/images/logoIcon/logo.png" 
-                alt="CoinSquare Wealth" 
+                alt="BlockCapitalInvestment Wealth" 
                 height="30" 
                 class="h-[30px] w-auto"
               /> -->
@@ -39,7 +39,7 @@
             <div class="socket__copyright">
               <div class="plus-21">
                 <p class="text-gray-400 text-sm m-0">
-                  Copyright &copy;2026 CoinSquare Wealth
+                  Copyright &copy;2026 BlockCapitalInvestment Wealth
                 </p>
               </div>
             </div>

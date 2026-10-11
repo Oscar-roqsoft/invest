@@ -38,7 +38,7 @@
           </div>
           
           <div class="security-of-funds-body text-primary-800 text-sm md:text-base lg:text-xl leading-relaxed mt-1 md:mt-3 lg:mt-5">
-            Our partners have grown along with CoinSquare Wealth in the past two decades, and our
+            Our partners have grown along with BlockCapitalInvestment Wealth in the past two decades, and our
             latest entity, MCT Atlantic, is taking our success a step further by offering unparalleled
             security to our traders. MCT Atlantic has taken out an insurance policy with Lloyd's of
             London, the world's leading insurance market, that protects clients' funds for up to

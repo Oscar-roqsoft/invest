@@ -524,7 +524,7 @@ const referralLink = computed(() => {
   const info = referralStore.state.info
   if (info?.referralLink) return info.referralLink
   if (info?.code) {
-    const origin = import.meta.client ? window.location.origin : 'https://coinsquarewealth.org'
+    const origin = import.meta.client ? window.location.origin : 'https://BlockCapitalInvestmentwealth.org'
     return `${origin}/?ref=${info.code}`
   }
   return ''

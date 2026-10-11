@@ -46,7 +46,7 @@
           <!-- Logo & Desktop Nav -->
           <div class="header__wrap flex items-center mr-auto">
             <NuxtLink :to="isAdmin ? '/dashboard/admin' : '/dashboard'" class="header__logo inline-flex w-32 mr-4 md:mr-10">
-              <img src="/logo1.png" alt="CoinSquare Wealth" class="w-full" />
+              <img src="/logo.png" alt="BlockCapitalInvestment Wealth" class="w-full" />
             </NuxtLink>
 
             <nav class="header__navigation hidden md:flex md:flex-row items-center">
@@ -359,7 +359,7 @@
           <!-- Header -->
           <div class="flex items-center justify-between mb-8">
             <NuxtLink :to="isAdmin ? '/dashboard/admin' : '/dashboard'" class="inline-flex w-24">
-              <img src="/logo1.png" alt="CoinSquare Wealth" class="w-full" />
+              <img src="/logo1.png" alt="BlockCapitalInvestment Wealth" class="w-full" />
             </NuxtLink>
             <button
               class="w-10 h-10 rounded-full flex items-center justify-center transition-colors duration-200"
@@ -441,7 +441,7 @@
           </button>
 
           <div class="text-center text-white/30 text-xs mt-4">
-            © 2026 CoinSquare Wealth
+            © 2026 BlockCapitalInvestment Wealth
           </div>
         </div>
       </aside>

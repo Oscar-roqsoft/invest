@@ -23,7 +23,7 @@
           </div>
           
           <h2 class="advantage-section-title font-oswald font-bold text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-white">
-            CoinSquare Wealth 
+            BlockCapitalInvestment Wealth 
             <span class="text-transparent bg-clip-text bg-gradient-to-r from-gold-400 via-gold-300 to-gold-500">ADVANTAGES</span>
           </h2>
           <p class="text-white/60 text-base md:text-lg mt-4 max-w-2xl mx-auto">
@@ -133,7 +133,7 @@
   const advantages = [
     {
       title: 'REGULATIONS AND SECURITY OF FUNDS',
-      description: 'CoinSquare Wealth is comprised of several entities that are regulated by 11+ regulators across 5 continents.',
+      description: 'BlockCapitalInvestment Wealth is comprised of several entities that are regulated by 11+ regulators across 5 continents.',
       image: '/advantages/adv-regulations.png',
       items: [
         '11+ regulators across 5 continents',

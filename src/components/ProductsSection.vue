@@ -58,13 +58,13 @@
             </div>
   
             <p class="products-paragraph text-white/70 text-sm sm:text-base leading-relaxed text-center max-w-3xl mx-auto">
-              CoinSquare Wealth is a dynamic investment company committed to identifying and nurturing
+              BlockCapitalInvestment Wealth is a dynamic investment company committed to identifying and nurturing
               high-potential opportunities across diverse sectors. With a focus on long-term value creation,
               the company strategically invests in innovative businesses and emerging markets.
             </p>
             
             <p class="products-paragraph text-white/70 text-sm sm:text-base leading-relaxed text-center max-w-3xl mx-auto mt-4">
-              Leveraging deep industry insight and financial expertise, CoinSquare Wealth supports portfolio
+              Leveraging deep industry insight and financial expertise, BlockCapitalInvestment Wealth supports portfolio
               growth through smart capital allocation and active management. Its disciplined approach ensures
               sustainable returns while managing risk effectively.
             </p>
@@ -74,10 +74,10 @@
           <div class="products-buttons grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 mt-10 md:mt-12 max-w-5xl mx-auto">
             <a 
               class="products-button-wrapper group bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 md:p-8 text-center hover:bg-white/10 hover:border-gold-500/30 transition-all duration-300 cursor-pointer"
-              href="/coinsquare.pdf" 
+              href="/BlockCapitalInvestment.pdf" 
               target="_blank" 
               rel="noopener"
-              @click.prevent="openPdfModal('/coinsquare.pdf')"
+              @click.prevent="openPdfModal('/BlockCapitalInvestment.pdf')"
             >
               <!-- Icon -->
               <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-gold-400/20 to-gold-600/20 flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
@@ -97,7 +97,7 @@
   
             <a 
               class="products-button-wrapper group bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 md:p-8 text-center hover:bg-white/10 hover:border-gold-500/30 transition-all duration-300"
-              href="https://www.ciro.ca/coinsquare-capital-markets-ltd" 
+              href="https://www.ciro.ca/BlockCapitalInvestment-capital-markets-ltd" 
               target="_blank"
             >
               <!-- Icon -->

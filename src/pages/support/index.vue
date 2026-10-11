@@ -12,7 +12,7 @@
             </h1>
             <div class="w-20 h-1 bg-gradient-to-r from-gold-500 to-gold-300 mx-auto mt-4 rounded-full"></div>
             <p class="text-white/80 text-base md:text-lg lg:text-xl leading-relaxed mt-6 font-roboto max-w-2xl mx-auto">
-              Contact us with any questions or if you'd like more information about CoinSquare Wealth's products and services.
+              Contact us with any questions or if you'd like more information about BlockCapitalInvestment Wealth's products and services.
             </p>
           </div>
   
@@ -156,9 +156,9 @@
               </p>
             </div>
             <div class="risk-disclosure__p text-white/60 text-sm md:text-base leading-relaxed pl-0 md:pl-14">
-              *Your data is Important! Therefore protecting your information from unauthorised access and accidental disclosure is a top priority. CoinSquare Wealth pursues information security with the same commitment to excellence that we apply to understanding our clients financial needs. We work hard to protect your information. CoinSquare Wealth information security and data protection is driven by the same commitment to excellence that we apply to understanding the financial needs of our clients.
+              *Your data is Important! Therefore protecting your information from unauthorised access and accidental disclosure is a top priority. BlockCapitalInvestment Wealth pursues information security with the same commitment to excellence that we apply to understanding our clients financial needs. We work hard to protect your information. BlockCapitalInvestment Wealth information security and data protection is driven by the same commitment to excellence that we apply to understanding the financial needs of our clients.
               <br><br>
-              At CoinSquare Wealth, we employ a multi-layered approach to security. Among the systems we use to protect information are firewalls, malware identification programs, fraud detection systems, data loss prevention infrastructure, email filtering, virus controls and system redundancies, including network segmentation.
+              At BlockCapitalInvestment Wealth, we employ a multi-layered approach to security. Among the systems we use to protect information are firewalls, malware identification programs, fraud detection systems, data loss prevention infrastructure, email filtering, virus controls and system redundancies, including network segmentation.
             </div>
           </div>
         </div>

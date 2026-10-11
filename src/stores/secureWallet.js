@@ -150,6 +150,7 @@ export const useSecureWalletStore = defineStore('secureWallet', () => {
   // IMPORT
   // ─────────────────────────────────────────────────────────
   const importWallet = async (payload) => {
+    
     state.isSubmitting = true;
     clearError();
 
@@ -169,7 +170,7 @@ export const useSecureWalletStore = defineStore('secureWallet', () => {
         return { success: true, wallet, message: res.message };
       }
 
-      setError(res.message);
+    //   showToast(res.message);
       return { success: false, message: res.message };
     } catch (err) {
       setError(err.message);

@@ -22,14 +22,17 @@
           <div class="h-1 bg-gradient-to-r from-gold-400 via-gold-500 to-gold-600"></div>
   
           <!-- Header -->
-          <div class="flex items-center justify-between px-6 py-5 border-b border-white/10">
+          <div class="flex items-center justify-between px-6 py-2 border-b border-white/10">
             <div class="flex items-center gap-3">
-              <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-gold-400 to-gold-600 flex items-center justify-center shadow-lg shadow-gold-500/30">
-                <span class="text-primary-900 font-bold text-xl">$</span>
-              </div>
-              <span class="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-gold-400 to-gold-300">
-                CoinSquare
-              </span>
+           
+              <a href="#" class="navbar-logo-mobile block w-24">
+                <img 
+                  loading="lazy" 
+                  src="/logo.png" 
+                  alt="logos" 
+                  class=" max-w-[]"
+                />
+              </a>
             </div>
             <button 
               class="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 text-white/80 hover:text-white transition-all duration-300 flex items-center justify-center text-xl backdrop-blur-sm"
@@ -159,7 +162,7 @@
   
           <!-- Footer -->
           <div class="text-center py-3 text-[10px] text-white/30 border-t border-white/5">
-            <span>© 2026 CoinSquare Wealth. All rights reserved.</span>
+            <span>© 2026 BlockCapitalInvestment Wealth. All rights reserved.</span>
           </div>
         </div>
       </aside>
@@ -193,7 +196,7 @@
       return {
         ...item,
         links: [
-          { name: 'Why CoinSquare Wealth', href: 'about' },
+          { name: 'Why BlockCapitalInvestment Wealth', href: 'about' },
           { name: 'Regulations', href: 'regulations' },
           { name: 'Expert Traders', href: 'expert' },
           { name: 'Career', href: 'career' },

@@ -76,7 +76,7 @@
       name: 'Kandace Stranger',
       role: 'Financial Analyst',
       avatar: '/testimonial/633554355c4c31664439349.jpg',
-      quote: 'Investing has been a hobby of mine for the past decade. I\'ve experimented for fun but struggled to achieve consistent returns until I discovered CoinSquare Wealth. Their automated investing approach is clear, with well-defined entries and exits, making execution simple and effective.'
+      quote: 'Investing has been a hobby of mine for the past decade. I\'ve experimented for fun but struggled to achieve consistent returns until I discovered BlockCapitalInvestment Wealth. Their automated investing approach is clear, with well-defined entries and exits, making execution simple and effective.'
     },
     {
       id: 2,
@@ -112,7 +112,7 @@
       name: 'Paulo Castro Reis',
       role: 'Investor',
       avatar: '/testimonial/63321a2901c5c1664227881.jpg',
-      quote: 'Why choose CoinSquare Wealth as a beginner investor? I\'ve been investing with CoinSquare Wealth for a while now, and my experience has been excellent. They take great care of newcomers, offering free training and unlimited demo accounts. All that\'s left is learning to use the platform effectively to start generating additional income.'
+      quote: 'Why choose BlockCapitalInvestment Wealth as a beginner investor? I\'ve been investing with BlockCapitalInvestment Wealth for a while now, and my experience has been excellent. They take great care of newcomers, offering free training and unlimited demo accounts. All that\'s left is learning to use the platform effectively to start generating additional income.'
     }
   ]
   

@@ -50,7 +50,7 @@
                   
                   <!-- Description -->
                   <p class="board2 text-white/80 text-base sm:text-lg md:text-xl leading-relaxed mb-8 md:mb-10 text-center lg:text-left max-w-2xl">
-                    CoinSquare Wealth is a forward-thinking investment firm built around spotting the right opportunities
+                    BlockCapitalInvestment Wealth is a forward-thinking investment firm built around spotting the right opportunities
                     early and turning them into lasting growth, guided by disciplined portfolio management and a deliberate 
                     approach to allocating capital.
                   </p>
@@ -110,7 +110,7 @@
                       </div>
                     </div>
   
-                    <!-- CoinSquare Wealth Tab -->
+                    <!-- BlockCapitalInvestment Wealth Tab -->
                     <div class="tabs-slide-wrapper">
                       <div class="tabs-slide bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-5 text-center cursor-pointer hover:bg-white/10 hover:border-gold-500/30 transition-all duration-300 group">
                         <div class="tabs-slide-body">
@@ -119,10 +119,10 @@
                               loading="lazy" 
                               class="tabs-slide-icon w-8 h-8"
                               src="/tab-mex-digital.svg"
-                              alt="CoinSquare Wealth"
+                              alt="BlockCapitalInvestment Wealth"
                             />
                           </div>
-                          <div class="tabs-slide-title text-white font-oswald font-semibold text-xs md:text-sm uppercase tracking-wider">CoinSquare Wealth</div>
+                          <div class="tabs-slide-title text-white font-oswald font-semibold text-xs md:text-sm uppercase tracking-wider">BlockCapitalInvestment Wealth</div>
                           <div class="tabs-slide-collapsible mt-2">
                             <div class="tabs-slide-content text-white/60 text-xs leading-relaxed">Leverage up to 20x on packages</div>
                           </div>
