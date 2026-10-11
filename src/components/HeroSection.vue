@@ -122,7 +122,7 @@
                               alt="BlockCapitalInvestment Wealth"
                             />
                           </div>
-                          <div class="tabs-slide-title text-white font-oswald font-semibold text-xs md:text-sm uppercase tracking-wider">BlockCapitalInvestment Wealth</div>
+                          <div class="tabs-slide-title text-white font-oswald font-semibold text-xs md:text-sm uppercase tracking-wider">BlockInvestment Wealth</div>
                           <div class="tabs-slide-collapsible mt-2">
                             <div class="tabs-slide-content text-white/60 text-xs leading-relaxed">Leverage up to 20x on packages</div>
                           </div>
