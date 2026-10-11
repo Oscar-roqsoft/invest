@@ -12,7 +12,7 @@
           : 'linear-gradient(135deg, #1E3A8A 0%, #1E40AF 50%, #1E3A8A 100%)',
         borderBottomLeftRadius: '60px',
         borderBottomRightRadius: '60px',
-        padding: '21px 0 77px',
+        padding: '0px 0 77px',
         boxShadow: isDark
           ? '0 4px 40px rgba(6, 11, 38, 0.6)'
           : '0 4px 40px rgba(30, 58, 138, 0.15)',
@@ -45,7 +45,7 @@
 
           <!-- Logo & Desktop Nav -->
           <div class="header__wrap flex items-center mr-auto">
-            <NuxtLink :to="isAdmin ? '/dashboard/admin' : '/dashboard'" class="header__logo inline-flex w-32 mr-4 md:mr-10">
+            <NuxtLink :to="isAdmin ? '/dashboard/admin' : '/dashboard'" class="header__logo inline-flex w-12 mr-4 md:mr-10">
               <img src="/logo.png" alt="BlockCapitalInvestment Wealth" class="w-full" />
             </NuxtLink>
 
@@ -355,11 +355,11 @@
         class="fixed top-0 left-0 bottom-0 z-[210] w-[292px] max-w-[85vw] md:hidden overflow-y-auto"
         style="background: linear-gradient(180deg, #1E3A8A 0%, #1E40AF 100%); box-shadow: 4px 0 24px rgba(0, 0, 0, 0.6);"
       >
-        <div class="flex flex-col h-full p-6">
+        <div class="flex flex-col h-full pb-2 px-6">
           <!-- Header -->
-          <div class="flex items-center justify-between mb-8">
+          <div class="flex items-center justify-between mb-6">
             <NuxtLink :to="isAdmin ? '/dashboard/admin' : '/dashboard'" class="inline-flex w-24">
-              <img src="/logo1.png" alt="BlockCapitalInvestment Wealth" class="w-full" />
+              <img src="/logo.png" alt="BlockCapitalInvestment Wealth" class="w-full" />
             </NuxtLink>
             <button
               class="w-10 h-10 rounded-full flex items-center justify-center transition-colors duration-200"
