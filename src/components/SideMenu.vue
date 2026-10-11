@@ -184,9 +184,9 @@
   // Navigation items matching the navbar
   const navItems = [
     { name: 'Home', href: '', hasDropdown: false },
-    { name: 'About us', href: '#', hasDropdown: true },
+    { name: 'About us', href: 'aboutUs', hasDropdown: false },
     { name: 'Expert Investors', href: 'expert', hasDropdown: false },
-    { name: 'Company', href: 'about', hasDropdown: false },
+    // { name: 'Company', href: 'about', hasDropdown: false },
     { name: 'Contact Us', href: 'support', hasDropdown: false },
   ]
   

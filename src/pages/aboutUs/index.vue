@@ -1,51 +1,85 @@
+
 <template>
-  <div class="about-page" style="background: #030f5c;">
+  <div class="about-page">
     <!-- Hero Section -->
-    <section class="about-top-section relative z-10 pt-28">
-      <!-- Upper Section with Background -->
-      <div class="upper-section min-h-[39.5rem] md:min-h-[30rem] lg:min-h-[38.5rem] bg-cover bg-center bg-no-repeat flex items-center relative" 
-           style="background-image: url('/why-multibank/mobile-header.webp');">
-        <!-- <div class="absolute inset-0" style="background: linear-gradient(180deg, rgba(3, 15, 92, 0.85) 0%, rgba(3, 15, 92, 0.60) 50%, rgba(3, 15, 92, 0.90) 100%);"></div> -->
-        <div class="container-fluid px-4 md:px-12 lg:px-16 xl:px-24 relative z-10">
-          <div class="row text-center">
-            <div class="col-12">
-              <div class="heading max-w-[56.25rem] mx-auto">
-                <span class="inline-block px-4 py-1.5 rounded-full bg-gold-500/10 border border-gold-500/20 text-gold-400 text-xs md:text-sm font-medium tracking-wider uppercase mb-4">
-                  About Us
-                </span>
-                <h1 class="text-gold-500 font-oswald font-bold uppercase text-3xl md:text-5xl lg:text-6xl leading-tight md:leading-[4.375rem]">
-                  WHY BlockCapitalInvestment Wealth
-                </h1>
-                <div class="w-20 h-1 bg-gradient-to-r from-gold-500 to-gold-300 mx-auto mt-4 rounded-full"></div>
-                <p class="text-white/80 text-base md:text-xl leading-relaxed mt-6 md:mt-8 font-roboto max-w-3xl mx-auto">
-                  Since our inception, we have established our authority in the world of investing. Along the way, we have pioneered and shaped the crypto and financial investment landscape, continually creating exceptional products, services, and platforms that empower investors to achieve consistent success.
-                </p>
-              </div>
-            </div>
+    <section class="about-top-section relative z-10">
+      <!-- Hero Background -->
+      <div class="upper-section relative flex items-center">
+        <div class="container-fluid relative z-10">
+          <div class="heading text-center">
+            <span
+              class="inline-block px-4 py-1.5 rounded-full bg-gold-500/10 border border-gold-500/20 text-gold-400 text-xs md:text-sm font-medium tracking-wider uppercase mb-4"
+            >
+              About Us
+            </span>
+
+            <h1
+              class="text-gold-500 font-oswald font-bold uppercase text-[clamp(1.75rem,7vw,3rem)] md:text-5xl lg:text-6xl leading-tight"
+            >
+              WHY BlockCapitalInvestment Wealth
+            </h1>
+
+            <div
+              class="w-20 h-1 bg-gradient-to-r from-gold-500 to-gold-300 mx-auto mt-4 rounded-full"
+            ></div>
+
+            <p
+              class="text-white/80 text-base md:text-xl leading-relaxed mt-6 md:mt-8 font-roboto max-w-3xl mx-auto"
+            >
+              Since our inception, we have established our authority in the
+              world of investing. Along the way, we have pioneered and shaped
+              the crypto and financial investment landscape, continually
+              creating exceptional products, services, and platforms that
+              empower investors to achieve consistent success.
+            </p>
           </div>
         </div>
       </div>
 
-      <!-- Lower Section - Cards -->
-      <div class="lower-section relative -top-8 md:-top-20 lg:-top-24 z-[9]">
-        <div class="container-fluid px-4 md:px-12 lg:px-16 xl:px-24">
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
-            <div v-for="(card, index) in aboutCards" :key="index" class="about-card-item">
-              <div class="card rounded-2xl p-6 md:p-8 h-full transition-all duration-300 hover:-translate-y-2 relative overflow-hidden group" style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(187, 145, 74, 0.15); backdrop-filter: blur(10px);">
-                <div class="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-gold-500 to-gold-300 rounded-l-2xl"></div>
-                <div class="absolute -top-10 -right-10 w-32 h-32 bg-gold-500/5 rounded-full blur-2xl group-hover:bg-gold-500/10 transition-all duration-500"></div>
+      <!-- About Cards -->
+      <div class="lower-section relative z-[9]">
+        <div class="container-fluid">
+          <div
+            class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6"
+          >
+            <div
+              v-for="(card, index) in aboutCards"
+              :key="index"
+              class="about-card-item"
+            >
+              <div
+                class="card rounded-2xl p-5 md:p-7 h-full relative overflow-hidden group"
+              >
+                <div
+                  class="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-gold-500 to-gold-300 rounded-l-2xl"
+                ></div>
+
+                <div
+                  class="absolute -top-10 -right-10 w-32 h-32 bg-gold-500/5 rounded-full blur-2xl group-hover:bg-gold-500/10 transition-all duration-500"
+                ></div>
+
                 <div class="relative z-10">
-                  <div class="flex items-center gap-3 mb-4">
-                    <div class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style="background: rgba(187, 145, 74, 0.15);">
-                      <span class="text-gold-500 font-oswald font-bold text-sm">{{ String(index + 1).padStart(2, '0') }}</span>
+                  <div class="flex items-start gap-3 mb-4">
+                    <div
+                      class="number-box w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
+                    >
+                      <span
+                        class="text-gold-500 font-oswald font-bold text-sm"
+                      >
+                        {{ String(index + 1).padStart(2, '0') }}
+                      </span>
                     </div>
-                    <h4 class="text-gold-400 font-oswald font-semibold uppercase text-lg md:text-xl leading-relaxed flex-1" 
-                        v-html="card.title">
-                    </h4>
+
+                    <h3
+                      class="text-gold-400 font-oswald font-semibold uppercase text-base md:text-lg leading-relaxed flex-1 min-w-0"
+                      v-html="card.title"
+                    ></h3>
                   </div>
-                  <p class="text-white/70 text-sm md:text-base leading-relaxed pl-13" 
-                     v-html="card.description">
-                  </p>
+
+                  <p
+                    class="text-white/70 text-sm md:text-base leading-relaxed"
+                    v-html="card.description"
+                  ></p>
                 </div>
               </div>
             </div>
@@ -54,55 +88,120 @@
       </div>
     </section>
 
-    <!-- BlockCapitalInvestment Wealth Established Section -->
-    <section class="multbank-group py-12 md:py-16" style="background: #030f5c;">
-      <div class="container-fluid px-4 md:px-12 lg:px-16 xl:px-24">
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 md:gap-12 items-center pb-10 md:pb-14" style="border-bottom: 1px solid rgba(187, 145, 74, 0.1);">
+    <!-- Company History and Features -->
+    <section class="multbank-group">
+      <div class="container-fluid">
+        <!-- Company History -->
+        <div class="legacy-grid grid grid-cols-1 lg:grid-cols-3 gap-8 md:gap-12 items-center pb-10 md:pb-14">
           <div class="lg:col-span-1">
-            <span class="text-gold-400 text-sm font-medium uppercase tracking-wider block mb-3">Our Legacy</span>
-            <h2 class="text-white font-oswald font-bold text-2xl md:text-4xl lg:text-5xl leading-tight uppercase">
-              Established in <span class="text-gold-500">2014</span>
+            <span
+              class="text-gold-400 text-sm font-medium uppercase tracking-wider block mb-3"
+            >
+              Our Legacy
+            </span>
+
+            <h2
+              class="text-white font-oswald font-bold text-2xl md:text-4xl lg:text-5xl leading-tight uppercase"
+            >
+              Established in
+              <span class="text-gold-500">2014</span>
             </h2>
-            <div class="w-16 h-1 bg-gradient-to-r from-gold-500 to-gold-300 mt-4 rounded-full"></div>
+
+            <div
+              class="w-16 h-1 bg-gradient-to-r from-gold-500 to-gold-300 mt-4 rounded-full"
+            ></div>
           </div>
-          <div class="lg:col-span-2 flex items-center">
-            <div class="rounded-2xl p-6 md:p-8 w-full" style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(187, 145, 74, 0.1); backdrop-filter: blur(10px);">
-              <div class="flex flex-wrap gap-6 md:gap-10 mb-4">
-                <div>
-                  <div class="text-2xl md:text-3xl font-bold text-gold-500">$322M+</div>
-                  <div class="text-white/50 text-xs uppercase tracking-wider">Paid-up Capital</div>
+
+          <div class="lg:col-span-2 min-w-0">
+            <div class="legacy-card rounded-2xl p-5 md:p-8 w-full">
+              <div
+                class="statistics-grid grid grid-cols-2 sm:grid-cols-3 gap-5 md:gap-8 mb-6"
+              >
+                <div class="stat-item stat-capital">
+                  <div
+                    class="text-2xl md:text-3xl font-bold text-gold-500"
+                  >
+                    $322M+
+                  </div>
+                  <div
+                    class="text-white/50 text-xs uppercase tracking-wider mt-1"
+                  >
+                    Paid-up Capital
+                  </div>
                 </div>
-                <div>
-                  <div class="text-2xl md:text-3xl font-bold text-gold-500">1M+</div>
-                  <div class="text-white/50 text-xs uppercase tracking-wider">Investors</div>
+
+                <div class="stat-item">
+                  <div
+                    class="text-2xl md:text-3xl font-bold text-gold-500"
+                  >
+                    1M+
+                  </div>
+                  <div
+                    class="text-white/50 text-xs uppercase tracking-wider mt-1"
+                  >
+                    Investors
+                  </div>
                 </div>
-                <div>
-                  <div class="text-2xl md:text-3xl font-bold text-gold-500">100+</div>
-                  <div class="text-white/50 text-xs uppercase tracking-wider">Countries</div>
+
+                <div class="stat-item">
+                  <div
+                    class="text-2xl md:text-3xl font-bold text-gold-500"
+                  >
+                    100+
+                  </div>
+                  <div
+                    class="text-white/50 text-xs uppercase tracking-wider mt-1"
+                  >
+                    Countries
+                  </div>
                 </div>
               </div>
-              <p class="text-white/70 text-base md:text-lg leading-relaxed font-roboto">
-                BlockCapitalInvestment Wealth was established, we have evolved into one of the largest financial derivatives providers worldwide, with a current paid-up capital of over $322 million. We service an extensive client-base of over 1,000,000+ investors from across 100 countries.
+
+              <p
+                class="text-white/70 text-base md:text-lg leading-relaxed font-roboto"
+              >
+                BlockCapitalInvestment Wealth was established in 2014 and has
+                evolved into a financial derivatives provider, with a stated
+                paid-up capital of over $322 million. We serve an extensive
+                client base of over 1,000,000 investors from across 100
+                countries.
               </p>
             </div>
           </div>
         </div>
 
         <!-- Features Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 mt-8 md:mt-12">
-          <div v-for="(feature, index) in features" :key="index" class="feature-card">
-            <div class="card rounded-2xl p-5 md:p-7 h-full transition-all duration-300 hover:-translate-y-1 group" style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(187, 145, 74, 0.1); backdrop-filter: blur(10px);">
+        <div
+          class="features-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 mt-8 md:mt-12"
+        >
+          <div
+            v-for="(feature, index) in features"
+            :key="index"
+            class="feature-card"
+          >
+            <div class="card rounded-2xl p-5 md:p-7 h-full group">
               <div class="flex items-start gap-4">
-                <div class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 transition-all duration-300" style="background: rgba(187, 145, 74, 0.15);">
-                  <span class="text-gold-400 font-oswald font-bold text-sm">{{ String(index + 1).padStart(2, '0') }}</span>
+                <div
+                  class="number-box w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
+                >
+                  <span
+                    class="text-gold-400 font-oswald font-bold text-sm"
+                  >
+                    {{ String(index + 1).padStart(2, '0') }}
+                  </span>
                 </div>
-                <div class="flex-1">
-                  <h5 class="text-gold-400 font-oswald font-semibold text-base md:text-lg uppercase leading-relaxed mb-2">
+
+                <div class="flex-1 min-w-0">
+                  <h3
+                    class="text-gold-400 font-oswald font-semibold text-base md:text-lg uppercase leading-relaxed mb-2"
+                  >
                     {{ feature.title }}
-                  </h5>
-                  <p class="text-white/60 text-sm md:text-base leading-relaxed font-roboto" 
-                     v-html="feature.description">
-                  </p>
+                  </h3>
+
+                  <p
+                    class="text-white/60 text-sm md:text-base leading-relaxed font-roboto"
+                    v-html="feature.description"
+                  ></p>
                 </div>
               </div>
             </div>
@@ -111,41 +210,75 @@
       </div>
     </section>
 
-    <!-- Customer Service Section -->
-    <section class="customer-service py-12 md:py-16 relative" style="background: #030f5c;">
-      <div class="upper-section-1 min-h-[20rem] md:min-h-[25rem] lg:min-h-[30rem] bg-cover bg-center bg-no-repeat flex items-center relative"
-           style="background-image: url('/why-multibank/Mask.html');">
-        <div class="absolute inset-0" style="background: linear-gradient(180deg, rgba(3, 15, 92, 0.85) 0%, rgba(3, 15, 92, 0.60) 50%, rgba(3, 15, 92, 0.90) 100%);"></div>
-        <div class="container-fluid px-4 md:px-12 lg:px-16 xl:px-24 relative z-10">
-          <div class="row text-center">
-            <div class="col-12">
-              <div class="heading">
-                <span class="inline-block px-4 py-1.5 rounded-full bg-gold-500/10 border border-gold-500/20 text-gold-400 text-xs md:text-sm font-medium tracking-wider uppercase mb-4">
-                  Support
-                </span>
-                <h2 class="text-white font-oswald font-bold uppercase text-3xl md:text-5xl lg:text-6xl leading-tight">
-                  Dedicated <span class="text-gold-500">Customer Service</span>
-                </h2>
-                <div class="w-20 h-1 bg-gradient-to-r from-gold-500 to-gold-300 mx-auto mt-4 rounded-full"></div>
-                <p class="text-white/80 text-base md:text-xl leading-relaxed mt-6 md:mt-8 font-roboto max-w-3xl mx-auto">
-                  A team of well-trained and multilingual professionals is available 24-hours who are fluent in over 10 languages.
-                </p>
-              </div>
-            </div>
+    <!-- Customer Service -->
+    <section class="customer-service relative">
+      <!-- Customer Service Hero -->
+      <div class="upper-section-1 relative flex items-center">
+        <div class="customer-overlay absolute inset-0"></div>
+
+        <div class="container-fluid relative z-10">
+          <div class="heading text-center">
+            <span
+              class="inline-block px-4 py-1.5 rounded-full bg-gold-500/10 border border-gold-500/20 text-gold-400 text-xs md:text-sm font-medium tracking-wider uppercase mb-4"
+            >
+              Support
+            </span>
+
+            <h2
+              class="text-white font-oswald font-bold uppercase text-[clamp(1.65rem,6vw,2.5rem)] md:text-5xl lg:text-6xl leading-tight"
+            >
+              Dedicated
+              <span class="text-gold-500">Customer Service</span>
+            </h2>
+
+            <div
+              class="w-20 h-1 bg-gradient-to-r from-gold-500 to-gold-300 mx-auto mt-4 rounded-full"
+            ></div>
+
+            <p
+              class="text-white/80 text-base md:text-xl leading-relaxed mt-6 md:mt-8 font-roboto max-w-3xl mx-auto"
+            >
+              A team of well-trained and multilingual professionals is
+              available 24 hours a day, with support in over 10 languages.
+            </p>
           </div>
         </div>
       </div>
 
       <!-- Service Cards -->
-      <div class="lower-section-1 relative -top-8 md:-top-12 lg:-top-16">
-        <div class="container-fluid px-4 md:px-12 lg:px-16 xl:px-24">
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-            <div v-for="(service, index) in services" :key="index" class="service-card">
-              <div class="card rounded-2xl p-6 md:p-8 h-full text-center transition-all duration-300 hover:-translate-y-1 group" style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(187, 145, 74, 0.1); backdrop-filter: blur(10px);">
-                <div class="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4 transition-all duration-300 group-hover:scale-110" style="background: rgba(187, 145, 74, 0.15);">
-                  <img :src="service.icon" :alt="service.title" class="w-8 h-8 object-contain">
+      <div class="lower-section-1 relative z-[9]">
+        <div class="container-fluid">
+          <div
+            class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6"
+          >
+            <div
+              v-for="(service, index) in services"
+              :key="index"
+              class="service-card"
+            >
+              <div
+                class="card rounded-2xl p-6 md:p-8 h-full text-center group"
+              >
+                <div
+                  class="service-icon w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-5"
+                >
+                  <img
+                    :src="service.icon"
+                    :alt="service.title"
+                    loading="lazy"
+                    class="w-8 h-8 object-contain"
+                  />
                 </div>
-                <p class="text-white/70 text-sm md:text-base leading-relaxed font-roboto">
+
+                <h3
+                  class="text-gold-400 font-oswald font-semibold uppercase text-base mb-3"
+                >
+                  {{ service.title }}
+                </h3>
+
+                <p
+                  class="text-white/70 text-sm md:text-base leading-relaxed font-roboto"
+                >
                   {{ service.description }}
                 </p>
               </div>
@@ -155,21 +288,37 @@
       </div>
     </section>
 
-    <!-- CTA Section -->
-    <section class="cta-section py-12 md:py-20" style="background: #030f5c;">
-      <div class="container-fluid px-4 md:px-12 lg:px-16 xl:px-24">
-        <div class="max-w-3xl mx-auto text-center">
-          <span class="inline-block px-4 py-1.5 rounded-full bg-gold-500/10 border border-gold-500/20 text-gold-400 text-xs md:text-sm font-medium tracking-wider uppercase mb-4">
+    <!-- Call to Action -->
+    <section class="cta-section">
+      <div class="container-fluid">
+        <div class="cta-content max-w-3xl mx-auto text-center">
+          <span
+            class="inline-block px-4 py-1.5 rounded-full bg-gold-500/10 border border-gold-500/20 text-gold-400 text-xs md:text-sm font-medium tracking-wider uppercase mb-4"
+          >
             Get Started
           </span>
-          <h2 class="text-white font-oswald font-bold text-2xl md:text-4xl lg:text-5xl uppercase">
-            TRADE WITH <span class="text-gold-500">BlockCapitalInvestment Wealth</span> NOW
+
+          <h2
+            class="text-white font-oswald font-bold text-[clamp(1.65rem,6vw,2.5rem)] md:text-4xl lg:text-5xl uppercase leading-tight"
+          >
+            TRADE WITH
+            <span class="text-gold-500">
+              BlockCapitalInvestment Wealth
+            </span>
+            NOW
           </h2>
-          <div class="w-20 h-1 bg-gradient-to-r from-gold-500 to-gold-300 mx-auto mt-4 rounded-full"></div>
+
+          <div
+            class="w-20 h-1 bg-gradient-to-r from-gold-500 to-gold-300 mx-auto mt-4 rounded-full"
+          ></div>
+
           <div class="flex justify-center mt-8 md:mt-10">
-            <a href="?a=login" class="gold-button inline-block px-10 md:px-14 py-4 md:py-5 bg-gradient-to-r from-gold-400 via-gold-500 to-gold-600 text-primary-900 font-oswald font-bold text-base md:text-xl uppercase rounded-2xl shadow-lg shadow-gold-500/30 hover:shadow-2xl hover:shadow-gold-500/50 hover:scale-[1.03] transition-all duration-300">
-              OPEN LIVE ACCOUNT
-              <i class="bi bi-arrow-right ml-2"></i>
+            <a
+              href="?a=login"
+              class="gold-button inline-flex items-center justify-center gap-2 px-6 md:px-14 py-4 md:py-5 bg-gradient-to-r from-gold-400 via-gold-500 to-gold-600 text-primary-900 font-oswald font-bold text-base md:text-xl uppercase rounded-2xl shadow-lg shadow-gold-500/30"
+            >
+              <span>OPEN LIVE ACCOUNT</span>
+              <i class="bi bi-arrow-right"></i>
             </a>
           </div>
         </div>
@@ -177,21 +326,41 @@
     </section>
 
     <!-- Risk Disclosure -->
-    <section class="risk-disclosure py-10 md:py-14" style="background: #030f5c; border-top: 1px solid rgba(187, 145, 74, 0.1);">
-      <div class="container-fluid px-4 md:px-12 lg:px-16 xl:px-24">
-        <div class="content max-w-4xl mx-auto">
-          <div class="flex items-center gap-3 mb-4">
-            <div class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0" style="background: rgba(187, 145, 74, 0.15);">
+    <section class="risk-disclosure">
+      <div class="container-fluid">
+        <div class="risk-content max-w-4xl mx-auto">
+          <div class="flex items-start gap-3 mb-4">
+            <div
+              class="number-box w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
+            >
               <i class="bi bi-shield-check text-gold-400 text-xl"></i>
             </div>
-            <p class="risk-disclosure__title text-gold-400 font-oswald text-xl md:text-2xl font-semibold">
+
+            <p
+              class="risk-disclosure__title text-gold-400 font-oswald text-xl md:text-2xl font-semibold"
+            >
               We keep your information secured 24/7
             </p>
           </div>
-          <div class="risk-disclosure__p text-white/60 text-sm md:text-base leading-relaxed pl-0 md:pl-14">
-            *Your data is Important! Therefore protecting your information from unauthorised access and accidental disclosure is a top priority. BlockCapitalInvestment Wealth pursues information security with the same commitment to excellence that we apply to understanding our clients financial needs. We work hard to protect your information. BlockCapitalInvestment Wealth information security and data protection is driven by the same commitment to excellence that we apply to understanding the financial needs of our clients.
-            <br><br>
-            At BlockCapitalInvestment Wealth, we employ a multi-layered approach to security. Among the systems we use to protect information are firewalls, malware identification programs, fraud detection systems, data loss prevention infrastructure, email filtering, virus controls and system redundancies, including network segmentation.
+
+          <div
+            class="risk-disclosure__p text-white/60 text-sm md:text-base leading-relaxed"
+          >
+            <p>
+              Your data is important! Protecting your information from
+              unauthorised access and accidental disclosure is a top priority.
+              BlockCapitalInvestment Wealth states that information security
+              and data protection are central to its approach to serving
+              clients.
+            </p>
+
+            <p class="mt-4">
+              The company describes a multi-layered approach to security.
+              Systems may include firewalls, malware identification programs,
+              fraud detection systems, data loss prevention infrastructure,
+              email filtering, virus controls and system redundancies,
+              including network segmentation.
+            </p>
           </div>
         </div>
       </div>
@@ -202,157 +371,548 @@
 <script setup>
 const aboutCards = [
   {
-    title: 'Heavily Regulated Across <span class="font-bold">5</span> Continents',
-    description: 'Closely supervised by over 10+ financial regulators worldwide across various jurisdictions, guaranteeing investor protection. Companies regulated by ASIC, AUSTRAC, BAFIN, CIMA, ESCA, FSC, FMA, MAS, TFG and VFSC. <span class="text-xs italic block mt-1 text-white/40">* pertains exclusively to certain regulated asset management products</span>'
+    title:
+      'Heavily Regulated Across <span class="font-bold">5</span> Continents',
+    description:
+      'Closely supervised by over 10+ financial regulators worldwide across various jurisdictions, guaranteeing investor protection. Companies regulated by ASIC, AUSTRAC, BAFIN, CIMA, ESCA, FSC, FMA, MAS, TFG and VFSC. <span class="text-xs italic block mt-2 text-white/40">* Pertains exclusively to certain regulated asset management products.</span>',
   },
   {
     title: 'PAID-UP CAPITAL OF OVER US$ <span class="font-bold">322</span> MILLION',
-    description: 'Due to our accumulated paid-up capital, we are globally recognized as one of the largest online financial derivatives providers.'
+    description:
+      'Due to our accumulated paid-up capital, we are globally recognized as one of the largest online financial derivatives providers.',
   },
   {
     title: 'FULL ECN MODEL WITH SPREADS',
-    description: 'We follow a pure Non-Dealing Desk ECN trading structure with direct access to over 20 interbank trading prices without any conflict of interest.'
+    description:
+      'We follow a pure Non-Dealing Desk ECN trading structure with direct access to over 20 interbank trading prices without any conflict of interest.',
   },
   {
     title: 'MAXIMUM LEVERAGE UP TO <span class="font-bold">500:1</span>',
-    description: 'We provide one of the highest leverage options in the market, allowing investors to amplify their returns. Our platform specializes in crypto assets, including Bitcoin and USDT, offering flexible and powerful opportunities for growth.'
-  }
+    description:
+      'We provide high-leverage trading options, which can amplify both gains and losses. Our platform describes opportunities involving crypto assets, including Bitcoin and USDT.',
+  },
 ]
 
 const features = [
   {
-    title: '1. LUCRATIVE BROKERS PROGRAM',
-    description: 'We collaborate with professionals and partners through our Introducing Brokers Program, providing them with commission and rebate structures unheard of in the industry.'
+    title: 'LUCRATIVE BROKERS PROGRAM',
+    description:
+      'We collaborate with professionals and partners through our Introducing Brokers Program, providing commission and rebate structures.',
   },
   {
-    title: '2. FUNDS WITHDRAWAL WITHIN 24 HOURS',
-    description: 'Funds withdrawal has been made easy and accessible for the benefit of our investors.'
+    title: 'FUNDS WITHDRAWAL WITHIN 24 HOURS',
+    description:
+      'Funds withdrawal has been made easy and accessible for the benefit of our investors.',
   },
   {
-    title: '3. CUTTING-EDGE TRADING PLATFORMS',
-    description: 'State-of-the-art trading platforms that are designed and developed to provide stability and enable real-time investing.'
+    title: 'CUTTING-EDGE TRADING PLATFORMS',
+    description:
+      'Trading platforms designed to provide stability and enable real-time investing.',
   },
   {
-    title: '4. STATE OF THE ART PRODUCTS',
-    description: 'Invest in a wide range of crypto assets, including Bitcoin (BTC) and Tether (USDT), for secure and flexible growth opportunities.'
+    title: 'STATE OF THE ART PRODUCTS',
+    description:
+      'Explore crypto assets, including Bitcoin (BTC) and Tether (USDT), while understanding the risks associated with digital assets.',
   },
   {
-    title: '5. Instant and Reliable Nano-Second Execution',
-    description: 'Zero commission investing on crypto assets.<br>Negative balance protection to safeguard your funds.<br>No delays, no rejections, and full support for automated strategies.'
+    title: 'INSTANT AND RELIABLE EXECUTION',
+    description:
+      'Trading execution and platform features may vary by instrument and market conditions. Review the applicable terms and protections before trading.',
   },
   {
-    title: '6. SUPERIOR FINANCIAL SERVICES',
-    description: 'Proficient Multilingual 24/7 Customer Service. <br/>Free MAM, PAMM, EA, VPS and API.'
+    title: 'SUPERIOR FINANCIAL SERVICES',
+    description:
+      'Multilingual customer support and trading-related services. Availability of MAM, PAMM, EA, VPS and API services depends on the provider and account.',
   },
   {
-    title: '7. SECURITY OF FUNDS',
-    description: 'Since our companies are heavily regulated, we are expected to uphold strict rules and obligations, allowing clients the highest level of funds security.'
+    title: 'SECURITY OF FUNDS',
+    description:
+      'Review the company’s regulatory status, client-money arrangements and applicable investor protections before depositing funds.',
   },
   {
-    title: '8. RECORD-BREAKING FINANCIAL PERFORMANCE',
-    description: 'With a turnover of over US$ 5+ Trillion in 2020 (exceeding the 2019 annual turnover of US$ 1.9 trillion), we deliver results that instill confidence.'
+    title: 'FINANCIAL PERFORMANCE',
+    description:
+      'Review independently verifiable financial and trading-performance information before relying on historical turnover or performance claims.',
   },
   {
-    title: '9. GLOBAL PRESENCE IN LEADING FINANCIAL HUBS',
-    description: 'We serve an international demographic of clients in collaboration with affiliates from our 20+ offices located within the financial centers of the world.'
-  }
+    title: 'GLOBAL PRESENCE IN FINANCIAL HUBS',
+    description:
+      'The company describes an international client base and a global network of offices and affiliates.',
+  },
 ]
 
 const services = [
   {
+    title: 'IT AND OPERATIONAL SUPPORT',
     icon: '/why-multibank/Group5630.svg',
-    description: 'IT and operational support including service desk, onboarding, configuration, and cash management.'
+    description:
+      'IT and operational support including service desk, onboarding, configuration, and cash management.',
   },
   {
+    title: 'SALES AND MARKET SUPPORT',
     icon: '/why-multibank/Group5621.svg',
-    description: 'Sales and market support including educational materials, videos, tutorials and seminars.'
+    description:
+      'Sales and market support including educational materials, videos, tutorials and seminars.',
   },
   {
+    title: 'FUNDING METHODS',
     icon: '/why-multibank/Group5628.svg',
-    description: 'Funding methods including: Crypto.'
+    description:
+      'Information about available funding methods, including cryptocurrency where supported.',
   },
   {
+    title: 'FINANCIAL NEWS',
     icon: '/why-multibank/Group5627.svg',
-    description: 'Real-time online financial news in multiple languages.'
+    description:
+      'Real-time online financial news in multiple languages.',
   },
   {
+    title: 'ACCOUNT OPENING',
     icon: '/why-multibank/Group5622.svg',
-    description: 'Around the clock, quick account opening and funding available.'
+    description:
+      'Account opening and funding services, subject to verification and applicable requirements.',
   },
   {
+    title: 'REGULATORY SUPPORT',
     icon: '/why-multibank/Group5629.svg',
-    description: 'Regulatory and corporate support.'
-  }
+    description:
+      'Regulatory, compliance and corporate support information.',
+  },
 ]
 </script>
 
 <style scoped>
-/* Card hover effects */
-.card {
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+/* Main layout */
+.about-page {
+  width: 100%;
+  min-width: 0;
+  overflow-x: clip;
+  background: #030f5c;
+  color: #fff;
+  box-sizing: border-box;
 }
 
-/* Gold button hover */
-.gold-button {
-  transition: all 0.3s ease;
+.about-page *,
+.about-page *::before,
+.about-page *::after {
+  box-sizing: border-box;
 }
 
-.gold-button:hover {
-  transform: translateY(-2px);
-}
-
-/* Mobile background image fix */
-@media (max-width: 768px) {
-  .upper-section {
-    background-image: url('/why-multibank/Mobile-Header.webp') !important;
-    background-size: cover !important;
-    background-position: bottom !important;
-    min-height: 27rem;
-  }
-}
-
-@media (max-width: 767px) {
-  .upper-section-1 {
-    min-height: 21.6875rem;
-    background-image: url('/why-multibank/MaskGroup30.html') !important;
-    background-size: cover !important;
-    background-position: bottom !important;
-  }
-}
-
-/* Container fluid responsive */
 .container-fluid {
-  padding-left: 9.375rem !important;
-  padding-right: 9.375rem !important;
+  width: 100%;
+  max-width: 100%;
+  margin-inline: auto;
+  padding-inline: clamp(1rem, 4vw, 6rem);
 }
 
-@media (max-width: 1440px) {
-  .container-fluid {
-    padding-left: 4rem !important;
-    padding-right: 4rem !important;
+.about-top-section {
+  padding-top: 7rem;
+}
+
+.multbank-group,
+.customer-service,
+.cta-section,
+.risk-disclosure {
+  background: #030f5c;
+}
+
+.multbank-group {
+  padding-top: 3rem;
+  padding-bottom: 4rem;
+}
+
+.customer-service {
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+
+.cta-section {
+  padding-top: 4rem;
+  padding-bottom: 5rem;
+}
+
+.risk-disclosure {
+  padding-top: 2.5rem;
+  padding-bottom: 3.5rem;
+  border-top: 1px solid rgba(187, 145, 74, 0.15);
+}
+
+/* Hero backgrounds */
+.upper-section {
+  min-height: 38.5rem;
+  padding-block: 3rem;
+  background-image: url('/why-multibank/mobile-header.webp');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.upper-section-1 {
+  min-height: 30rem;
+  padding-block: 3rem;
+  background-image: url('/why-multibank/Mask.html');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.customer-overlay {
+  background: linear-gradient(
+    180deg,
+    rgba(3, 15, 92, 0.85) 0%,
+    rgba(3, 15, 92, 0.6) 50%,
+    rgba(3, 15, 92, 0.9) 100%
+  );
+}
+
+.heading {
+  width: 100%;
+  max-width: 56.25rem;
+  margin-inline: auto;
+}
+
+.heading h1,
+.heading h2,
+.cta-content h2 {
+  overflow-wrap: anywhere;
+  text-wrap: balance;
+}
+
+.heading p {
+  max-width: 48rem;
+  margin-inline: auto;
+}
+
+/* Cards */
+.card,
+.legacy-card {
+  min-width: 0;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(187, 145, 74, 0.15);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition:
+    transform 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.number-box,
+.service-icon {
+  background: rgba(187, 145, 74, 0.15);
+}
+
+.about-card-item,
+.feature-card,
+.service-card {
+  height: 100%;
+  min-width: 0;
+}
+
+.about-card-item h3,
+.feature-card h3,
+.service-card h3 {
+  overflow-wrap: anywhere;
+}
+
+.about-card-item p,
+.feature-card p,
+.service-card p,
+.legacy-card p,
+.risk-disclosure__p {
+  overflow-wrap: anywhere;
+}
+
+.legacy-grid {
+  border-bottom: 1px solid rgba(187, 145, 74, 0.15);
+}
+
+.statistics-grid {
+  min-width: 0;
+}
+
+.stat-item {
+  min-width: 0;
+}
+
+.stat-item > div:first-child {
+  overflow-wrap: anywhere;
+}
+
+.gold-button {
+  width: auto;
+  max-width: 100%;
+  min-height: 3.5rem;
+  white-space: normal;
+  text-align: center;
+  text-decoration: none;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.risk-disclosure__title {
+  min-width: 0;
+  line-height: 1.4;
+}
+
+/* Tablet */
+@media (max-width: 1023px) {
+  .about-top-section {
+    padding-top: 6rem;
+  }
+
+  .upper-section {
+    min-height: 32rem;
+  }
+
+  .upper-section-1 {
+    min-height: 25rem;
+  }
+
+  .multbank-group {
+    padding-top: 2rem;
+    padding-bottom: 3rem;
+  }
+
+  .cta-section {
+    padding-top: 3rem;
+    padding-bottom: 3.5rem;
   }
 }
 
-@media (max-width: 1200px) {
-  .container-fluid {
-    padding-left: 3rem !important;
-    padding-right: 3rem !important;
-  }
-}
-
+/* Mobile */
 @media (max-width: 767px) {
   .container-fluid {
-    padding-left: 2rem !important;
-    padding-right: 2rem !important;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .about-top-section {
+    padding-top: 5.5rem;
+  }
+
+  .upper-section {
+    min-height: auto;
+    padding-top: 3.5rem;
+    padding-bottom: 4.5rem;
+    background-image: url('/why-multibank/Mobile-Header.webp');
+    background-size: cover;
+    background-position: center;
+  }
+
+  .upper-section-1 {
+    min-height: auto;
+    padding-top: 3.5rem;
+    padding-bottom: 4rem;
+    background-image: url('/why-multibank/MaskGroup30.html');
+    background-size: cover;
+    background-position: center;
+  }
+
+  .heading h1 {
+    font-size: clamp(1.75rem, 7vw, 2.5rem);
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+  }
+
+  .heading h2 {
+    font-size: clamp(1.65rem, 6vw, 2.3rem);
+    line-height: 1.2;
+  }
+
+  .heading p {
+    margin-top: 1.25rem;
+    font-size: 0.95rem;
+    line-height: 1.75;
+  }
+
+  /* Cards overlap the bottom of each hero slightly */
+  .lower-section {
+    margin-top: -1.5rem;
+  }
+
+  .lower-section-1 {
+    margin-top: -1.5rem;
+  }
+
+  .about-card-item .card,
+  .feature-card .card,
+  .service-card .card {
+    padding: 1.25rem;
+    border-radius: 1rem;
+  }
+
+  .about-card-item h3 {
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+
+  .about-card-item p,
+  .feature-card p,
+  .service-card p {
+    font-size: 0.875rem;
+    line-height: 1.75;
+  }
+
+  .multbank-group {
+    padding-top: 2rem;
+    padding-bottom: 2.5rem;
+  }
+
+  .multbank-group h2 {
+    font-size: clamp(1.8rem, 7vw, 2.5rem);
+    line-height: 1.2;
+  }
+
+  .legacy-grid {
+    padding-bottom: 2rem;
+    gap: 1.5rem;
+  }
+
+  .legacy-card {
+    padding: 1.25rem;
+    border-radius: 1rem;
+  }
+
+  .statistics-grid {
+    gap: 1.25rem 0.75rem;
+  }
+
+  .stat-capital {
+    grid-column: 1 / -1;
+  }
+
+  .stat-item > div:first-child {
+    font-size: 1.4rem;
+  }
+
+  .stat-item > div:last-child {
+    font-size: 0.65rem;
+    line-height: 1.5;
+  }
+
+  .features-grid {
+    margin-top: 2rem;
+    gap: 1rem;
+  }
+
+  .feature-card .flex.items-start {
+    gap: 0.75rem;
+  }
+
+  .customer-service {
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+  }
+
+  .service-icon {
+    width: 3.5rem;
+    height: 3.5rem;
+  }
+
+  .service-icon img {
+    width: 1.75rem;
+    height: 1.75rem;
+  }
+
+  .cta-section {
+    padding-top: 2.5rem;
+    padding-bottom: 3rem;
+  }
+
+  .cta-content h2 {
+    font-size: clamp(1.6rem, 6.5vw, 2.3rem);
+    line-height: 1.25;
+  }
+
+  .cta-section .flex.justify-center {
+    margin-top: 1.5rem;
+  }
+
+  .gold-button {
+    width: 100%;
+    max-width: 22rem;
+    min-height: 3.5rem;
+    padding: 1rem 1.25rem;
+    font-size: 0.95rem;
+    line-height: 1.4;
+    border-radius: 0.875rem;
+  }
+
+  .risk-disclosure {
+    padding-top: 2rem;
+    padding-bottom: 2.5rem;
+  }
+
+  .risk-disclosure__title {
+    font-size: 1.1rem;
+  }
+
+  .risk-disclosure__p {
+    font-size: 0.875rem;
+    line-height: 1.8;
   }
 }
 
-/* Typography */
-h1, h2, h3, h4, h5, h6 {
-  font-family: "Oswald", sans-serif;
+/* Very small phones */
+@media (max-width: 380px) {
+  .container-fluid {
+    padding-left: 0.875rem;
+    padding-right: 0.875rem;
+  }
+
+  .about-top-section {
+    padding-top: 5rem;
+  }
+
+  .heading h1 {
+    font-size: 1.75rem;
+  }
+
+  .heading h2,
+  .cta-content h2 {
+    font-size: 1.55rem;
+  }
+
+  .about-card-item .flex.items-start {
+    gap: 0.625rem;
+  }
+
+  .about-card-item .number-box,
+  .feature-card .number-box {
+    width: 2.25rem;
+    height: 2.25rem;
+  }
+
+  .stat-item > div:first-child {
+    font-size: 1.25rem;
+  }
 }
 
-p {
-  font-family: "Roboto Condensed", sans-serif;
+/* Desktop hover effects */
+@media (hover: hover) and (pointer: fine) {
+  .card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(187, 145, 74, 0.35);
+  }
+
+  .gold-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 15px 35px rgba(187, 145, 74, 0.25);
+  }
+
+  .service-card .card:hover .service-icon {
+    transform: scale(1.05);
+  }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .card,
+  .gold-button,
+  .service-icon {
+    transition: none;
+  }
 }
 </style>

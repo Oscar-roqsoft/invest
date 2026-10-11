@@ -7,13 +7,13 @@
             <p class="m-0">
               <span class="text-gold-500">Email:</span>
               <a href="/cdn-cgi/l/email-protection#a5d6d0d5d5cad7d1e5c6cacccbd6d4d0c4d7c0d2c0c4c9d1cd8bcad7c2" class="text-gray-400 no-underline hover:text-gold-400 transition-colors">
-                <span class="__cf_email__" data-cfemail="33404643435c414733505c5a5d4042445043514351565b435f1d5c4154">[email&#160;protected]</span>
+                <span class="__cf_email__" data-cfemail="33404643435c414733505c5a5d4042445043514351565b435f1d5c4154">blockcapitalinvestmentsupport@gmail.com</span>
               </a>
             </p>
-            <p class="m-0">
+            <!-- <p class="m-0">
               <span class="text-gold-500">Registered Office Address:</span>
               304-371 Front St. Toronto, ON, Canada
-            </p>
+            </p> -->
           </div>
   
           <!-- Footer Navigation -->
