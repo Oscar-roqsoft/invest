@@ -14,11 +14,11 @@
       <div class="container max-w-md mx-auto px-4 sm:px-0">
         <div class="w-full">
           <!-- Logo -->
-          <div class="text-center auth-logo mb-6">
+          <div class="text-center auth-logo ">
             <img 
-              src="/logo1.png" 
+              src="/logo.png" 
               alt="BlockCapitalInvestment Wealth" 
-              class="company_logo h-12 md:h-16 mx-auto"
+              class="company_logo h-28 md:h-28 mx-auto"
             />
           </div>
 
@@ -33,7 +33,7 @@
               </svg>
             </div>
             <p class="text-white/70 text-xs font-bold mb-0">
-              <span class="text-green-400">https://</span>BlockCapitalInvestmentwealth.org/?a=register
+              <span class="text-green-400">https://</span>BlockCapitalInvestmentwealth.com/?a=register
             </p>
           </div>
           
