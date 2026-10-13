@@ -343,9 +343,13 @@ const handleRegister = async () => {
       password: form.value.password,
       referralCode: referralCode.value || undefined,
     })
+    console.log(res)
+    if (res.message.includes('Email already exists')) {
+  router.push('/login')
+}
 
     if (!res.success) {
-      toast.error('Registration failed')
+      toast.error(res.message || 'Registration failed')
       return
     }
 

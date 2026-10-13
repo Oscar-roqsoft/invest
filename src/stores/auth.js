@@ -124,6 +124,8 @@ export const useAuthStore = defineStore('auth', () => {
     try {
       const res = await requests.register(payload);
 
+      
+
       if (res.success) {
         const token = res.data?.token;
         const refresh = res.data?.refreshToken;
@@ -140,7 +142,7 @@ export const useAuthStore = defineStore('auth', () => {
         return { success: true, data: res.data, message: res.message };
       }
 
-      state.error = res.message;
+      // state.error = res.message;
       return { success: false, message: res.message };
     } catch (err) {
       state.error = err.message || 'Registration failed';
