@@ -157,7 +157,7 @@
               <NuxtLink
                 :to="authStore.state.isAuthenticated
                   ? `/dashboard/invest/plans/${plan.slug}`
-                  : `/auth/register?plan=${plan.slug}`"
+                  : `/register?plan=${plan.slug}`"
                 class="gold-btn block text-center text-sm md:text-base font-semibold"
               >
                 {{ authStore.state.isAuthenticated ? 'Invest Now' : 'Get Started' }}
