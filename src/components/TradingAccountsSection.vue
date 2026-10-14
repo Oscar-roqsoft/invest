@@ -156,7 +156,7 @@
               <!-- CTA -->
               <NuxtLink
                 :to="authStore.state.isAuthenticated
-                  ? `/dashboard/invest/plans/${plan.slug}`
+                  ? `/dashboard/plans/${plan.slug}`
                   : `/register?plan=${plan.slug}`"
                 class="gold-btn block text-center text-sm md:text-base font-semibold"
               >
