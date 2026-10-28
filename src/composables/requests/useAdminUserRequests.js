@@ -20,11 +20,25 @@ export const useAdminUserRequests = () => {
   const getUserStats = () =>
     api.get(ADMIN_USER_ENDPOINTS.STATS, authOpts);
 
+  const manualCredit = (userId, payload) =>
+    api.post(ADMIN_USER_ENDPOINTS.MANUAL_CREDIT(userId), payload, authOpts);
+
+  /**
+   * Debit a user's USD balance. Fails if balance would go negative.
+   * @param {string} userId
+   * @param {{ amount: number, reason: string, sendEmail?: boolean }} payload
+   */
+  const manualDebit = (userId, payload) =>
+    api.post(ADMIN_USER_ENDPOINTS.MANUAL_DEBIT(userId), payload, authOpts);
+
+
   return {
     getAllUsers,
     getUserById,
     setBanStatus,
     updateUser,
     getUserStats,
+    manualCredit,
+    manualDebit,
   };
 };

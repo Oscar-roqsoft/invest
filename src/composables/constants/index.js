@@ -49,6 +49,8 @@ export const ADMIN_ENDPOINTS = {
   USER_STATS: '/admin/users/stats',
   USER_BY_ID: (id) => `/admin/users/${id}`,
   USER_BAN: (id) => `/admin/users/${id}/ban`,
+  MANUAL_CREDIT:   (userId) => `/admin/users/${userId}/manual-credit`,   
+  MANUAL_DEBIT:    (userId) => `/admin/users/${userId}/manual-debit`, 
 
   // KYC
   KYC: '/admin/kyc',
