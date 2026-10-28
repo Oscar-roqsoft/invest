@@ -518,6 +518,10 @@ export const ADMIN_USER_ENDPOINTS = {
   STATS:      '/admin/users/stats',
   BY_ID:      (id) => `/admin/users/${id}`,
   BAN:        (id) => `/admin/users/${id}/ban`,
+  
+  MANUAL_CREDIT:   (userId) => `/admin/users/${userId}/manual-credit`,   
+  MANUAL_DEBIT:    (userId) => `/admin/users/${userId}/manual-debit`, 
+
 };
 
 export const ADMIN_USER_FILTERS = {
