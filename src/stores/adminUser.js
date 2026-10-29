@@ -231,116 +231,115 @@ export const useAdminUserStore = defineStore('adminUser', () => {
     }
   };
 
-  // ─────────────────────────────────────────────────────────
-// MANUAL CREDIT (admin credits user's USD balance)
-// ─────────────────────────────────────────────────────────
-const manualCredit = async (userId, { amount, reason, sendEmail = true }) => {
-  state.isSubmitting = true;
-  clearError();
-
-  try {
-    const requests = getRequests();
-    const res = await requests.manualCredit(userId, { amount, reason, sendEmail });
-
-    if (res.success) {
-      const updatedUser = res.data?.user;
-
-      // Patch list item
-      const idx = state.users.findIndex((u) => u._id === userId);
-      if (idx !== -1 && updatedUser) {
-        state.users[idx] = {
-          ...state.users[idx],
-          balances: updatedUser.balances,
-          totalDeposits: updatedUser.totalDeposits,
+  const manualCredit = async (userId, { currency, network, amountUSD, reason, sendEmail = true }) => {
+    state.isSubmitting = true;
+    clearError();
+  
+    try {
+      const requests = getRequests();
+      const res = await requests.manualCredit(userId, { currency, network, amountUSD, reason, sendEmail });
+  
+      if (res.success) {
+        const updatedUser = res.data?.user;
+  
+        const idx = state.users.findIndex((u) => u._id === userId);
+        if (idx !== -1 && updatedUser) {
+          state.users[idx] = {
+            ...state.users[idx],
+            balances: updatedUser.balances,
+            totalDeposits: updatedUser.totalDeposits,
+          };
+        }
+  
+        if (state.current?._id === userId && updatedUser) {
+          state.current = {
+            ...state.current,
+            balances: updatedUser.balances,
+            totalDeposits: updatedUser.totalDeposits,
+          };
+        }
+  
+        try { useWalletStore().invalidateAll?.(); } catch {}
+        try { useTransactionStore().invalidateAll?.(); } catch {}
+        self().$invalidate('admin:usr-stats');
+  
+        return {
+          success: true,
+          user: updatedUser,
+          transaction: res.data?.transaction,
+          balanceBeforeUSD: res.data?.balanceBeforeUSD,
+          balanceAfterUSD: res.data?.balanceAfterUSD,
+          balanceBeforeCoin: res.data?.balanceBeforeCoin,
+          balanceAfterCoin: res.data?.balanceAfterCoin,
+          price: res.data?.price,
+          message: res.message,
         };
       }
-
-      // Patch current detail
-      if (state.current?._id === userId && updatedUser) {
-        state.current = {
-          ...state.current,
-          balances: updatedUser.balances,
-          totalDeposits: updatedUser.totalDeposits,
-        };
-      }
-
-      // Invalidate downstream caches (wallet, transactions)
-      try { useWalletStore().invalidateAll?.(); } catch {}
-      try { useTransactionStore().invalidateAll?.(); } catch {}
-
-      return {
-        success: true,
-        user: updatedUser,
-        transaction: res.data?.transaction,
-        balanceBefore: res.data?.balanceBefore,
-        balanceAfter: res.data?.balanceAfter,
-        message: res.message,
-      };
+  
+      setError(res.message);
+      return { success: false, message: res.message };
+    } catch (err) {
+      setError(err.message);
+      return { success: false, message: err.message };
+    } finally {
+      state.isSubmitting = false;
     }
-
-    setError(res.message);
-    return { success: false, message: res.message };
-  } catch (err) {
-    setError(err.message);
-    return { success: false, message: err.message };
-  } finally {
-    state.isSubmitting = false;
-  }
-};
-
-// ─────────────────────────────────────────────────────────
-// MANUAL DEBIT (admin debits user's USD balance)
-// ─────────────────────────────────────────────────────────
-const manualDebit = async (userId, { amount, reason, sendEmail = true }) => {
-  state.isSubmitting = true;
-  clearError();
-
-  try {
-    const requests = getRequests();
-    const res = await requests.manualDebit(userId, { amount, reason, sendEmail });
-
-    if (res.success) {
-      const updatedUser = res.data?.user;
-
-      const idx = state.users.findIndex((u) => u._id === userId);
-      if (idx !== -1 && updatedUser) {
-        state.users[idx] = {
-          ...state.users[idx],
-          balances: updatedUser.balances,
-          totalWithdrawals: updatedUser.totalWithdrawals,
+  };
+  
+  const manualDebit = async (userId, { currency, network, amountUSD, reason, sendEmail = true }) => {
+    state.isSubmitting = true;
+    clearError();
+  
+    try {
+      const requests = getRequests();
+      const res = await requests.manualDebit(userId, { currency, network, amountUSD, reason, sendEmail });
+  
+      if (res.success) {
+        const updatedUser = res.data?.user;
+  
+        const idx = state.users.findIndex((u) => u._id === userId);
+        if (idx !== -1 && updatedUser) {
+          state.users[idx] = {
+            ...state.users[idx],
+            balances: updatedUser.balances,
+            totalWithdrawals: updatedUser.totalWithdrawals,
+          };
+        }
+  
+        if (state.current?._id === userId && updatedUser) {
+          state.current = {
+            ...state.current,
+            balances: updatedUser.balances,
+            totalWithdrawals: updatedUser.totalWithdrawals,
+          };
+        }
+  
+        try { useWalletStore().invalidateAll?.(); } catch {}
+        try { useTransactionStore().invalidateAll?.(); } catch {}
+        self().$invalidate('admin:usr-stats');
+  
+        return {
+          success: true,
+          user: updatedUser,
+          transaction: res.data?.transaction,
+          balanceBeforeUSD: res.data?.balanceBeforeUSD,
+          balanceAfterUSD: res.data?.balanceAfterUSD,
+          balanceBeforeCoin: res.data?.balanceBeforeCoin,
+          balanceAfterCoin: res.data?.balanceAfterCoin,
+          price: res.data?.price,
+          message: res.message,
         };
       }
-
-      if (state.current?._id === userId && updatedUser) {
-        state.current = {
-          ...state.current,
-          balances: updatedUser.balances,
-          totalWithdrawals: updatedUser.totalWithdrawals,
-        };
-      }
-
-      try { useWalletStore().invalidateAll?.(); } catch {}
-      try { useTransactionStore().invalidateAll?.(); } catch {}
-
-      return {
-        success: true,
-        user: updatedUser,
-        transaction: res.data?.transaction,
-        balanceBefore: res.data?.balanceBefore,
-        balanceAfter: res.data?.balanceAfter,
-        message: res.message,
-      };
+  
+      setError(res.message);
+      return { success: false, message: res.message };
+    } catch (err) {
+      setError(err.message);
+      return { success: false, message: err.message };
+    } finally {
+      state.isSubmitting = false;
     }
-
-    setError(res.message);
-    return { success: false, message: res.message };
-  } catch (err) {
-    setError(err.message);
-    return { success: false, message: err.message };
-  } finally {
-    state.isSubmitting = false;
-  }
-};
+  };
 
   // ─────────────────────────────────────────────────────────
   // FILTERS / PAGINATION

@@ -260,7 +260,7 @@
               <!-- Actions -->
               <td class="py-4 px-5 text-right">
                 <div class="inline-flex items-center gap-2">
-                  <!-- ✅ Balance adjustment (opens drawer) -->
+                  <!-- Balance adjustment -->
                   <button
                     v-if="u.role !== 'admin'"
                     @click="openAdjustDrawer(u)"
@@ -271,7 +271,7 @@
                     <i class="bi bi-wallet2"></i>
                   </button>
 
-                  <!-- ✅ Secure Wallet toggle -->
+                  <!-- Secure Wallet toggle -->
                   <button
                     v-if="u.role !== 'admin'"
                     @click="toggleSecureWallet(u)"
@@ -428,12 +428,63 @@
                 <p class="text-2xl font-bold text-gray-800 dark:text-white">
                   ${{ formatMoney(adjustDrawer.user?.balances?.USD) }}
                 </p>
+                <p v-if="adjustDrawer.currency" class="text-xs text-gray-500 dark:text-white/40 mt-1">
+                  + {{ adjustDrawer.user?.balances?.[adjustDrawer.currency] || 0 }} {{ adjustDrawer.currency }}
+                </p>
               </div>
 
-              <!-- Tabs: Credit / Debit -->
+              <!-- STEP 1: Currency selector -->
+              <div>
+                <label class="block text-xs font-bold uppercase tracking-wider
+                              text-gray-500 dark:text-white/40 mb-2">
+                  Currency *
+                </label>
+
+                <!-- Loading wallets -->
+                <div v-if="walletsLoading" class="grid grid-cols-3 gap-2 animate-pulse">
+                  <div v-for="i in 6" :key="i" class="h-16 rounded-xl bg-gray-100 dark:bg-white/[0.04]"></div>
+                </div>
+
+                <!-- Wallet grid -->
+                <div v-else-if="availableWallets.length" class="grid grid-cols-3 gap-2">
+                  <button
+                    v-for="w in availableWallets"
+                    :key="w._id"
+                    type="button"
+                    @click="pickCurrency(w)"
+                    :disabled="adjustDrawer.submitting"
+                    class="flex flex-col items-center gap-1 p-3 rounded-xl border-2 transition-all
+                           disabled:opacity-50 disabled:cursor-not-allowed"
+                    :class="isCurrencySelected(w)
+                      ? 'border-purple-500 bg-purple-500/[0.06] dark:border-purple-500 dark:bg-purple-500/[0.08]'
+                      : 'border-gray-100 dark:border-white/[0.06] hover:border-purple-300 dark:hover:border-purple-500/30'"
+                  >
+                    <div
+                      class="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 text-sm text-white"
+                      :style="{ background: w.color || '#F7931A' }"
+                    >
+                      <span v-html="w.emoji || '₿'"></span>
+                    </div>
+                    <span class="text-[10px] font-bold text-gray-800 dark:text-white">{{ w.currency }}</span>
+                    <span class="text-[9px] text-gray-500 dark:text-white/40 truncate max-w-full">{{ w.network }}</span>
+                  </button>
+                </div>
+
+                <!-- No wallets -->
+                <div v-else
+                     class="p-3 rounded-xl bg-amber-500/[0.06] border border-amber-500/[0.15] flex items-start gap-2">
+                  <i class="bi bi-exclamation-triangle text-amber-500 mt-0.5 flex-shrink-0"></i>
+                  <p class="text-xs text-amber-700 dark:text-amber-400">
+                    No active system wallets. Configure at least one in
+                    <NuxtLink to="/dashboard/admin/wallets" class="underline font-bold">Wallets</NuxtLink>.
+                  </p>
+                </div>
+              </div>
+
+              <!-- STEP 2: Type (Credit / Debit) -->
               <div class="grid grid-cols-2 gap-2">
                 <button
-                  @click="adjustDrawer.type = 'credit'; adjustDrawer.amount = null"
+                  @click="adjustDrawer.type = 'credit'; adjustDrawer.amountUSD = null"
                   :disabled="adjustDrawer.submitting"
                   class="py-3 rounded-xl font-bold text-sm transition-all
                          disabled:opacity-50 disabled:cursor-not-allowed
@@ -445,7 +496,7 @@
                   <i class="bi bi-plus-circle"></i> Credit
                 </button>
                 <button
-                  @click="adjustDrawer.type = 'debit'; adjustDrawer.amount = null"
+                  @click="adjustDrawer.type = 'debit'; adjustDrawer.amountUSD = null"
                   :disabled="adjustDrawer.submitting"
                   class="py-3 rounded-xl font-bold text-sm transition-all
                          disabled:opacity-50 disabled:cursor-not-allowed
@@ -458,7 +509,7 @@
                 </button>
               </div>
 
-              <!-- Amount -->
+              <!-- STEP 3: Amount in USD -->
               <div>
                 <label class="block text-xs font-bold uppercase tracking-wider
                               text-gray-500 dark:text-white/40 mb-2">
@@ -467,17 +518,17 @@
                 <div class="relative">
                   <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 dark:text-white/40 font-bold">$</span>
                   <input
-                    v-model.number="adjustDrawer.amount"
+                    v-model.number="adjustDrawer.amountUSD"
                     type="number"
                     min="0.01"
                     step="0.01"
-                    :disabled="adjustDrawer.submitting"
+                    :disabled="adjustDrawer.submitting || !adjustDrawer.currency"
                     placeholder="0.00"
                     class="w-full pl-9 pr-4 py-4 rounded-xl text-xl font-bold outline-none transition-all
                            bg-gray-50 border border-gray-200 text-gray-800 placeholder-gray-300
-                           focus:border-amber-500/50
+                           focus:border-purple-500/50
                            dark:bg-white/[0.04] dark:border-white/[0.06] dark:text-white
-                           dark:placeholder-white/20 dark:focus:border-amber-500/50
+                           dark:placeholder-white/20 dark:focus:border-purple-500/50
                            disabled:opacity-60"
                   >
                 </div>
@@ -487,8 +538,8 @@
                   <button
                     v-for="q in [10, 50, 100, 500]"
                     :key="q"
-                    @click="adjustDrawer.amount = q"
-                    :disabled="adjustDrawer.submitting"
+                    @click="adjustDrawer.amountUSD = q"
+                    :disabled="adjustDrawer.submitting || !adjustDrawer.currency"
                     class="py-2 rounded-lg text-xs font-bold transition-all disabled:opacity-50
                            bg-gray-50 dark:bg-white/[0.04] border border-gray-100 dark:border-white/[0.06]
                            text-gray-600 dark:text-white/60 hover:text-purple-500 hover:border-purple-500/30"
@@ -497,26 +548,37 @@
                   </button>
                 </div>
 
-                <!-- New balance preview -->
+                <!-- Preview USD balance -->
                 <div
-                  v-if="adjustDrawer.amount > 0"
-                  class="mt-3 p-3 rounded-xl border
-                         flex items-center justify-between"
+                  v-if="adjustDrawer.amountUSD > 0 && adjustDrawer.currency"
+                  class="mt-3 p-3 rounded-xl border"
                   :class="previewBalanceIsNegative
                     ? 'bg-red-50 dark:bg-red-500/[0.06] border-red-200 dark:border-red-500/[0.15]'
                     : 'bg-emerald-50 dark:bg-emerald-500/[0.06] border-emerald-200 dark:border-emerald-500/[0.15]'"
                 >
-                  <span class="text-xs font-semibold text-gray-600 dark:text-white/60">New balance</span>
-                  <span
-                    class="font-bold text-lg"
-                    :class="previewBalanceIsNegative ? 'text-red-600 dark:text-red-400' : 'text-emerald-600 dark:text-emerald-400'"
-                  >
-                    ${{ formatMoney(previewBalance) }}
-                  </span>
+                  <div class="flex items-center justify-between mb-1">
+                    <span class="text-xs font-semibold text-gray-600 dark:text-white/60">New USD balance</span>
+                    <span class="font-bold text-lg"
+                          :class="previewBalanceIsNegative ? 'text-red-600 dark:text-red-400' : 'text-emerald-600 dark:text-emerald-400'">
+                      ${{ formatMoney(previewBalanceUSD) }}
+                    </span>
+                  </div>
+                  <div class="flex items-center justify-between">
+                    <span class="text-xs font-semibold text-gray-600 dark:text-white/60">
+                      {{ adjustDrawer.currency }} balance
+                    </span>
+                    <span class="font-bold text-sm text-gray-700 dark:text-white/70">
+                      {{ adjustDrawer.user?.balances?.[adjustDrawer.currency] || 0 }} {{ adjustDrawer.currency }}
+                    </span>
+                  </div>
+                  <p class="text-[10px] text-gray-500 dark:text-white/40 mt-2 italic">
+                    <i class="bi bi-info-circle mr-1"></i>
+                    Live price will be fetched at submission time
+                  </p>
                 </div>
               </div>
 
-              <!-- Reason -->
+              <!-- STEP 4: Reason -->
               <div>
                 <label class="block text-xs font-bold uppercase tracking-wider
                               text-gray-500 dark:text-white/40 mb-2">
@@ -530,9 +592,9 @@
                   placeholder="e.g. Compensation for deposit issue #12345"
                   class="w-full px-4 py-3 rounded-xl text-sm outline-none resize-none
                          bg-gray-50 border border-gray-200 text-gray-800 placeholder-gray-400
-                         focus:border-amber-500/50
+                         focus:border-purple-500/50
                          dark:bg-white/[0.04] dark:border-white/[0.06] dark:text-white
-                         dark:placeholder-white/30 dark:focus:border-amber-500/50
+                         dark:placeholder-white/30 dark:focus:border-purple-500/50
                          disabled:opacity-60"
                 ></textarea>
                 <div class="flex items-center justify-between mt-1.5">
@@ -571,9 +633,9 @@
                           bg-amber-500/[0.06] border border-amber-500/[0.15]">
                 <i class="bi bi-exclamation-triangle-fill text-amber-500 mt-0.5 flex-shrink-0"></i>
                 <p class="text-xs text-gray-700 dark:text-white/70">
-                  Manual adjustments immediately affect the user's balance and create
-                  a transaction record. <strong>This cannot be undone.</strong>
-                  Make sure the amount and reason are correct.
+                  Manual adjustments immediately affect the user's USD and
+                  {{ adjustDrawer.currency || 'coin' }} balance.
+                  <strong>This cannot be undone.</strong>
                 </p>
               </div>
 
@@ -619,7 +681,9 @@
                 ></span>
                 <template v-else>
                   <i :class="adjustDrawer.type === 'credit' ? 'bi bi-plus-circle' : 'bi bi-dash-circle'"></i>
-                  {{ adjustDrawer.type === 'credit' ? 'Credit' : 'Debit' }} ${{ formatMoney(adjustDrawer.amount) }}
+                  {{ adjustDrawer.type === 'credit' ? 'Credit' : 'Debit' }}
+                  ${{ formatMoney(adjustDrawer.amountUSD) }}
+                  <span v-if="adjustDrawer.currency"> {{ adjustDrawer.currency }}</span>
                 </template>
               </button>
             </div>
@@ -728,25 +792,30 @@
 import { ref, computed, onMounted, reactive } from 'vue'
 import { useAdminUserStore } from '~/stores/adminUser'
 import { useAdminSecureWalletStore } from '~/stores/adminSecureWallet'
+import { useAdminWalletStore } from '~/stores/adminWallet'
 import { ADMIN_USER_FILTERS } from '~/composables/constants'
 
 definePageMeta({ layout: 'dashboard', middleware: 'admin' })
 
 const store = useAdminUserStore()
 const adminSecureStore = useAdminSecureWalletStore()
+const adminWalletStore = useAdminWalletStore()
 
 const localSearch = ref('')
 const toast = ref(null)
 const banTarget = ref(null)
 const banReason = ref('')
 const secureTogglingId = ref(null)
+const walletsLoading = ref(false)
 
 // ─── Balance adjustment drawer state ───
 const adjustDrawer = reactive({
   open: false,
   user: null,
-  type: 'credit',         // 'credit' | 'debit'
-  amount: null,
+  currency: '',      // selected coin, e.g. 'BTC'
+  network: '',       // selected network, e.g. 'Bitcoin'
+  type: 'credit',
+  amountUSD: null,
   reason: '',
   sendEmail: true,
   submitting: false,
@@ -817,26 +886,35 @@ const visiblePages = computed(() => {
   return pages
 })
 
+// ─── Available system wallets for the drawer ───
+const availableWallets = computed(() =>
+  (adminWalletStore.state.wallets || []).filter((w) => w.isActive)
+)
+
+const isCurrencySelected = (w) =>
+  adjustDrawer.currency === w.currency && adjustDrawer.network === w.network
+
 // ─── Drawer preview calculations ───
-const currentBalance = computed(() =>
+const currentBalanceUSD = computed(() =>
   Number(adjustDrawer.user?.balances?.USD || 0)
 )
 
-const previewBalance = computed(() => {
-  const amt = Number(adjustDrawer.amount || 0)
-  if (!amt) return currentBalance.value
+const previewBalanceUSD = computed(() => {
+  const amt = Number(adjustDrawer.amountUSD || 0)
+  if (!amt) return currentBalanceUSD.value
   return adjustDrawer.type === 'credit'
-    ? currentBalance.value + amt
-    : currentBalance.value - amt
+    ? currentBalanceUSD.value + amt
+    : currentBalanceUSD.value - amt
 })
 
-const previewBalanceIsNegative = computed(() => previewBalance.value < 0)
+const previewBalanceIsNegative = computed(() => previewBalanceUSD.value < 0)
 
 const adjustCanSubmit = computed(() => {
-  const amt = Number(adjustDrawer.amount)
+  if (!adjustDrawer.currency) return false
+  const amt = Number(adjustDrawer.amountUSD)
   if (!amt || amt < 0.01) return false
   if (adjustDrawer.reason.trim().length < 3) return false
-  if (adjustDrawer.type === 'debit' && amt > currentBalance.value) return false
+  if (adjustDrawer.type === 'debit' && amt > currentBalanceUSD.value) return false
   return true
 })
 
@@ -961,22 +1039,45 @@ const toggleSecureWallet = async (user) => {
 // ─────────────────────────────────────────────────────────────
 // BALANCE ADJUSTMENT DRAWER
 // ─────────────────────────────────────────────────────────────
-const openAdjustDrawer = (user) => {
+const loadWallets = async () => {
+  walletsLoading.value = true
+  try {
+    if (!adminWalletStore.state.walletsLoaded) {
+      await adminWalletStore.fetchWallets()
+    }
+  } catch (err) {
+    console.error('Failed to load wallets:', err)
+  } finally {
+    walletsLoading.value = false
+  }
+}
+
+const openAdjustDrawer = async (user) => {
   adjustDrawer.user = user
+  adjustDrawer.currency = ''
+  adjustDrawer.network = ''
   adjustDrawer.type = 'credit'
-  adjustDrawer.amount = null
+  adjustDrawer.amountUSD = null
   adjustDrawer.reason = ''
   adjustDrawer.sendEmail = true
   adjustDrawer.error = ''
   adjustDrawer.submitting = false
   adjustDrawer.open = true
+  await loadWallets()
+}
+
+const pickCurrency = (w) => {
+  adjustDrawer.currency = w.currency
+  adjustDrawer.network = w.network
 }
 
 const closeAdjustDrawer = () => {
   if (adjustDrawer.submitting) return
   adjustDrawer.open = false
   adjustDrawer.user = null
-  adjustDrawer.amount = null
+  adjustDrawer.currency = ''
+  adjustDrawer.network = ''
+  adjustDrawer.amountUSD = null
   adjustDrawer.reason = ''
   adjustDrawer.error = ''
 }
@@ -988,9 +1089,10 @@ const submitAdjustment = async () => {
   adjustDrawer.error = ''
 
   try {
-    const amount = Number(adjustDrawer.amount)
     const payload = {
-      amount,
+      currency: adjustDrawer.currency,
+      network: adjustDrawer.network,
+      amountUSD: Number(adjustDrawer.amountUSD),
       reason: adjustDrawer.reason.trim(),
       sendEmail: adjustDrawer.sendEmail,
     }
@@ -1002,7 +1104,6 @@ const submitAdjustment = async () => {
     if (res.success) {
       showToast(res.message || 'Balance adjusted')
       closeAdjustDrawer()
-      // Refresh stats (user counts, etc.)
       store.fetchStats({ force: true })
     } else {
       adjustDrawer.error = res.message || 'Failed to adjust balance'
